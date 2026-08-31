@@ -1,0 +1,5 @@
+node_modules
+# dist/ is COMMITTED here on purpose: installing a cartridge downloads this
+# repo and nothing compiles on the user machine.
+vite.config.ts.timestamp-*
+__pycache__/

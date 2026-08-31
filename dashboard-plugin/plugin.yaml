@@ -1,0 +1,4 @@
+name: mnemosyne-os
+version: 0.1.0
+description: "Mnemosyne OS dashboard tab — governed memory for your agent: covenant status, the human veto inbox, and the brain Mnemosyne OS serves to Hermes. Dashboard-only: no agent tools, no hooks."
+author: "Mnemosyne OS (https://mnemosyne-os.com)"

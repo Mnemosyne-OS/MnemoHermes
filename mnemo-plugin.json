@@ -1,0 +1,42 @@
+{
+  "name": "@mnemosyne-plugins/mnemo-hermes",
+  "displayName": "MnemoHermes",
+  "version": "0.8.0",
+  "description": "Cockpit for your Hermes Agent. See what your agent is doing, chat with it, manage its skills, and govern every memory it writes into your vaults — keep, move or reject, with full provenance. Hermes roams the world; you govern what it remembers.",
+  "descriptionI18n": {
+    "en": "Cockpit for your Hermes Agent. See what your agent is doing, chat with it, manage its skills, and govern every memory it writes into your vaults — keep, move or reject, with full provenance.",
+    "fr": "Cockpit pour votre agent Hermes. Voyez ce que fait votre agent, discutez avec lui, gérez ses skills, et gouvernez chaque souvenir qu'il écrit dans vos coffres — garder, déplacer ou rejeter, avec provenance complète.",
+    "es": "Cabina de control para tu agente Hermes. Observa lo que hace tu agente, chatea con él, gestiona sus skills y gobierna cada recuerdo que escribe en tus cofres — conservar, mover o rechazar, con procedencia completa."
+  },
+  "category": "System",
+  "icon": "icon.svg",
+  "vendor": "Mnemosyne OS",
+  "keywords": [
+    "hermes",
+    "agent",
+    "cockpit",
+    "governance",
+    "memory"
+  ],
+  "permissions": [
+    "vault:read",
+    "vault:write",
+    "model:infer",
+    "hermes:control"
+  ],
+  "repository": "https://github.com/Mnemosyne-OS/MnemoHermes",
+  "updateStrategy": "git",
+  "entrypoints": {
+    "renderer": "index.html"
+  },
+  "widgets": [
+    {
+      "id": "mnemo-hermes-main",
+      "icon": "🦉",
+      "name": "MnemoHermes",
+      "route": "index.html",
+      "defaultWidth": 960,
+      "defaultHeight": 700
+    }
+  ]
+}

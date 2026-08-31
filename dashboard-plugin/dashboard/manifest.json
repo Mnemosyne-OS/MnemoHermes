@@ -1,0 +1,13 @@
+{
+  "name": "mnemosyne-os",
+  "label": "Mnemosyne OS",
+  "description": "Your agent's governed memory: covenant status, the human veto inbox, and the brain Mnemosyne OS serves to Hermes.",
+  "icon": "Brain",
+  "version": "0.1.0",
+  "tab": {
+    "path": "/mnemosyne-os",
+    "position": "after:skills"
+  },
+  "entry": "dist/index.js",
+  "api": "plugin_api.py"
+}

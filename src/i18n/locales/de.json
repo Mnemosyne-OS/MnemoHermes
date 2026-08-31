@@ -1,0 +1,240 @@
+{
+  "app": {
+    "title": "MnemoHermes",
+    "tagline": "Hermes durchstreift die Welt. Du bestimmst, was er behält."
+  },
+  "tabs": {
+    "status": "Status",
+    "chat": "Chat",
+    "skills": "Skills",
+    "inbox": "Speicher-Inbox",
+    "settings": "Einstellungen",
+    "channels": "Kanäle",
+    "tools": "Werkzeuge",
+    "agents": "Agenten"
+  },
+  "agents": {
+    "intro": "Jedes Profil ist ein vollständiger Agent — mit eigenem Gedächtnis, eigenen Skills, eigenem Gateway und eigenem Telegram-Bot. Ein Token pro Bot, Telegrams Regel.",
+    "defaultAgent": "Hauptagent",
+    "configureTelegram": "Telegram…",
+    "botfatherHint": "Erstelle über @BotFather auf Telegram einen eigenen Bot (ein Token pro Agent) und füge das Token hier ein.",
+    "createHeading": "Agent erstellen",
+    "create": "Erstellen",
+    "creating": "Wird erstellt…"
+  },
+  "channels": {
+    "heading": "Messaging-Kanäle",
+    "configured": "konfiguriert",
+    "notConfigured": "nicht konfiguriert",
+    "telegramHeading": "Telegram",
+    "tokenLabel": "Bot-Token",
+    "tokenHint": "Erstelle einen Bot mit @BotFather auf Telegram und füge das Token hier ein.",
+    "allowedLabel": "Erlaubte Benutzer-IDs (kommagetrennt)",
+    "allowedHint": "Dringend empfohlen: ohne Liste kann jeder mit deinem Agenten sprechen. Deine ID findest du über @userinfobot.",
+    "saved": "Gespeichert ✓ (Backup erstellt) — Gateway neu starten.",
+    "invalidToken": "Das sieht nicht wie ein BotFather-Token aus.",
+    "invalidIds": "IDs müssen kommagetrennte Zahlen sein.",
+    "othersHint": "Andere Plattformen (QR, Kopplungen…) werden vorerst in Hermes konfiguriert."
+  },
+  "tools": {
+    "intro": "Was dein Agent tun darf, Kanal für Kanal. Ankreuzen, speichern — automatisches Backup.",
+    "empty": "Kein Werkzeug-Block in der Config gefunden.",
+    "saved": "Gespeichert ✓ (Backup erstellt) — Gateway neu starten.",
+    "terminalWarning": "Terminal auf einem Messaging-Kanal aktiv",
+    "presetNote": "Dieser Kanal nutzt ein Preset — Speichern ersetzt es durch die angekreuzte Liste."
+  },
+  "status": {
+    "heading": "Agentenstatus",
+    "checking": "Hermes-Installation wird geprüft…",
+    "notWired": "Der Hermes-Connector ist auf diesem Host noch nicht verdrahtet. Aktualisiere Mnemosyne OS und versuche es erneut.",
+    "retry": "Erneut versuchen",
+    "installed": "Installiert",
+    "notInstalled": "Nicht installiert",
+    "gateway": "Gateway",
+    "gatewayUp": "läuft",
+    "gatewayDown": "gestoppt",
+    "gatewayStart": "Starten",
+    "gatewayStop": "Stoppen",
+    "gatewayStarting": "startet…",
+    "apiServer": "API-Server",
+    "enabled": "aktiviert",
+    "disabled": "deaktiviert",
+    "logs": "Protokoll",
+    "logsEmpty": "Noch nichts protokolliert.",
+    "update": "Hermes aktualisieren",
+    "updating": "Hermes wird aktualisiert…",
+    "updateDone": "Hermes ist aktuell ✓ — starte das Gateway neu.",
+    "updateFailed": "Aktualisierung fehlgeschlagen — siehe Ausgabe unten.",
+    "updateHint": "Repariert die eingebettete Laufzeit (z. B. das SQLite, vor dem das Gateway warnt). Kein Terminal nötig."
+  },
+  "settings": {
+    "heading": "Einstellungen",
+    "refresh": {
+      "label": "Status automatisch aktualisieren",
+      "off": "Aus",
+      "s30": "30 s",
+      "m1": "1 Min.",
+      "m5": "5 Min."
+    },
+    "port": {
+      "label": "Port des Hermes-API-Servers",
+      "hint": "Leer = automatisch erkennen. Wird vom Chat-Tab verwendet."
+    },
+    "save": "Speichern",
+    "saved": "Gespeichert ✓",
+    "saveError": "Speichern fehlgeschlagen (außerhalb des Mnemosyne-Hosts?)"
+  },
+  "brain": {
+    "heading": "Gehirn des Agenten",
+    "intro": "Hermes denkt mit Mnemosynes Inferenz-Engine — lokales Modell, Cloud-Guthaben oder eigene Schlüssel. Niemals Gedächtnis hier: nur ein Gehirn.",
+    "enable": "Hermes das Gehirn servieren (lokaler Port)",
+    "running": "aktiv",
+    "stopped": "gestoppt",
+    "capLabel": "Tägliches Anruflimit (0 = pausiert)",
+    "callsToday": "{{n}} / {{cap}} Aufrufe heute",
+    "spentToday": "Heute ausgegeben: ${{usd}} (Kredit-Route — echte Abbuchungen)",
+    "spentTodayFloor": "Heute ausgegeben: ≥ ${{usd}} ({{priced}}/{{total}} Aufrufe bepreist — der Rest unbekannt, nicht gratis)",
+    "toolsNative": "Native Tools: ja — der Agent kann seine Tool-Aufrufe über dieses Gehirn ausführen.",
+    "toolsNone": "Native Tools: nein — dieses Gehirn dient nur dem Chat; für Tool-Ausführung braucht es eine Gemini- oder Vertex-Route in Mnemosynes KI-Einstellungen.",
+    "pasteHint": "Oder von Hand in die Hermes-Config einfügen:",
+    "apply": "In die Hermes-Config übernehmen",
+    "applyConfirm": "Schreiben bestätigen?",
+    "applied": "Übernommen ✓ (Backup erstellt) — Hermes neu starten zum Laden.",
+    "auxApply": "Auch die Nebendienste zu Mnemosyne routen",
+    "auxHint": "Vision, Web-Zusammenfassungen, Kompression, Titel, Sitzungssuche: Hermes' Nebenaufgaben denken ebenfalls mit deinem OS. (Die Stimme kommt in einem nächsten Meilenstein.)"
+  },
+  "chat": {
+    "placeholder": "Schreibe deinem Agenten…",
+    "send": "Senden",
+    "thinking": "Hermes denkt nach (er kann seine Tools nutzen — das kann dauern)…",
+    "empty": "Sprich mit deinem Hermes-Agenten — das Gateway muss laufen (hermes gateway).",
+    "errNotRunning": "Das Hermes-Gateway antwortet nicht. Starte „hermes gateway“ in einem Terminal und versuche es erneut.",
+    "errDisabled": "Der Hermes-API-Server ist in seiner Konfiguration deaktiviert.",
+    "errNotInstalled": "Keine Hermes-Installation auf diesem Rechner gefunden.",
+    "errAuth": "API-Schlüssel von Hermes abgelehnt — prüfe seine Konfiguration.",
+    "errTimeout": "Hermes hat nicht rechtzeitig geantwortet. Er arbeitet vielleicht noch — versuche es erneut.",
+    "commands": "Befehle",
+    "commandsTitle": "Befehls-Spickzettel",
+    "commandsHint": "Hier teilweise unterstützt — voll auf Telegram und im CLI. Klick fügt den Befehl ein.",
+    "cmd": {
+      "help": "Die Befehlsreferenz, im Chat",
+      "new": "Neue Sitzung (Titel optional)",
+      "status": "Sitzungsinfo und Zusammenfassung",
+      "model": "Modell wechseln oder anzeigen",
+      "context": "Aufschlüsselung des Kontextfensters",
+      "goal": "Dauerziel mit Auto-Fortsetzung",
+      "skills": "Skills suchen und verwalten",
+      "background": "Aufgabe in separater Sitzung",
+      "title": "Aktuelle Sitzung benennen",
+      "voice": "Gesprochene Antworten ein/aus"
+    },
+    "longTurnHint": "Der Agent arbeitet — ein Zug mit Tools kann bis zu 3 Minuten dauern.",
+    "stop": "Stopp",
+    "stopped": "Gestoppt.",
+    "errInterrupted": "Die Antwort wurde vor dem Ende unterbrochen."
+  },
+  "skills": {
+    "count": "{{n}} Skills im Regal",
+    "tapsHeading": "Abonnierte Taps",
+    "ourInstalled": "Die Skill mnemosyne-memory ist installiert — dein Agent kennt den Gedächtnis-Covenant.",
+    "ourMissing": "Die Skill mnemosyne-memory ist nicht installiert. So fügst du sie hinzu:",
+    "empty": "Keine Skills gefunden."
+  },
+  "inbox": {
+    "intro": "Alles, was Hermes in deine Tresore schreibt, wartet hier auf dein Urteil. Behalten billigt es, Verschieben sortiert es um, Ablehnen vergisst es.",
+    "empty": "Nichts zu prüfen — keine Agenten-Einträge ausstehend.",
+    "keep": "Behalten",
+    "move": "Verschieben",
+    "moveTo": "In welchen Tresor?",
+    "reject": "Ablehnen",
+    "confirm": "Vergessen bestätigen?",
+    "multiPart": "Mehrteiliges Dokument — verwalte es direkt im Tresor."
+  },
+  "onboarding": {
+    "stepOf": "Schritt {{n}} / {{total}}",
+    "skipAll": "Alles überspringen",
+    "skip": "Überspringen",
+    "next": "Weiter",
+    "back": "Zurück",
+    "finishButton": "Erste Schritte abschließen",
+    "rerun": "Erste Schritte erneut starten",
+    "welcome": {
+      "heading": "Willkommen bei MnemoHermes",
+      "body": "Vier Schritte, alle optional — und dein Agent denkt mit deinem OS, spricht mit dir auf deinen Kanälen und bleibt unter deiner Governance.",
+      "detected": "Hermes-Installation erkannt.",
+      "notInstalled": "Keine Hermes-Installation gefunden. Installiere sie zuerst — die automatisierte Installation kommt in einem nächsten Meilenstein."
+    },
+    "brain": {
+      "heading": "1. Das Gehirn"
+    },
+    "posture": {
+      "heading": "2. Wo lebt dein Agent?",
+      "body": "Ein autonomer Agent führt aus, was er liest. Wähle eine Haltung mit einem Klick — sie schreibt beide Seiten der Brücke: die Tools von Hermes und das Gehirn-Limit. Du kannst sie jederzeit ändern.",
+      "current": "Aktuelle Haltung: {{name}}",
+      "currentCustom": "Aktuelle Haltung: benutzerdefiniert (passt zu keinem Preset)",
+      "active": "aktiv",
+      "apply": "Anwenden",
+      "confirmYolo": "Bestätigen? Alles öffnet sich",
+      "applying": "Wird angewendet…",
+      "applied": "Angewendet ✓ (Backup erstellt) — Gehirn-Limit jetzt {{cap}}/Tag. Starte das Hermes-Gateway neu.",
+      "footnote": "Jedes Preset sichert die Hermes-Konfiguration vor dem Schreiben. Auf einer Maschine mit deinen Passwörtern oder Wallets bevorzuge Festung — oder lasse den Agenten auf einer dedizierten Maschine / einem VPS leben.",
+      "fortress": {
+        "title": "Festung — wichtige Maschine",
+        "body": "Minimale Tools überall (kein Terminal, keine Skill-Selbstinstallation), manuelle Freigabe, blockierender tirith-Scan, niedriges Gehirn-Limit. Die geschlossenste Angriffsfläche."
+      },
+      "balanced": {
+        "title": "Ausgewogen — empfohlen",
+        "body": "Vorsichtige Messenger (Recall, keine Shell), volle CLI, intelligente Freigabe, normales Gehirn-Limit. Die Standardeinstellung des Assistenten."
+      },
+      "yolo": {
+        "title": "YOLO — Wegwerf-PC, „kann brennen“",
+        "body": "Alles offen auf jedem Kanal, Freigaben aus, hohes Gehirn-Limit. Nur auf einer entfernten Maschine ohne etwas zu verlieren."
+      }
+    },
+    "profile": {
+      "heading": "3. Wer bist du für ihn?",
+      "body": "Das Profil, das dein Agent in jeder Sitzung liest. Mnemosyne kann es aus deinem Gedächtnis entwerfen — lies es, passe es an, übernimm es. Oder fülle den Fragebogen aus, oder füge ein bestehendes Profil ein, wenn du migrierst.",
+      "autofill": "Aus Mnemosyne vorausfüllen",
+      "autofilling": "Mnemosyne entwirft…",
+      "template": "Fragebogen einfügen",
+      "placeholder": "Wer du bist, was du machst, wie er mit dir sprechen soll…",
+      "counter": "{{n}} / {{max}} Zeichen",
+      "apply": "In Hermes übernehmen",
+      "applied": "Profil übernommen ✓ (Backup erstellt)",
+      "templateText": "# Profil\n\n## Rolle\n(Dev, Forscher, Kreativer… ?)\n\n## Stack / tägliche Tools\n\n## Interaktionsstil\n(knapp oder ausführlich? proaktiv oder reaktiv? Sprache?)\n\n## Was ich von dir erwarte\n\n## Kontext\n(Zeitzone, Kanäle, Einschränkungen)"
+    },
+    "channel": {
+      "heading": "4. Ein Kanal, um mit ihm zu sprechen"
+    },
+    "finish": {
+      "heading": "5. Starten",
+      "body": "Starte das Gateway und sag deinem Agenten Hallo — im Chat-Tab oder über Telegram, falls eingerichtet.",
+      "started": "Gateway läuft ✓ — dein Agent ist online."
+    }
+  },
+  "dashboard": {
+    "channelsCount": "{{n}} konfiguriert",
+    "covenantOk": "Covenant ✓",
+    "covenantMissing": "Covenant fehlt",
+    "inboxPending": "{{n}} ausstehend"
+  },
+  "common": {
+    "loading": "Wird geladen…",
+    "error": "Etwas ist schiefgelaufen."
+  },
+  "search": {
+    "heading": "Websuche des Agenten",
+    "intro": "Dein Agent sucht mit der Engine deines OS — Mnemosynes lokalem SearXNG, ohne API-Schlüssel, ohne Dritte, die seine Anfragen lesen.",
+    "engineUp": "Suchmaschine antwortet",
+    "engineDown": "Suchmaschine antwortet nicht",
+    "alreadyRouted": "geroutet ✓",
+    "route": "Websuche zu Mnemosyne routen",
+    "routed": "Geroutet ✓ (Backup erstellt) — Gateway neu starten.",
+    "dockerInstall": "Die Engine lebt in einem Docker-Container — installiere zuerst Docker Desktop.",
+    "dockerStart": "Starte Docker Desktop und klicke erneut — die Engine lebt in einem Container.",
+    "notSetUp": "Aktiviere zuerst die SearXNG-Engine in Mnemosynes Web-Einstellungen.",
+    "starting": "Die Engine startet — klicke in ein paar Sekunden erneut.",
+    "notAnswering": "Der Container läuft, antwortet aber nicht — prüfe Mnemosynes Web-Einstellungen.",
+    "searchOnly": "SearXNG deckt nur die SUCHE ab — Seiten-Extraktion braucht einen eigenen Anbieter (späterer Meilenstein)."
+  }
+}

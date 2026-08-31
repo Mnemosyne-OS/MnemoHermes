@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <!--
+    MnemoHermes — the messenger's wings carrying the memory core. Drawn in
+    the Mnemosyne flow gradient (same strand as the OS lemniscate) over the
+    brand plate: Hermes roams the world, the vault line grounds him.
+  -->
+  <defs>
+    <linearGradient id="flow" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#7B5EA7"/>
+      <stop offset="45%" stop-color="#A98BFF"/>
+      <stop offset="100%" stop-color="#E4D6FF"/>
+    </linearGradient>
+    <radialGradient id="bloom" cx="50%" cy="42%" r="60%">
+      <stop offset="0%" stop-color="#7C4DFF" stop-opacity="0.30"/>
+      <stop offset="55%" stop-color="#7C4DFF" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="#7C4DFF" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="1.6"/>
+    </filter>
+  </defs>
+
+  <rect width="64" height="64" rx="14" fill="#0E0E13"/>
+  <rect width="64" height="64" rx="14" fill="url(#bloom)"/>
+
+  <!-- Wings — glow pass, then the strands. -->
+  <g filter="url(#glow)" opacity="0.55">
+    <path d="M24 30 C17 28, 12 23, 10 15 C16 18, 21 19, 25 23" fill="none" stroke="url(#flow)" stroke-width="3.2" stroke-linecap="round"/>
+    <path d="M40 30 C47 28, 52 23, 54 15 C48 18, 43 19, 39 23" fill="none" stroke="url(#flow)" stroke-width="3.2" stroke-linecap="round"/>
+  </g>
+  <path d="M24 30 C17 28, 12 23, 10 15 C16 18, 21 19, 25 23" fill="none" stroke="url(#flow)" stroke-width="3.2" stroke-linecap="round"/>
+  <path d="M40 30 C47 28, 52 23, 54 15 C48 18, 43 19, 39 23" fill="none" stroke="url(#flow)" stroke-width="3.2" stroke-linecap="round"/>
+  <path d="M23 37 C18 37, 14 34, 12 29 C16 30.5, 19.5 31, 23 33" fill="none" stroke="url(#flow)" stroke-width="2.2" stroke-linecap="round" opacity="0.6"/>
+  <path d="M41 37 C46 37, 50 34, 52 29 C48 30.5, 44.5 31, 41 33" fill="none" stroke="url(#flow)" stroke-width="2.2" stroke-linecap="round" opacity="0.6"/>
+
+  <!-- Memory core — glow pass, then the strand. -->
+  <g filter="url(#glow)" opacity="0.55">
+    <circle cx="32" cy="33" r="8.5" fill="none" stroke="url(#flow)" stroke-width="3.6"/>
+  </g>
+  <circle cx="32" cy="33" r="8.5" fill="none" stroke="url(#flow)" stroke-width="3.6"/>
+  <circle cx="32" cy="33" r="2.6" fill="#E4D6FF"/>
+
+  <!-- The vault line: what he brings home lands under governance. -->
+  <line x1="24" y1="51" x2="40" y2="51" stroke="#A98BFF" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
+</svg>

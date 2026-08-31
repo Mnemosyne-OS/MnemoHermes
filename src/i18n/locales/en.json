@@ -1,0 +1,240 @@
+{
+  "app": {
+    "title": "MnemoHermes",
+    "tagline": "Hermes roams the world. You govern what it remembers."
+  },
+  "tabs": {
+    "status": "Status",
+    "chat": "Chat",
+    "skills": "Skills",
+    "inbox": "Memory inbox",
+    "settings": "Settings",
+    "channels": "Channels",
+    "tools": "Tools",
+    "agents": "Agents"
+  },
+  "agents": {
+    "intro": "Each profile is a complete agent — its own memory, skills, gateway and Telegram bot. One token per bot, Telegram's law.",
+    "defaultAgent": "Main agent",
+    "configureTelegram": "Telegram…",
+    "botfatherHint": "Create a dedicated bot via @BotFather on Telegram (one token per agent), then paste the token here.",
+    "createHeading": "Create an agent",
+    "create": "Create",
+    "creating": "Creating…"
+  },
+  "channels": {
+    "heading": "Messaging channels",
+    "configured": "configured",
+    "notConfigured": "not configured",
+    "telegramHeading": "Telegram",
+    "tokenLabel": "Bot token",
+    "tokenHint": "Create a bot with @BotFather on Telegram, then paste the token here.",
+    "allowedLabel": "Allowed user IDs (comma-separated)",
+    "allowedHint": "Strongly recommended: without a list, anyone can talk to your agent. Find your ID via @userinfobot.",
+    "saved": "Saved ✓ (backup created) — restart the gateway.",
+    "invalidToken": "That does not look like a BotFather token.",
+    "invalidIds": "IDs must be numbers separated by commas.",
+    "othersHint": "Other platforms (QR, pairings…) are configured in Hermes for now."
+  },
+  "tools": {
+    "intro": "What your agent may do, channel by channel. Check, save — automatic backup.",
+    "empty": "No toolsets block found in the config.",
+    "saved": "Saved ✓ (backup created) — restart the gateway.",
+    "terminalWarning": "terminal enabled on a messaging channel",
+    "presetNote": "This channel uses a preset — saving replaces it with the checked list."
+  },
+  "status": {
+    "heading": "Agent status",
+    "checking": "Checking your Hermes install…",
+    "notWired": "The Hermes connector is not wired on this host yet. Update Mnemosyne OS, then retry.",
+    "retry": "Retry",
+    "installed": "Installed",
+    "notInstalled": "Not installed",
+    "gateway": "Gateway",
+    "gatewayUp": "running",
+    "gatewayDown": "stopped",
+    "gatewayStart": "Start",
+    "gatewayStop": "Stop",
+    "gatewayStarting": "starting…",
+    "apiServer": "API server",
+    "enabled": "enabled",
+    "disabled": "disabled",
+    "logs": "Logs",
+    "logsEmpty": "Nothing logged yet.",
+    "update": "Update Hermes",
+    "updating": "Updating Hermes…",
+    "updateDone": "Hermes is up to date ✓ — restart the gateway.",
+    "updateFailed": "Update failed — see the output below.",
+    "updateHint": "Repairs the embedded runtime (e.g. the SQLite the gateway warns about). No terminal needed."
+  },
+  "settings": {
+    "heading": "Settings",
+    "refresh": {
+      "label": "Auto-refresh status",
+      "off": "Off",
+      "s30": "30 s",
+      "m1": "1 min",
+      "m5": "5 min"
+    },
+    "port": {
+      "label": "Hermes API server port",
+      "hint": "Empty = auto-detect. Used by the Chat tab."
+    },
+    "save": "Save",
+    "saved": "Saved ✓",
+    "saveError": "Could not save (outside the Mnemosyne host?)"
+  },
+  "brain": {
+    "heading": "Agent brain",
+    "intro": "Hermes thinks with Mnemosyne's inference engine — local model, cloud credits or your own keys. Never memory here: a brain only.",
+    "enable": "Serve the brain to Hermes (local port)",
+    "running": "serving",
+    "stopped": "stopped",
+    "capLabel": "Daily call cap (0 = paused)",
+    "callsToday": "{{n}} / {{cap}} calls today",
+    "spentToday": "Spent today: ${{usd}} (credits route — real debits)",
+    "spentTodayFloor": "Spent today: ≥ ${{usd}} ({{priced}}/{{total}} calls priced — the rest unknown, not free)",
+    "toolsNative": "Native tools: yes — the agent can execute its tool calls through this brain.",
+    "toolsNone": "Native tools: no — this brain serves chat only; tool execution needs a Gemini or Vertex route in Mnemosyne's AI settings.",
+    "pasteHint": "Or paste by hand into Hermes' config:",
+    "apply": "Apply to Hermes' config",
+    "applyConfirm": "Confirm the write?",
+    "applied": "Applied ✓ (backup created) — restart Hermes to reload.",
+    "auxApply": "Also route auxiliary services to Mnemosyne",
+    "auxHint": "Vision, web summaries, compression, titles, session search: Hermes' side quests think with your OS too. (Voice comes in a next milestone.)"
+  },
+  "chat": {
+    "placeholder": "Write to your agent…",
+    "send": "Send",
+    "thinking": "Hermes is thinking (it may use its tools — this can take a while)…",
+    "empty": "Talk to your Hermes agent — the gateway must be running (hermes gateway).",
+    "errNotRunning": "The Hermes gateway is not answering. Run “hermes gateway” in a terminal, then try again.",
+    "errDisabled": "The Hermes API server is disabled in its configuration.",
+    "errNotInstalled": "No Hermes install found on this machine.",
+    "errAuth": "API key rejected by Hermes — check its configuration.",
+    "errTimeout": "Hermes did not answer in time. It may still be working — try again.",
+    "commands": "Commands",
+    "commandsTitle": "Command cheat sheet",
+    "commandsHint": "Partial support here — full on Telegram and in the CLI. Click to insert the command.",
+    "cmd": {
+      "help": "The command reference, in the chat",
+      "new": "Start a fresh session (optional title)",
+      "status": "Session info and recap",
+      "model": "Switch or show the model",
+      "context": "Context-window breakdown",
+      "goal": "Standing objective with auto-continuation",
+      "skills": "Search and manage skills",
+      "background": "Run a task in a separate session",
+      "title": "Name the current session",
+      "voice": "Toggle spoken replies"
+    },
+    "longTurnHint": "The agent is working — a turn with tools can take up to 3 minutes.",
+    "stop": "Stop",
+    "stopped": "Stopped.",
+    "errInterrupted": "The reply was interrupted before it finished."
+  },
+  "skills": {
+    "count": "{{n}} skills on the shelf",
+    "tapsHeading": "Subscribed taps",
+    "ourInstalled": "The mnemosyne-memory skill is installed — your agent knows the memory covenant.",
+    "ourMissing": "The mnemosyne-memory skill is not installed. To add it:",
+    "empty": "No skills found."
+  },
+  "inbox": {
+    "intro": "Everything Hermes writes into your vaults awaits your verdict here. Keep approves it, move refiles it, reject forgets it.",
+    "empty": "Nothing to review — no agent writes pending.",
+    "keep": "Keep",
+    "move": "Move",
+    "moveTo": "Which vault?",
+    "reject": "Reject",
+    "confirm": "Confirm forgetting?",
+    "multiPart": "Multi-part document — manage it from the vault itself."
+  },
+  "onboarding": {
+    "stepOf": "Step {{n}} / {{total}}",
+    "skipAll": "Skip everything",
+    "skip": "Skip",
+    "next": "Next",
+    "back": "Back",
+    "finishButton": "Finish first steps",
+    "rerun": "Run first steps again",
+    "welcome": {
+      "heading": "Welcome to MnemoHermes",
+      "body": "Four steps, all optional, and your agent thinks with your OS, talks to you on your channels, and stays under your governance.",
+      "detected": "Hermes install detected.",
+      "notInstalled": "No Hermes install found. Install it first — automated install comes in a next milestone."
+    },
+    "brain": {
+      "heading": "1. The brain"
+    },
+    "posture": {
+      "heading": "2. Where does your agent live?",
+      "body": "An autonomous agent executes what it reads. Pick a posture in one click — it writes both sides of the bridge: Hermes' tools and the brain cap. You can always change it.",
+      "current": "Current posture: {{name}}",
+      "currentCustom": "Current posture: custom (matches no preset)",
+      "active": "active",
+      "apply": "Apply",
+      "confirmYolo": "Confirm? Everything opens",
+      "applying": "Applying…",
+      "applied": "Applied ✓ (backup created) — brain cap now {{cap}}/day. Restart the Hermes gateway.",
+      "footnote": "Every preset backs up Hermes' config before writing. On a machine that holds your passwords or wallets, prefer Fortress — or run the agent on a dedicated machine / VPS.",
+      "fortress": {
+        "title": "Fortress — important machine",
+        "body": "Minimal tools everywhere (no terminal, no skill self-install), manual approval, blocking tirith scan, low brain cap. The most closed attack surface."
+      },
+      "balanced": {
+        "title": "Balanced — recommended",
+        "body": "Cautious messaging (recall, no shell), full CLI, smart approval, normal brain cap. The wizard's default."
+      },
+      "yolo": {
+        "title": "YOLO — throwaway PC, \"may burn\"",
+        "body": "Everything open on every channel, approvals off, high brain cap. Only on a remote machine with nothing to lose."
+      }
+    },
+    "profile": {
+      "heading": "3. Who are you to it?",
+      "body": "The profile your agent reads every session. Mnemosyne can draft it from your memory — review, adjust, apply. Or fill the questionnaire, or paste an existing profile if you are migrating.",
+      "autofill": "Pre-fill from Mnemosyne",
+      "autofilling": "Mnemosyne is drafting…",
+      "template": "Insert the questionnaire",
+      "placeholder": "Who you are, what you do, how you want it to talk to you…",
+      "counter": "{{n}} / {{max}} characters",
+      "apply": "Apply to Hermes",
+      "applied": "Profile applied ✓ (backup created)",
+      "templateText": "# Profile\n\n## Role\n(dev, researcher, creative… ?)\n\n## Stack / daily tools\n\n## Interaction style\n(concise or didactic? proactive or reactive? language?)\n\n## What I expect from you\n\n## Context\n(timezone, channels, constraints)"
+    },
+    "channel": {
+      "heading": "4. A channel to talk to it"
+    },
+    "finish": {
+      "heading": "5. Start",
+      "body": "Start the gateway and say hello to your agent — from the Chat tab, or from Telegram if you configured it.",
+      "started": "Gateway up ✓ — your agent is online."
+    }
+  },
+  "dashboard": {
+    "channelsCount": "{{n}} configured",
+    "covenantOk": "covenant ✓",
+    "covenantMissing": "covenant missing",
+    "inboxPending": "{{n}} pending"
+  },
+  "common": {
+    "loading": "Loading…",
+    "error": "Something went wrong."
+  },
+  "search": {
+    "heading": "Agent web search",
+    "intro": "Your agent searches with your OS's own engine — Mnemosyne's local SearXNG, no API key, no third party reading its queries.",
+    "engineUp": "Search engine answering",
+    "engineDown": "Search engine not answering",
+    "alreadyRouted": "routed ✓",
+    "route": "Route web search to Mnemosyne",
+    "routed": "Routed ✓ (backup created) — restart the gateway.",
+    "dockerInstall": "The engine lives in a Docker container — install Docker Desktop first.",
+    "dockerStart": "Launch Docker Desktop, then click again — the engine lives in a container.",
+    "notSetUp": "Enable the SearXNG engine in Mnemosyne's web settings first.",
+    "starting": "The engine is starting — click again in a few seconds.",
+    "notAnswering": "The container runs but does not answer — check Mnemosyne's web settings.",
+    "searchOnly": "SearXNG covers SEARCH only — page extraction needs a separate provider (later milestone)."
+  }
+}

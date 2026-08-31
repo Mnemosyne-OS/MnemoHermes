@@ -1,0 +1,240 @@
+{
+  "app": {
+    "title": "MnemoHermes",
+    "tagline": "Hermes 走遍世界，你掌管它的记忆。"
+  },
+  "tabs": {
+    "status": "状态",
+    "chat": "对话",
+    "skills": "技能",
+    "inbox": "记忆收件箱",
+    "settings": "设置",
+    "channels": "频道",
+    "tools": "工具",
+    "agents": "智能体"
+  },
+  "agents": {
+    "intro": "每个配置档都是一个完整的智能体——拥有自己的记忆、技能、网关和 Telegram 机器人。每个机器人一个令牌，这是 Telegram 的规则。",
+    "defaultAgent": "主智能体",
+    "configureTelegram": "Telegram…",
+    "botfatherHint": "在 Telegram 上通过 @BotFather 创建一个专用机器人（每个智能体一个令牌），然后把令牌粘贴到这里。",
+    "createHeading": "创建智能体",
+    "create": "创建",
+    "creating": "创建中…"
+  },
+  "channels": {
+    "heading": "消息频道",
+    "configured": "已配置",
+    "notConfigured": "未配置",
+    "telegramHeading": "Telegram",
+    "tokenLabel": "机器人令牌",
+    "tokenHint": "在 Telegram 上通过 @BotFather 创建机器人，然后将令牌粘贴到这里。",
+    "allowedLabel": "允许的用户 ID（逗号分隔）",
+    "allowedHint": "强烈建议：不设列表则任何人都能与你的智能体对话。通过 @userinfobot 查询你的 ID。",
+    "saved": "已保存 ✓（已创建备份）——请重启网关。",
+    "invalidToken": "这看起来不像 BotFather 令牌。",
+    "invalidIds": "ID 必须是用逗号分隔的数字。",
+    "othersHint": "其他平台（二维码、配对等）目前请在 Hermes 中配置。"
+  },
+  "tools": {
+    "intro": "你的智能体在每个频道可以做什么。勾选并保存——自动备份。",
+    "empty": "配置中未找到工具块。",
+    "saved": "已保存 ✓（已创建备份）——请重启网关。",
+    "terminalWarning": "消息频道上启用了终端",
+    "presetNote": "此频道使用预设——保存后将替换为勾选的列表。"
+  },
+  "status": {
+    "heading": "智能体状态",
+    "checking": "正在检查你的 Hermes 安装…",
+    "notWired": "此宿主尚未接入 Hermes 连接器。请更新 Mnemosyne OS 后重试。",
+    "retry": "重试",
+    "installed": "已安装",
+    "notInstalled": "未安装",
+    "gateway": "网关",
+    "gatewayUp": "运行中",
+    "gatewayDown": "已停止",
+    "gatewayStart": "启动",
+    "gatewayStop": "停止",
+    "gatewayStarting": "启动中…",
+    "apiServer": "API 服务器",
+    "enabled": "已启用",
+    "disabled": "已禁用",
+    "logs": "日志",
+    "logsEmpty": "暂无日志。",
+    "update": "更新 Hermes",
+    "updating": "正在更新 Hermes…",
+    "updateDone": "Hermes 已是最新 ✓ — 请重启网关。",
+    "updateFailed": "更新失败——请查看下方输出。",
+    "updateHint": "修复内置运行时（例如网关警告的 SQLite）。无需终端。"
+  },
+  "settings": {
+    "heading": "设置",
+    "refresh": {
+      "label": "自动刷新状态",
+      "off": "关闭",
+      "s30": "30 秒",
+      "m1": "1 分钟",
+      "m5": "5 分钟"
+    },
+    "port": {
+      "label": "Hermes API 服务器端口",
+      "hint": "留空 = 自动检测。供“对话”标签页使用。"
+    },
+    "save": "保存",
+    "saved": "已保存 ✓",
+    "saveError": "无法保存（不在 Mnemosyne 宿主中？）"
+  },
+  "brain": {
+    "heading": "智能体大脑",
+    "intro": "Hermes 使用 Mnemosyne 的推理引擎思考——本地模型、云积分或你自己的密钥。这里永远不涉及记忆：只是大脑。",
+    "enable": "向 Hermes 提供大脑（本地端口）",
+    "running": "服务中",
+    "stopped": "已停止",
+    "capLabel": "每日调用上限（0 = 暂停）",
+    "callsToday": "今日 {{n}} / {{cap}} 次调用",
+    "spentToday": "今日已花费：${{usd}}（积分路线——真实扣费）",
+    "spentTodayFloor": "今日已花费：≥ ${{usd}}（{{priced}}/{{total}} 次调用已计价——其余未知，并非免费）",
+    "toolsNative": "原生工具：是 — 智能体可以通过这个大脑执行工具调用。",
+    "toolsNone": "原生工具：否 — 这个大脑仅支持对话；执行工具需要在 Mnemosyne 的 AI 设置中使用 Gemini 或 Vertex 路由。",
+    "pasteHint": "或手动粘贴到 Hermes 配置：",
+    "apply": "应用到 Hermes 配置",
+    "applyConfirm": "确认写入？",
+    "applied": "已应用 ✓（已创建备份）——请重启 Hermes 以重新加载。",
+    "auxApply": "同时将辅助服务路由到 Mnemosyne",
+    "auxHint": "视觉、网页摘要、压缩、标题、会话搜索：Hermes 的辅助任务也用你的 OS 来思考。（语音将在下一个里程碑到来。）"
+  },
+  "chat": {
+    "placeholder": "给你的智能体写点什么…",
+    "send": "发送",
+    "thinking": "Hermes 正在思考（可能会调用工具，需要一点时间）…",
+    "empty": "与你的 Hermes 智能体对话——网关需要处于运行状态（hermes gateway）。",
+    "errNotRunning": "Hermes 网关未响应。请在终端运行 “hermes gateway” 后重试。",
+    "errDisabled": "Hermes 的 API 服务器已在配置中禁用。",
+    "errNotInstalled": "此计算机上未找到 Hermes 安装。",
+    "errAuth": "Hermes 拒绝了 API 密钥——请检查其配置。",
+    "errTimeout": "Hermes 未及时响应。它可能仍在工作——请重试。",
+    "commands": "命令",
+    "commandsTitle": "命令速查",
+    "commandsHint": "此处部分支持——Telegram 和 CLI 中完整支持。点击插入命令。",
+    "cmd": {
+      "help": "命令参考，就在对话里",
+      "new": "新建会话（标题可选）",
+      "status": "会话信息与摘要",
+      "model": "切换或查看模型",
+      "context": "上下文窗口明细",
+      "goal": "持续目标，自动续跑",
+      "skills": "搜索和管理技能",
+      "background": "在独立会话中运行任务",
+      "title": "命名当前会话",
+      "voice": "语音回复开/关"
+    },
+    "longTurnHint": "智能体正在工作——使用工具的回合最长可能需要 3 分钟。",
+    "stop": "停止",
+    "stopped": "已停止。",
+    "errInterrupted": "回复在完成前被中断。"
+  },
+  "skills": {
+    "count": "架上共有 {{n}} 个技能",
+    "tapsHeading": "已订阅的 tap",
+    "ourInstalled": "mnemosyne-memory 技能已安装——你的智能体了解记忆公约。",
+    "ourMissing": "尚未安装 mnemosyne-memory 技能。添加方法：",
+    "empty": "未找到技能。"
+  },
+  "inbox": {
+    "intro": "Hermes 写入你金库的每条记录都在这里等待你的裁决。保留即批准，移动即归档，拒绝即遗忘。",
+    "empty": "没有待审核的内容——暂无智能体写入。",
+    "keep": "保留",
+    "move": "移动",
+    "moveTo": "移到哪个金库？",
+    "reject": "拒绝",
+    "confirm": "确认遗忘？",
+    "multiPart": "多分片文档——请在金库中直接管理。"
+  },
+  "onboarding": {
+    "stepOf": "第 {{n}} / {{total}} 步",
+    "skipAll": "全部跳过",
+    "skip": "跳过",
+    "next": "下一步",
+    "back": "上一步",
+    "finishButton": "完成初始设置",
+    "rerun": "重新运行初始设置",
+    "welcome": {
+      "heading": "欢迎使用 MnemoHermes",
+      "body": "四个步骤，全部可选——你的智能体将用你的 OS 思考，在你的频道上与你交谈，并始终处于你的治理之下。",
+      "detected": "已检测到 Hermes 安装。",
+      "notInstalled": "未找到 Hermes 安装。请先安装——自动安装将在下一个里程碑到来。"
+    },
+    "brain": {
+      "heading": "1. 大脑"
+    },
+    "posture": {
+      "heading": "2. 你的智能体住在哪里？",
+      "body": "自主智能体会执行它读到的内容。一键选择一种姿态——它会同时写入桥的两端：Hermes 的工具集和大脑上限。之后随时可以更改。",
+      "current": "当前姿态：{{name}}",
+      "currentCustom": "当前姿态：自定义（不匹配任何预设）",
+      "active": "生效中",
+      "apply": "应用",
+      "confirmYolo": "确认？将全部开放",
+      "applying": "正在应用…",
+      "applied": "已应用 ✓（已创建备份）——大脑上限现为每日 {{cap}} 次。请重启 Hermes 网关。",
+      "footnote": "每个预设在写入前都会备份 Hermes 配置。在存有你的密码或钱包的机器上，请优先选择堡垒——或让智能体运行在专用机器 / VPS 上。",
+      "fortress": {
+        "title": "堡垒——重要机器",
+        "body": "各处工具集最小化（不开终端，不自动安装技能）、手动审批、tirith 拦截式扫描、大脑上限低。攻击面最封闭。"
+      },
+      "balanced": {
+        "title": "均衡——推荐",
+        "body": "消息频道谨慎（可回忆，无 shell）、完整 CLI、智能审批、大脑上限正常。向导的默认设置。"
+      },
+      "yolo": {
+        "title": "YOLO——一次性电脑，「可能烧掉」",
+        "body": "所有频道全部开放、关闭审批、大脑上限高。仅用于无所顾忌的远程机器。"
+      }
+    },
+    "profile": {
+      "heading": "3. 对它来说，你是谁？",
+      "body": "这是你的智能体每次会话都会读取的档案。Mnemosyne 可以从你的记忆中起草——请审阅、调整、应用。也可以填写问卷，或在迁移时粘贴现有档案。",
+      "autofill": "从 Mnemosyne 预填",
+      "autofilling": "Mnemosyne 起草中…",
+      "template": "插入问卷",
+      "placeholder": "你是谁、你做什么、你希望它如何与你交谈…",
+      "counter": "{{n}} / {{max}} 字符",
+      "apply": "应用到 Hermes",
+      "applied": "档案已应用 ✓（已创建备份）",
+      "templateText": "# 档案\n\n## 角色\n（开发者、研究者、创作者……?）\n\n## 技术栈 / 日常工具\n\n## 交互风格\n（简洁还是详尽？主动还是被动？语言？）\n\n## 我对你的期待\n\n## 背景\n（时区、频道、约束）"
+    },
+    "channel": {
+      "heading": "4. 一个与它对话的频道"
+    },
+    "finish": {
+      "heading": "5. 启动",
+      "body": "启动网关，向你的智能体问声好——在对话标签页，或者你配置好的 Telegram 上。",
+      "started": "网关已启动 ✓——你的智能体已上线。"
+    }
+  },
+  "dashboard": {
+    "channelsCount": "已配置 {{n}} 个",
+    "covenantOk": "公约 ✓",
+    "covenantMissing": "缺少公约",
+    "inboxPending": "{{n}} 待处理"
+  },
+  "common": {
+    "loading": "加载中…",
+    "error": "出了点问题。"
+  },
+  "search": {
+    "heading": "智能体网页搜索",
+    "intro": "你的智能体用你 OS 自己的引擎搜索——Mnemosyne 的本地 SearXNG，无需 API 密钥，没有第三方读取它的查询。",
+    "engineUp": "搜索引擎在线",
+    "engineDown": "搜索引擎无响应",
+    "alreadyRouted": "已路由 ✓",
+    "route": "将网页搜索路由到 Mnemosyne",
+    "routed": "已路由 ✓（已创建备份）——请重启网关。",
+    "dockerInstall": "引擎运行在 Docker 容器中——请先安装 Docker Desktop。",
+    "dockerStart": "请启动 Docker Desktop 再点一次——引擎运行在容器中。",
+    "notSetUp": "请先在 Mnemosyne 的网页设置中启用 SearXNG 引擎。",
+    "starting": "引擎正在启动——几秒后再点一次。",
+    "notAnswering": "容器在运行但无响应——请检查 Mnemosyne 的网页设置。",
+    "searchOnly": "SearXNG 只负责搜索——页面提取需要单独的提供方（后续里程碑）。"
+  }
+}

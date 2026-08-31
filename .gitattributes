@@ -1,0 +1,4 @@
+# The published tree is LF. The monorepo it is generated from works in CRLF
+# on disk, and without this every regeneration shows files as modified that
+# nobody touched.
+* text=auto eol=lf

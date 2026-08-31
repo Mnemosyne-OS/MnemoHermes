@@ -1,0 +1,20 @@
+{
+  /* Lint-and-typecheck project.
+   *
+   * tsconfig.json deliberately EXCLUDES the tests so shipping does not depend
+   * on vitest being installed. That leaves the tests typed by nothing: ESLint
+   * rules are not tsc, and a `.endsWith()` on a `string | null` passes the lint
+   * and is never reported. This project includes everything, and `pnpm
+   * typecheck` runs against it.
+   *
+   * `types` must name vitest/globals: the suite runs with `globals: true`, so
+   * describe/it/expect/vi exist at runtime but not to the compiler.
+   * ⚠️ Naming any type package here turns OFF automatic @types/* inclusion.
+   * Nothing else is needed: vitest pulls node's types along with it. */
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "types": ["vitest/globals"]
+  },
+  "include": ["src", "eslint.config.js", "vite.config.ts"],
+  "exclude": []
+}
