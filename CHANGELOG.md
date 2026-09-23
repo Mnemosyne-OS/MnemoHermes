@@ -1,5 +1,37 @@
 # Changelog
 
+## 0.9.0 (unreleased — ships with Mnemosyne OS 1.6.0)
+
+Needs Mnemosyne OS 1.6.0 or later: the new tabs call host actions that
+earlier versions do not have.
+
+- **Install Hermes with one button**, on the Status panel and on the wizard's
+  first step. The app downloads a pinned Hermes release, checks it, builds it
+  and wires your memory into it. No terminal, no git.
+- **Tasks with approval**: a new Tasks tab starts a run, shows its log, and
+  when Hermes asks before a risky command you see the command, the reason and
+  the time left, then answer once, for the session, or always. The same
+  question appears as a card on your board.
+- **Skills**: install the covenant skill with a button, switch any skill on
+  or off, see where each one comes from, uninstall, import your own, and
+  install any identifier through Hermes' own installer.
+- **Channels and Tools** say who a bot is linked to, which platforms can run
+  the terminal, and what a preset really ticks; Save carries the restart it
+  needs, and Discard undoes an edit.
+- **Memory inbox** lists only what Hermes signed, in plain words.
+- **Voice**: voice notes are transcribed on your machine, and replies are
+  spoken in the app's language or in the voice chosen in Settings › Voice.
+- **A daily token cap** on the brain, next to the call cap. Enter saves a cap
+  like leaving the field does.
+- **Discussion listens and speaks**, like the Telegram bot: a microphone
+  button (the host's device, lent for one question and transcribed with the
+  engine chosen in Settings › Voice), and replies spoken in the voice chosen
+  there — never, when you spoke, or always. Both appear only while the
+  gateway is running.
+- **Cards beside the chat**: an image the agent made or a document it wrote
+  becomes its own card next to the conversation, with a preview and an
+  “Open” button; a file that cannot be read says why.
+
 ## 0.8.0 (2026-08-31)
 
 First public release. The cockpit itself has been in the monorepo since

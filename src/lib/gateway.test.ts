@@ -9,6 +9,7 @@ function status(over: StatusOverride = {}): HermesStatus {
   return {
     installed: true,
     home: 'C:/Users/x/Documents/hermes',
+    managed: false,
     apiServer: { enabled: true, keyPresent: true },
     gatewayRunning: false,
     ...over,

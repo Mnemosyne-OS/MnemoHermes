@@ -18,9 +18,13 @@ cartridge.
 > [Installing it](#installing-it)). There is no catalog entry, no review and no
 > signed listing behind it.
 >
-> What has actually been measured: **145 tests** over 10 files, mutation-checked,
-> and **7 languages at key parity**. The three security presets were written
-> against the Hermes **v0.20 source**, not against its documentation.
+> What has actually been measured: **218 tests** over 17 files, and **7
+> languages at key parity**. The security presets and the task approvals were
+> written against the Hermes source, not against its documentation. The managed
+> install pins one Hermes release (`v2026.9.21`) and checks its sha256.
+>
+> **Version 0.9.0 needs Mnemosyne OS 1.6.0 or later.** Its new tabs call host
+> actions that earlier versions do not have.
 >
 > What nobody has watched: macOS, Linux, anyone else's Hermes layout, and any
 > Hermes other than the one this was built beside. More importantly, four things
@@ -41,7 +45,12 @@ live in a YAML file and a terminal:
 
 - **Status** — the install, the `api_server`, and the gateway, with start, stop
   and the process's own journal. A managed child that has not bound its port yet
-  reads as *starting*, not as *stopped*.
+  reads as *starting*, not as *stopped*. Without Hermes, one button installs it:
+  the app downloads the pinned release, builds it, and wires your memory in.
+- **Tasks** — start a run and follow its log. When Hermes asks before a risky
+  command, you see the command, its reason and the time left, and you answer
+  once, for the session, or always. The same question appears as a card on your
+  board.
 - **Discussion** — talk to the agent through its `api_server`, streaming token
   by token, with a Stop button. An agent turn runs tools and can legitimately
   take minutes, so the wait shows elapsed seconds rather than a spinner.
@@ -51,13 +60,14 @@ live in a YAML file and a terminal:
   cockpit is allowed to write.
 - **Tools** — the per-platform toolset grid. A messaging platform that carries a
   terminal gets flagged, because that is the configuration worth noticing.
-- **Skills** — the shelf, read-only. Installing stays a gesture you make in the
-  Hermes CLI.
+- **Skills** — a switch per skill, where each one comes from, uninstall, import
+  your own, and install any identifier through Hermes' own installer and its
+  scan.
 - **Inbox** — the reason this exists. Every chronicle the agent wrote into your
   vaults through MCP carries a provenance line, and the inbox surfaces them as a
   queue: **keep**, **move** or **reject**.
 - **Brain** — the loopback proxy that serves Mnemosyne's inference to Hermes,
-  with a daily call cap and today's real spend.
+  with a daily call cap, a daily token cap, and today's real spend.
 - **Security presets** — Fortress, Balanced, YOLO. One click writes both sides
   of the bridge: Hermes' `config.yaml` and Mnemosyne's own call cap.
 
@@ -69,8 +79,8 @@ initiative.
 
 MnemoHermes is a cartridge: it runs inside Mnemosyne OS, in a sandboxed iframe.
 You need the host first
-([latest release](https://github.com/Mnemosyne-OS/Mnemosyne-Neural-OS/releases/latest)),
-and you need Hermes already installed.
+([latest release](https://github.com/Mnemosyne-OS/Mnemosyne-Neural-OS/releases/latest),
+1.6.0 or later). Hermes itself can be installed from the cockpit.
 
 Then, in the app:
 
@@ -165,8 +175,9 @@ In order:
 1. **A screen that claimed something untrue.** Top of the list regardless of how
    small it looks. A status that does not match your `config.yaml`, a count that
    is wrong, a "saved" that saved nothing.
-2. **A Hermes layout this does not find.** It looks for `HERMES_HOME`, then
-   `~/Documents/hermes`, then `%LOCALAPPDATA%\hermes`. If yours lives elsewhere,
+2. **A Hermes layout this does not find.** It looks for `HERMES_HOME`, then the
+   install the app manages, then `~/Documents/hermes`, then
+   `%LOCALAPPDATA%\hermes`. If yours lives elsewhere,
    that is worth an issue.
 3. **Anything on macOS or Linux.** Neither has been watched.
 

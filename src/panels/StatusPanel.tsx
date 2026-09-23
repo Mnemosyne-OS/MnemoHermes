@@ -8,11 +8,13 @@
  */
 import { useCallback, useEffect, useState, type ReactNode } from 'react';
 import { sdk } from '../sdk/instance';
-import { useI18n } from '../i18n/useI18n';
+import { useI18n, getLang } from '../i18n/useI18n';
 import { usePanelData } from '../hooks/usePanelData';
 import { panel, buttonStyle, primaryButton, hint, StatusDot, PanelGate, CodeBlock, sectionTitle, row } from '../ui';
 import { type HermesStatus } from '../types';
 import { canStartGateway, gatewayPhase, GATEWAY_PHASE_KEYS, isBooting } from '../lib/gateway';
+import { showsUpdateButton } from '../lib/managedInstall';
+import { ManagedInstallCard } from './ManagedInstallCard';
 import {
   summarizeDashboard,
   pendingCount,
@@ -78,6 +80,11 @@ export function StatusPanel({ refreshSec, reviewedIds }: { refreshSec: number; r
     }
   }, []);
 
+  // Managed install (doc 123 §4 lot 0) lives in ManagedInstallCard — shared
+  // with the wizard's welcome step. When its job settles, the install facts
+  // changed under us: re-read them.
+  const onInstallSettled = useCallback(() => { void reload(true); }, [reload]);
+
   const loadLogs = useCallback(async () => {
     try {
       const data = await sdk.invoke<{ lines: string[] }>('hermes.gatewayLogs', {});
@@ -129,7 +136,7 @@ export function StatusPanel({ refreshSec, reviewedIds }: { refreshSec: number; r
     setGatewayBusy(true);
     setLogsOpen(true); // the honest status: show the process's own words
     try {
-      await sdk.invoke('hermes.gatewayStart', {});
+      await sdk.invoke('hermes.gatewayStart', { locale: getLang() });
     } catch {
       // The reload below shows the honest state either way.
     } finally {
@@ -207,9 +214,16 @@ export function StatusPanel({ refreshSec, reviewedIds }: { refreshSec: number; r
               </CodeBlock>
             )}
 
+            {/* Managed install (doc 123 §4 lot 0) — the button every user gets
+                instead of the official `irm | iex`. Shown while nothing is
+                installed; on the install the host owns, a Reinstall instead. */}
+            <ManagedInstallCard status={status} onSettled={onInstallSettled} />
+
             {/* Update Hermes — the "terminals give me acne" thesis: no shell to
-                run `hermes update`, one button, live output. Shown when installed. */}
-            {status.installed && (
+                run `hermes update`, one button, live output. Shown on a HAND
+                install: the managed one has no git checkout to pull and
+                re-installs instead (lib/managedInstall). */}
+            {showsUpdateButton(status) && (
               <div style={{ ...row, gap: 10 }}>
                 <button onClick={() => void startUpdate()} disabled={update?.running === true} style={buttonStyle}>
                   {update?.running ? t('status.updating') : t('status.update')}

@@ -17,6 +17,7 @@ import {
   sanitizeSettings,
   type ChatMessage,
   type CockpitSettings,
+  type StageItem,
 } from './types';
 import { StatusPanel } from './panels/StatusPanel';
 import { ChatPanel } from './panels/ChatPanel';
@@ -28,11 +29,12 @@ import { InboxPanel } from './panels/InboxPanel';
 import { BrainSection } from './panels/BrainSection';
 import { SearchSection } from './panels/SearchSection';
 import { SettingsPanel } from './panels/SettingsPanel';
+import { TasksPanel } from './panels/TasksPanel';
 import { OnboardingWizard } from './onboarding/OnboardingWizard';
 
-type Tab = 'status' | 'chat' | 'agents' | 'channels' | 'tools' | 'skills' | 'inbox' | 'settings';
+type Tab = 'status' | 'chat' | 'tasks' | 'agents' | 'channels' | 'tools' | 'skills' | 'inbox' | 'settings';
 
-const TABS: Tab[] = ['status', 'chat', 'agents', 'channels', 'tools', 'skills', 'inbox', 'settings'];
+const TABS: Tab[] = ['status', 'chat', 'tasks', 'agents', 'channels', 'tools', 'skills', 'inbox', 'settings'];
 
 export default function App() {
   const { t } = useI18n();
@@ -42,6 +44,8 @@ export default function App() {
   const [onboardingDone, setOnboardingDone] = useState<boolean | null>(null);
   // Session-scoped on purpose: survives tab switches, dies with the window.
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
+  // The cards beside the chat outlive the turn that made them (doc 123).
+  const [stageItems, setStageItems] = useState<StageItem[]>([]);
 
   // Outside the host (plain browser dev) the bridge is absent — defaults apply.
   useEffect(() => {
@@ -151,8 +155,11 @@ export default function App() {
                 apiPort={settings?.apiPort ?? null}
                 messages={chatMessages}
                 setMessages={setChatMessages}
+                stageItems={stageItems}
+                setStageItems={setStageItems}
               />
             )}
+            {tab === 'tasks' && <TasksPanel />}
             {tab === 'agents' && <AgentsPanel />}
             {tab === 'channels' && <ChannelsPanel />}
             {tab === 'tools' && <ToolsPanel />}

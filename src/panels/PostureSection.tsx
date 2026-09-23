@@ -24,6 +24,8 @@ interface Posture {
   tirithFailOpen: boolean;
   terminalOnMessaging: boolean;
   dailyCallCap: number;
+  /** Older hosts omit it. */
+  dailyTokenCap?: number;
 }
 
 const PRESETS: Preset[] = ['fortress', 'balanced', 'yolo'];

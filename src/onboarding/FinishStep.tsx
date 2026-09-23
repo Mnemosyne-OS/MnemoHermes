@@ -1,7 +1,7 @@
 /** Wizard last step — start the gateway, then hand back to the cockpit. */
 import { useState } from 'react';
 import { sdk } from '../sdk/instance';
-import { useI18n } from '../i18n/useI18n';
+import { useI18n, getLang } from '../i18n/useI18n';
 import { panel, buttonStyle } from '../ui';
 import type { HermesStatus } from '../types';
 
@@ -13,7 +13,7 @@ export function FinishStep({ onDone }: { onDone: () => void }) {
     setGw('starting');
     try {
       try {
-        await sdk.invoke('hermes.gatewayStart', {});
+        await sdk.invoke('hermes.gatewayStart', { locale: getLang() });
       } catch (err) {
         // A gateway already answering is a success, not a failure.
         if (!(err instanceof Error && err.message.includes('ALREADY_RUNNING'))) throw err;

@@ -5,7 +5,7 @@
  */
 import { useState } from 'react';
 import { sdk } from '../sdk/instance';
-import { useI18n } from '../i18n/useI18n';
+import { useI18n, getLang } from '../i18n/useI18n';
 import { usePanelData } from '../hooks/usePanelData';
 import { panel, inputStyle, buttonStyle, primaryButton, hint, Pill, StatusDot, PanelGate, FeedbackNote, cardTitle, stack, row } from '../ui';
 import { isValidProfileName, normalizeProfileName } from '../lib/hermesConfig';
@@ -42,7 +42,7 @@ export function AgentsPanel() {
     try {
       await sdk.invoke('hermes.agentProfileCreate', { name: normalizeProfileName(newName) });
       setNewName('');
-      void reload();
+      void reload(true);
     } catch {
       setCreateError(true);
     } finally {
@@ -53,13 +53,13 @@ export function AgentsPanel() {
   const gateway = async (profile: string, action: 'start' | 'stop') => {
     setBusy(profile);
     try {
-      await sdk.invoke(action === 'start' ? 'hermes.gatewayStart' : 'hermes.gatewayStop', { profile });
+      await sdk.invoke(action === 'start' ? 'hermes.gatewayStart' : 'hermes.gatewayStop', { profile, ...(action === 'start' ? { locale: getLang() } : {}) });
       if (action === 'start') await new Promise((r) => setTimeout(r, GATEWAY_SETTLE_MS));
     } catch {
       // reload() below shows the honest state either way.
     } finally {
       setBusy(null);
-      void reload();
+      void reload(true);
     }
   };
 
@@ -84,7 +84,7 @@ export function AgentsPanel() {
       });
       setTgFeedback('saved');
       setTgToken('');
-      void reload();
+      void reload(true);
     } catch {
       setTgFeedback('error');
     } finally {
@@ -99,7 +99,8 @@ export function AgentsPanel() {
           <p style={{ ...hint, margin: 0 }}>{t('agents.intro')}</p>
 
           {data.profiles.map((p) => {
-            const label = p.name === '' ? t('agents.defaultAgent') : p.name;
+            const isMain = p.name === '';
+            const label = isMain ? t('agents.defaultAgent') : p.name;
             const isBusy = busy === p.name;
             return (
               <div key={p.name || '·'} style={panel}>
@@ -107,23 +108,36 @@ export function AgentsPanel() {
                   <strong style={{ fontSize: 14 }}>{label}</strong>
                   {p.apiServerPort !== null && <Pill>:{p.apiServerPort}</Pill>}
                   <span style={hint}>
-                    <StatusDot on={p.telegramTokenPresent} />Telegram
-                  </span>
-                  <span style={hint}>
                     <StatusDot on={p.gatewayManaged} />{t('status.gateway')}
                   </span>
-                  {p.gatewayManaged ? (
+                  <span style={hint}>
+                    <StatusDot on={p.telegramTokenPresent} />Telegram
+                  </span>
+                  {/* The main profile's gateway IS the one the Status tab
+                      drives: a second stop button here read as "stop
+                      Telegram" and stopped everything. Secondary profiles
+                      each run their own gateway, so they keep the buttons. */}
+                  {isMain ? (
+                    <span style={{ ...hint, fontSize: 12 }}>{t('agents.mainGatewayNote')}</span>
+                  ) : p.gatewayManaged ? (
                     <button onClick={() => void gateway(p.name, 'stop')} disabled={isBusy} style={buttonStyle}>
-                      {t('status.gatewayStop')}
+                      {t('agents.gatewayStop')}
                     </button>
                   ) : (
                     <button onClick={() => void gateway(p.name, 'start')} disabled={isBusy} style={primaryButton}>
-                      {isBusy ? t('status.gatewayStarting') : t('status.gatewayStart')}
+                      {isBusy ? t('status.gatewayStarting') : t('agents.gatewayStart')}
                     </button>
                   )}
-                  <button onClick={() => openTelegramForm(p.name)} style={buttonStyle}>
-                    {t('agents.configureTelegram')}
-                  </button>
+                  {/* One door for the main bot: the Channels tab writes the
+                      same variables with validation and hints. Secondary
+                      profiles have their own .env, so they keep the form. */}
+                  {isMain ? (
+                    <span style={{ ...hint, fontSize: 12 }}>{t('agents.mainTelegramNote')}</span>
+                  ) : (
+                    <button onClick={() => openTelegramForm(p.name)} style={{ ...buttonStyle, marginLeft: 'auto' }}>
+                      {t('agents.configureTelegram')}
+                    </button>
+                  )}
                 </div>
                 {!p.gatewayManaged && p.lastLine && (
                   <p style={{ ...hint, margin: '8px 0 0', fontSize: 11 }}>{p.lastLine}</p>
@@ -163,6 +177,9 @@ export function AgentsPanel() {
 
           <div style={panel}>
             <h2 style={cardTitle}>{t('agents.createHeading')}</h2>
+            {data.profiles.every((p) => p.name === '') && (
+              <p style={{ ...hint, margin: '0 0 12px' }}>{t('agents.onlyMain')}</p>
+            )}
             <div style={{ ...row, gap: 8 }}>
               <input
                 value={newName}

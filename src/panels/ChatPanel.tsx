@@ -2,13 +2,26 @@
  * The Chat tab — one stateless conversation with the agent through its
  * api_server (M2). Error CODES become localized user messages here; the
  * host only ever ships the taxonomy.
+ *
+ * 2026-09-23 (doc 123): the tab also LISTENS and SPEAKS, like the Telegram
+ * bot — the host's microphone and the voice of Settings › Voice, through
+ * `speech.*` and `reader.tts*`; a spoken question goes through the same
+ * `hermes.chatStream` as a typed one. And what a reply POINTS AT (an image the
+ * agent made, a document it wrote) becomes a card on the stage beside the
+ * conversation, read through `hermes.readMedia` / `hermes.readDocument`.
+ * Both are gated on the gateway answering: a person without Hermes running
+ * sees the same text tab as before, no mic, no cards.
  */
-import { useEffect, useRef, useState, type Dispatch, type SetStateAction } from 'react';
+import { useCallback, useEffect, useRef, useState, type Dispatch, type SetStateAction } from 'react';
 import { sdk } from '../sdk/instance';
 import { useI18n } from '../i18n/useI18n';
 import { panel, inputStyle, buttonStyle, primaryButton, hint } from '../ui';
 import { chatErrorKey, errorMessage } from '../lib/errorCodes';
-import type { ChatMessage } from '../types';
+import { extractMedia, type MediaRef } from '../lib/chatMedia';
+import { shouldSpeak } from '../lib/speech';
+import { useCockpitVoice } from '../hooks/useCockpitVoice';
+import { ChatStage } from './ChatStage';
+import type { ChatMessage, HermesStatus, StageItem } from '../types';
 
 /** The cheat-sheet content. Command literals are Hermes' own vocabulary
  *  (universal, never translated); only the descriptions go through t(). */
@@ -17,11 +30,37 @@ const COMMANDS = [
   'goal', 'skills', 'background', 'title', 'voice',
 ] as const;
 
-export function ChatPanel({ apiPort, messages, setMessages }: {
+const VOICE_MODE_ICON = { off: '🔇', voice: '🔈', all: '🔊' } as const;
+
+let stageSeq = 0;
+function stageId(): string {
+  stageSeq += 1;
+  return `stage-${Date.now().toString(36)}-${stageSeq}`;
+}
+
+/** A reply's pointers → cards, all `loading` until the host reads them. */
+export function stageItemsFor(refs: MediaRef[]): StageItem[] {
+  return refs.map((ref) => ({
+    id: stageId(),
+    kind: ref.kind,
+    name: ref.name,
+    path: ref.path,
+    dataUrl: ref.dataUrl,
+    text: null,
+    truncated: false,
+    state: ref.dataUrl ? 'ready' : 'loading',
+    error: null,
+  }));
+}
+
+export function ChatPanel({ apiPort, messages, setMessages, stageItems, setStageItems }: {
   apiPort: number | null;
   /** Owned by App so the conversation survives tab switches (panels unmount). */
   messages: ChatMessage[];
   setMessages: Dispatch<SetStateAction<ChatMessage[]>>;
+  /** Owned by App for the same reason: a card is not the turn that made it. */
+  stageItems: StageItem[];
+  setStageItems: Dispatch<SetStateAction<StageItem[]>>;
 }) {
   const { t } = useI18n();
   const [input, setInput] = useState('');
@@ -53,15 +92,76 @@ export function ChatPanel({ apiPort, messages, setMessages }: {
   const lastMsg = messages[messages.length - 1];
   const awaitingFirstToken = pending && (!lastMsg || lastMsg.role !== 'assistant' || lastMsg.content.length === 0);
 
+  // ── Voice ────────────────────────────────────────────────────────────────
+  const voice = useCockpitVoice();
+  // The mic exists only when Hermes can answer: without the gateway this tab
+  // is the text tab it always was, and nothing here is confused with the
+  // app's own assistant.
+  const [gatewayUp, setGatewayUp] = useState<boolean | null>(null);
+  useEffect(() => {
+    let cancelled = false;
+    sdk.invoke<HermesStatus>('hermes.status', {})
+      .then((s) => { if (!cancelled) setGatewayUp(s?.gatewayRunning === true); })
+      .catch((err) => { console.warn('[chat] hermes.status failed:', err); if (!cancelled) setGatewayUp(false); });
+    return () => { cancelled = true; };
+  }, []);
+  const micReady = gatewayUp === true && voice.available === true;
+  const micDisabledReason = gatewayUp === null || voice.available === null
+    ? t('chat.micProbing')
+    : gatewayUp === false ? t('chat.micNoGateway') : t('chat.micNoEngine');
+
+  // ── Stage: read what a reply points at ───────────────────────────────────
+  const patchStage = useCallback((id: string, patch: Partial<StageItem>) => {
+    setStageItems((cur) => cur.map((it) => (it.id === id ? { ...it, ...patch } : it)));
+  }, [setStageItems]);
+
+  const resolveStageItem = useCallback(async (item: StageItem) => {
+    if (item.state !== 'loading' || !item.path) return;
+    try {
+      if (item.kind === 'image') {
+        const r = await sdk.invoke<{ dataUrl: string; name: string }>('hermes.readMedia', { path: item.path });
+        patchStage(item.id, { state: 'ready', dataUrl: r.dataUrl, name: r.name || item.name });
+      } else {
+        const r = await sdk.invoke<{ text: string | null; truncated: boolean; name: string }>('hermes.readDocument', { path: item.path });
+        patchStage(item.id, { state: 'ready', text: r.text, truncated: !!r.truncated, name: r.name || item.name });
+      }
+    } catch (err) {
+      const msg = errorMessage(err);
+      console.warn('[chat] stage item unreadable:', item.path, msg);
+      patchStage(item.id, { state: 'error', error: msg.slice(0, 160) });
+    }
+  }, [patchStage]);
+
+  // A card left `loading` by a tab switch mid-read is read again on return.
+  const resolvingRef = useRef<Set<string>>(new Set());
+  useEffect(() => {
+    for (const item of stageItems) {
+      if (item.state === 'loading' && !resolvingRef.current.has(item.id)) {
+        resolvingRef.current.add(item.id);
+        void resolveStageItem(item);
+      }
+    }
+  }, [stageItems, resolveStageItem]);
+
+  const openPath = useCallback(async (path: string) => {
+    try {
+      await sdk.invoke('hermes.openPath', { path });
+    } catch (err) {
+      console.warn('[chat] openPath refused:', err);
+      if (mountedRef.current) setError(`${t('stage.openFailed')} ${errorMessage(err).slice(0, 120)}`);
+    }
+  }, [t]);
+
   const insertCommand = (cmd: string) => {
     setInput(`/${cmd} `);
     setCheatOpen(false);
     inputRef.current?.focus();
   };
 
-  const send = async () => {
-    const text = input.trim();
+  const send = async (given?: string, askedByVoice = false) => {
+    const text = (given ?? input).trim();
     if (!text || pending) return;
+    voice.stopSpeaking();
     const next = [...messages, { role: 'user' as const, content: text }];
     setMessages(next);
     setInput('');
@@ -78,6 +178,7 @@ export function ChatPanel({ apiPort, messages, setMessages }: {
     const controller = new AbortController();
     abortRef.current = controller;
     let received = 0;
+    let full = '';
     try {
       await sdk.stream('hermes.chatStream', {
         messages: next,
@@ -86,6 +187,7 @@ export function ChatPanel({ apiPort, messages, setMessages }: {
         signal: controller.signal,
         onChunk: (chunk) => {
           received += chunk.length;
+          full += chunk;
           setMessages((cur) => {
             const copy = cur.slice();
             const bubble = copy[assistantIndex];
@@ -96,6 +198,18 @@ export function ChatPanel({ apiPort, messages, setMessages }: {
           });
         },
       });
+      // The turn is whole: pull out what it points at, keep the words.
+      const { text: clean, refs } = extractMedia(full);
+      if (refs.length > 0 || clean !== full) {
+        setMessages((cur) => {
+          const copy = cur.slice();
+          const bubble = copy[assistantIndex];
+          if (bubble && bubble.role === 'assistant') copy[assistantIndex] = { role: 'assistant', content: clean };
+          return copy;
+        });
+      }
+      if (refs.length > 0) setStageItems((cur) => [...stageItemsFor(refs), ...cur]);
+      if (mountedRef.current && shouldSpeak(voice.mode, askedByVoice)) void voice.speak(clean);
     } catch (err) {
       if (controller.signal.aborted) {
         // Clean stop: keep whatever streamed, label it stopped.
@@ -115,8 +229,17 @@ export function ChatPanel({ apiPort, messages, setMessages }: {
     }
   };
 
+  const micStop = async () => {
+    const text = await voice.stopAndTranscribe();
+    if (!mountedRef.current || !text) return;
+    await send(text, true);
+  };
+
+  const voiceErrorLine = voice.error ? t(`chat.voiceErr.${voice.error}`, undefined) : null;
+
   return (
-    <div style={{ ...panel, display: 'flex', flexDirection: 'column', height: '100%', boxSizing: 'border-box', position: 'relative', overflow: 'hidden' }}>
+    <div style={{ display: 'flex', flexDirection: 'row', gap: 12, height: '100%', minHeight: 0 }}>
+    <div style={{ ...panel, display: 'flex', flexDirection: 'column', height: '100%', boxSizing: 'border-box', position: 'relative', overflow: 'hidden', flex: 1, minWidth: 0 }}>
       {/* The sliding cheat-sheet: tiles of Hermes' slash commands, click to insert. */}
       <div
         aria-hidden={!cheatOpen}
@@ -194,10 +317,30 @@ export function ChatPanel({ apiPort, messages, setMessages }: {
             )}
           </p>
         )}
+        {voice.speaking && (
+          <p style={{ ...hint, fontSize: 13, margin: 0, display: 'flex', alignItems: 'center', gap: 8 }}>
+            <span>🔊 {t('chat.speaking')}{voice.spokenTruncated ? ` ${t('chat.spokenTruncated')}` : ''}</span>
+            <button onClick={voice.stopSpeaking} style={{ ...buttonStyle, padding: '2px 8px', fontSize: 12 }}>
+              {t('chat.stopSpeaking')}
+            </button>
+          </p>
+        )}
         {error && (
           <p style={{ color: 'var(--text-secondary, #aaa)', fontSize: 13, margin: 0 }}>{error}</p>
         )}
+        {voiceErrorLine && (
+          <p style={{ color: 'var(--text-secondary, #aaa)', fontSize: 13, margin: 0 }}>{voiceErrorLine}</p>
+        )}
       </div>
+
+      {(voice.listening || voice.transcribing) && (
+        <p style={{ ...hint, fontSize: 12, margin: '0 0 6px', display: 'flex', alignItems: 'center', gap: 8 }}>
+          {voice.listening
+            ? <><span aria-hidden style={{ color: '#e5484d' }}>●</span> {t('chat.listening')} {voice.listenSeconds}s</>
+            : <>{t('chat.transcribing')}</>}
+        </p>
+      )}
+
       <div style={{ display: 'flex', gap: 8 }}>
         <input
           ref={inputRef}
@@ -208,10 +351,40 @@ export function ChatPanel({ apiPort, messages, setMessages }: {
             // composition — it must never send the message mid-typing.
             if (e.key === 'Enter' && !e.nativeEvent.isComposing) void send();
           }}
-          placeholder={t('chat.placeholder')}
-          disabled={pending}
+          placeholder={voice.listening ? t('chat.listeningPlaceholder') : t('chat.placeholder')}
+          disabled={pending || voice.listening || voice.transcribing}
           style={{ ...inputStyle, flex: 1 }}
         />
+        {/* The microphone: the host's device, lent for one question. */}
+        {voice.listening ? (
+          <>
+            <button onClick={() => void micStop()} style={primaryButton} aria-label={t('chat.micSend')} title={t('chat.micSend')}>
+              {t('chat.micSend')}
+            </button>
+            <button onClick={voice.cancel} style={buttonStyle} aria-label={t('chat.micCancel')} title={t('chat.micCancel')}>
+              ×
+            </button>
+          </>
+        ) : (
+          <button
+            onClick={() => void voice.start()}
+            disabled={!micReady || pending || voice.transcribing}
+            aria-label={t('chat.mic')}
+            title={micReady ? t('chat.mic') : micDisabledReason}
+            style={buttonStyle}
+          >
+            🎤
+          </button>
+        )}
+        <button
+          onClick={voice.cycleMode}
+          aria-label={`${t('chat.voiceModeLabel')}: ${t(`chat.voiceMode.${voice.mode}`)}`}
+          title={`${t('chat.voiceModeLabel')}: ${t(`chat.voiceMode.${voice.mode}`)}`}
+          disabled={!micReady}
+          style={buttonStyle}
+        >
+          {VOICE_MODE_ICON[voice.mode]}
+        </button>
         <button
           onClick={() => setCheatOpen((o) => !o)}
           aria-label={t('chat.commands')}
@@ -225,11 +398,17 @@ export function ChatPanel({ apiPort, messages, setMessages }: {
             {t('chat.stop')}
           </button>
         ) : (
-          <button onClick={() => void send()} disabled={!input.trim()} style={buttonStyle}>
+          <button onClick={() => void send()} disabled={!input.trim() || voice.listening} style={buttonStyle}>
             {t('chat.send')}
           </button>
         )}
       </div>
+    </div>
+    <ChatStage
+      items={stageItems}
+      onClose={(id) => setStageItems((cur) => cur.filter((it) => it.id !== id))}
+      onOpen={(path) => void openPath(path)}
+    />
     </div>
   );
 }

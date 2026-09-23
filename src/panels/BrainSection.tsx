@@ -17,8 +17,14 @@ interface ProxyStatus {
   enabled: boolean;
   port: number;
   dailyCallCap: number;
+  /** Measured tokens per UTC day, 0 = paused (doc 81 guardrail 2b). Older
+   *  hosts omit it, with the two counters below: the token line is not drawn. */
+  dailyTokenCap?: number;
   running: boolean;
   callsToday: number;
+  tokensToday?: number;
+  /** Today's calls no provider metered — not counted, not free. */
+  unmeteredCallsToday?: number;
   /** Whether the configured Mnemosyne route can execute agent tools natively. */
   nativeTools: boolean;
   /** Real credits-route spend today, micro-USD (gate debits) — a FLOOR when
@@ -46,14 +52,14 @@ export function BrainSection() {
   const [verdicts, setVerdicts] = useState<Record<string, ApplyVerdict>>({});
   const confirm = useConfirm<string>();
 
-  const update = async (patch: { enabled?: boolean; dailyCallCap?: number }) => {
+  const update = async (patch: { enabled?: boolean; dailyCallCap?: number; dailyTokenCap?: number }) => {
     setBusy(true);
     try {
       const status = await sdk.invoke<ProxyStatus>('hermes.proxySetConfig', patch);
       setState({ kind: 'data', data: status });
     } catch {
       // Whatever the host actually holds is the truth to show.
-      await reload();
+      await reload(true);
     } finally {
       setBusy(false);
     }
@@ -105,7 +111,12 @@ export function BrainSection() {
                 max={5000}
                 defaultValue={status.dailyCallCap}
                 disabled={busy}
+                // Enter commits like leaving the field does (field 2026-09-23 22:45:
+                // a cap typed then Enter was never saved, and the next run hit 429).
+                onKeyDown={(e) => { if (e.key === 'Enter') e.currentTarget.blur(); }}
                 onBlur={(e) => {
+                  // An emptied field is not "0 = pause": Number('') is 0 (sweep 2026-09-23).
+                  if (e.target.value.trim() === '') { e.target.value = String(status.dailyCallCap); return; }
                   const v = Number(e.target.value);
                   if (Number.isFinite(v) && v !== status.dailyCallCap) void update({ dailyCallCap: v });
                 }}
@@ -115,6 +126,34 @@ export function BrainSection() {
                 {t('brain.callsToday', { n: status.callsToday, cap: status.dailyCallCap })}
               </span>
             </label>
+
+            {/* The token side of the same dial (doc 81 guardrail 2b): one memory
+                question measured at 247 k tokens, so calls alone let the bill
+                through. Drawn only when the host reports the counters. */}
+            {typeof status.dailyTokenCap === 'number' && (
+              <label style={{ display: 'grid', gap: 6 }}>
+                {t('brain.tokenCapLabel')}
+                <input
+                  type="number"
+                  min={0}
+                  max={50_000_000}
+                  step={100_000}
+                  defaultValue={status.dailyTokenCap}
+                  disabled={busy}
+                  onKeyDown={(e) => { if (e.key === 'Enter') e.currentTarget.blur(); }}
+                  onBlur={(e) => {
+                    if (e.target.value.trim() === '') { e.target.value = String(status.dailyTokenCap); return; }
+                    const v = Number(e.target.value);
+                    if (Number.isFinite(v) && v !== status.dailyTokenCap) void update({ dailyTokenCap: v });
+                  }}
+                  style={{ ...inputStyle, maxWidth: 180 }}
+                />
+                <span style={hint}>
+                  {t('brain.tokensToday', { n: (status.tokensToday ?? 0).toLocaleString(), cap: status.dailyTokenCap.toLocaleString() })}
+                  {(status.unmeteredCallsToday ?? 0) > 0 && ` · ${t('brain.tokensUnmetered', { n: status.unmeteredCallsToday ?? 0 })}`}
+                </span>
+              </label>
+            )}
 
             {/* Live credits spend today — real gate debits (Pheme discipline: a FLOOR
                 when some calls had no known cost, never a 0 dressed as free). */}

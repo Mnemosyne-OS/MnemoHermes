@@ -1,6 +1,6 @@
 {
   "name": "@mnemosyne-plugins/mnemo-hermes",
-  "version": "0.8.0",
+  "version": "0.9.0",
   "private": true,
   "type": "module",
   "description": "MnemoHermes — cockpit cartridge for Hermes Agent: live status, chat, skills, and human-governed review of every memory the agent writes.",

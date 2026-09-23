@@ -6,6 +6,7 @@
   "tabs": {
     "status": "状态",
     "chat": "对话",
+    "tasks": "任务",
     "skills": "技能",
     "inbox": "记忆收件箱",
     "settings": "设置",
@@ -13,35 +14,187 @@
     "tools": "工具",
     "agents": "智能体"
   },
+  "tasks": {
+    "heading": "任务",
+    "intro": "把任务交给代理。它在你的机器上用自己的工具运行；遇到受保护的操作时会停下来，在这里询问你。你批准的命令就是显示的那一条。",
+    "placeholder": "例如：按类型整理我的下载文件夹",
+    "start": "开始",
+    "starting": "启动中…",
+    "refused": "已拒绝：",
+    "empty": "还没有任务。",
+    "lastSign": "最后一次活动在 {{s}} 秒前",
+    "streamLost": "事件流静默，已重新读取状态",
+    "approvalTitle": "代理想要执行：",
+    "noCommand": "（命令未传输）",
+    "smartDenied": "自动守卫已经拒绝 — 你仍可以允许一次。",
+    "countdown": "如果你不回答，Hermes 将在 {{s}} 秒后自行决定。",
+    "expired": "期限已过：Hermes 自行决定了。下面可以看到它做了什么。",
+    "choiceOnce": "允许一次",
+    "choiceSession": "本次会话允许",
+    "choiceAlways": "始终允许",
+    "choiceDeny": "拒绝",
+    "error": "错误：",
+    "stop": "停止",
+    "stopping": "停止中…",
+    "statusQueued": "排队中",
+    "statusRunning": "运行中",
+    "statusWaiting": "等待你的批准",
+    "statusStopping": "正在停止",
+    "statusCompleted": "已完成",
+    "statusFailed": "失败",
+    "statusCancelled": "已停止",
+    "statusUnknown": "未知"
+  },
   "agents": {
     "intro": "每个配置档都是一个完整的智能体——拥有自己的记忆、技能、网关和 Telegram 机器人。每个机器人一个令牌，这是 Telegram 的规则。",
     "defaultAgent": "主智能体",
-    "configureTelegram": "Telegram…",
+    "configureTelegram": "关联 Telegram 机器人",
     "botfatherHint": "在 Telegram 上通过 @BotFather 创建一个专用机器人（每个智能体一个令牌），然后把令牌粘贴到这里。",
     "createHeading": "创建智能体",
     "create": "创建",
-    "creating": "创建中…"
+    "creating": "创建中…",
+    "gatewayStart": "启动它的网关",
+    "gatewayStop": "停止它的网关",
+    "mainGatewayNote": "它的网关在「状态」标签页中控制。",
+    "onlyMain": "目前只有一个智能体：主智能体。第二个配置档是一个独立的 Hermes，拥有自己的记忆、技能和 Telegram 机器人，不会影响主智能体。",
+    "mainTelegramNote": "Telegram 在「频道」标签页中关联。"
   },
   "channels": {
-    "heading": "消息频道",
-    "configured": "已配置",
-    "notConfigured": "未配置",
-    "telegramHeading": "Telegram",
     "tokenLabel": "机器人令牌",
-    "tokenHint": "在 Telegram 上通过 @BotFather 创建机器人，然后将令牌粘贴到这里。",
-    "allowedLabel": "允许的用户 ID（逗号分隔）",
-    "allowedHint": "强烈建议：不设列表则任何人都能与你的智能体对话。通过 @userinfobot 查询你的 ID。",
-    "saved": "已保存 ✓（已创建备份）——请重启网关。",
+    "allowedLabel": "授权 ID，用逗号分隔",
+    "allowedHint": "你的 ID，以及允许与助手对话的人的 ID。",
+    "saved": "已保存（已创建备份）。网关将在下次启动时读取。",
     "invalidToken": "这看起来不像 BotFather 令牌。",
     "invalidIds": "ID 必须是用逗号分隔的数字。",
-    "othersHint": "其他平台（二维码、配对等）目前请在 Hermes 中配置。"
+    "othersHint": "暂不支持在应用内设置。需在终端中运行 Hermes 的安装命令。",
+    "intro": "频道是你与助手对话的即时通讯应用，比如在手机上。没有频道，它只在「对话」标签页中回答。",
+    "linked": "已关联",
+    "notLinked": "尚未关联",
+    "allowedCount": "回答 {{n}} 位已授权用户。",
+    "openToAll": "没有授权列表：任何找到这个机器人的人都能与它对话并消耗你的积分。",
+    "step1": "在 Telegram 上打开 @BotFather，创建一个机器人，复制它的令牌。",
+    "step2": "打开 @userinfobot 查看你的数字 ID。",
+    "step3": "把两者粘贴到下方，保存，然后重启网关。",
+    "tokenKept": "已保存一个令牌。留空以保留它。",
+    "othersHeading": "其他即时通讯应用",
+    "voiceHeading": "说与听",
+    "voiceHint": "发送一条语音：它会在本机转写，并按文字消息处理。若要让回复也以语音返回，在 Telegram 对话中输入 /voice on；/voice all 朗读所有回复，/voice off 关闭。语音跟随应用语言。",
+    "voicePrivacy": "你发送的语音留在本机。但每条朗读回复的文本会经过微软的语音合成服务。",
+    "voiceRouteApp": "应用里选择的声音（设置 › 语音），在本机朗读",
+    "voiceRouteEdge": "微软的免费声音",
+    "voiceRouteChosen": "已选：{{chosen}}",
+    "voiceRouteOther": "您已在 config.yaml 中自行设置了声音；应用不会改动它。",
+    "voiceRouteSaved": "已保存。网关将在下次启动时读取。",
+    "voiceRouteReason_NO_VOICE_PREFS": "应用中尚未选择声音：请打开 设置 › 语音。",
+    "voiceRouteReason_UNSUPPORTED_FAMILY": "系统声音和 ElevenLabs 无法离开窗口：请在 设置 › 语音 中选择本地声音。",
+    "voiceRouteReason_LICENSE_REQUIRED": "本地声音是需要许可的功能。",
+    "voiceRouteReason_ENGINE_NOT_INSTALLED": "所选引擎未安装：设置 › 语音。",
+    "voiceRouteReason_VOICE_NOT_INSTALLED": "所选 Piper 声音不在磁盘上：设置 › 语音。",
+    "voiceRouteReason_NO_CLONE_SAMPLE": "伙伴使用您的声音说话，但尚未录制样本：设置 › 语音。"
   },
   "tools": {
-    "intro": "你的智能体在每个频道可以做什么。勾选并保存——自动备份。",
-    "empty": "配置中未找到工具块。",
-    "saved": "已保存 ✓（已创建备份）——请重启网关。",
-    "terminalWarning": "消息频道上启用了终端",
-    "presetNote": "此频道使用预设——保存后将替换为勾选的列表。"
+    "intro": "你的助手可以做什么，取决于从哪里与它对话。勾选、保存、重启网关。",
+    "empty": "配置中没有工具块，也没有关联的频道。",
+    "saved": "已保存（已创建备份）。网关将在下次启动时读取。",
+    "terminalWarning": "从即时通讯应用打开了终端",
+    "presetAll": "预设「{{name}}」：所有工具，包括终端。",
+    "presetSome": "预设「{{name}}」：{{n}} 个工具。",
+    "presetNote": "取消勾选会用勾选的列表替换预设。",
+    "presetUnknown": "预设「{{name}}」：应用无法读取其内容，未为它勾选任何项。",
+    "noBlock": "没有设置：Hermes 给它所有工具，包括终端。",
+    "noBlockFix": "选择它的工具",
+    "channelsUnread": "无法读取已关联的频道：没有设置的频道可能在这里缺失。",
+    "platform": {
+      "api_server": "本应用（对话、任务）",
+      "cli": "Hermes 终端",
+      "telegram": "Telegram",
+      "discord": "Discord",
+      "slack": "Slack",
+      "whatsapp": "WhatsApp",
+      "signal": "Signal",
+      "matrix": "Matrix"
+    },
+    "toolset": {
+      "web": {
+        "label": "网页",
+        "desc": "搜索网络并阅读页面。"
+      },
+      "search": {
+        "label": "仅搜索",
+        "desc": "只搜索，不打开页面。"
+      },
+      "browser": {
+        "label": "浏览器",
+        "desc": "操控浏览器：点击、填写、阅读。"
+      },
+      "file": {
+        "label": "文件",
+        "desc": "读取、写入和修改这台电脑上的文件。"
+      },
+      "terminal": {
+        "label": "终端",
+        "desc": "在这台电脑上执行命令。"
+      },
+      "code_execution": {
+        "label": "运行代码",
+        "desc": "运行调用工具的 Python 脚本。"
+      },
+      "vision": {
+        "label": "视觉",
+        "desc": "分析图片。"
+      },
+      "image_gen": {
+        "label": "图像",
+        "desc": "生成图片。"
+      },
+      "tts": {
+        "label": "语音",
+        "desc": "朗读文本。"
+      },
+      "memory": {
+        "label": "Hermes 记忆",
+        "desc": "除 Mnemosyne 之外，它跨会话的自有笔记。"
+      },
+      "session_search": {
+        "label": "过往对话",
+        "desc": "查找它之前的交流。"
+      },
+      "todo": {
+        "label": "任务清单",
+        "desc": "规划多步骤的工作。"
+      },
+      "skills": {
+        "label": "技能",
+        "desc": "读取并管理它的技能。"
+      },
+      "cronjob": {
+        "label": "定时任务",
+        "desc": "为自己安排定时任务。"
+      },
+      "computer_use": {
+        "label": "桌面",
+        "desc": "查看屏幕并操作它，鼠标和键盘。"
+      },
+      "delegation": {
+        "label": "子智能体",
+        "desc": "把子任务交给独立的智能体。"
+      },
+      "clarify": {
+        "label": "提问",
+        "desc": "行动前先向你提问。"
+      },
+      "homeassistant": {
+        "label": "家居",
+        "desc": "Home Assistant：传感器和设备。"
+      }
+    },
+    "discard": "取消",
+    "error": {
+      "TOOLSETS_BLOCK_UNREADABLE": "配置中的工具块有一行应用无法读取。未写入任何内容：请在 config.yaml 中修正它，或删除该块。",
+      "BLOCK_NOT_FOUND": "没有可写入的工具块。",
+      "CONFIG_NOT_FOUND": "找不到 Hermes 的配置。",
+      "INVALID_PLATFORMS": "无效的列表。"
+    }
   },
   "status": {
     "heading": "智能体状态",
@@ -65,7 +218,32 @@
     "updating": "正在更新 Hermes…",
     "updateDone": "Hermes 已是最新 ✓ — 请重启网关。",
     "updateFailed": "更新失败——请查看下方输出。",
-    "updateHint": "修复内置运行时（例如网关警告的 SQLite）。无需终端。"
+    "updateHint": "修复内置运行时（例如网关警告的 SQLite）。无需终端。",
+    "install": "安装助手",
+    "installHint": "Mnemosyne OS 会下载经过校验的 Hermes Agent 版本（{{version}}，约 {{mb}} MB），并用自带的 Python 构建。无需终端，无需账号，不改动这台机器上的其他内容。",
+    "installing": "正在安装…",
+    "installCancel": "停止",
+    "installDone": "已安装 ✓ — 请启动网关。",
+    "installFailed": "安装失败 — 请查看下方输出。",
+    "installCancelled": "安装已停止。没有任何内容被记为已安装。",
+    "installBusy": "请先停止网关 — 安装会替换它正在运行的文件。",
+    "installManaged": "由 Mnemosyne OS 安装 · {{version}}",
+    "reinstall": "重新安装",
+    "memoryWired": "记忆已接入",
+    "memoryMissing": "记忆未接入 — 请重新安装",
+    "actionsWired": "图片已接入",
+    "actionsMissing": "图片未接入——请重启网关",
+    "voiceWired": "语音在本机转写",
+    "voiceMissing": "语音未转写——请重启网关",
+    "stagePython": "准备 Python",
+    "stageDownload": "下载 Hermes",
+    "stageVerify": "校验压缩包",
+    "stageExtract": "解压",
+    "stageVenv": "创建环境",
+    "stageDeps": "安装依赖",
+    "stageConfig": "写入配置",
+    "stageCheck": "检查安装",
+    "stageDone": "完成"
   },
   "settings": {
     "heading": "设置",
@@ -92,6 +270,9 @@
     "stopped": "已停止",
     "capLabel": "每日调用上限（0 = 暂停）",
     "callsToday": "今日 {{n}} / {{cap}} 次调用",
+    "tokenCapLabel": "每日 token 上限（0 = 暂停）",
+    "tokensToday": "今天 {{n}} / {{cap}} 个 token（按提供方报告）",
+    "tokensUnmetered": "{{n}} 次调用没有 token 计数 — 未计入，但不免费",
     "spentToday": "今日已花费：${{usd}}（积分路线——真实扣费）",
     "spentTodayFloor": "今日已花费：≥ ${{usd}}（{{priced}}/{{total}} 次调用已计价——其余未知，并非免费）",
     "toolsNative": "原生工具：是 — 智能体可以通过这个大脑执行工具调用。",
@@ -131,24 +312,116 @@
     "longTurnHint": "智能体正在工作——使用工具的回合最长可能需要 3 分钟。",
     "stop": "停止",
     "stopped": "已停止。",
-    "errInterrupted": "回复在完成前被中断。"
+    "errInterrupted": "回复在完成前被中断。",
+    "mic": "对 Hermes 说话",
+    "micSend": "发送语音",
+    "micCancel": "取消录音",
+    "micProbing": "正在检查麦克风…",
+    "micNoGateway": "Hermes 网关未响应：请在“状态”标签页启动它。",
+    "micNoEngine": "没有转写引擎：请在 设置 › 语音 中选择一个（本地 Whisper 或云端密钥）。",
+    "listening": "录音中",
+    "listeningPlaceholder": "说话，然后按“发送语音”",
+    "transcribing": "正在本机转写…",
+    "voiceModeLabel": "语音回复",
+    "voiceMode": {
+      "off": "从不",
+      "voice": "当我说话时",
+      "all": "总是"
+    },
+    "speaking": "Hermes 正在说话…",
+    "spokenTruncated": "（仅开头，其余请阅读）",
+    "stopSpeaking": "安静",
+    "voiceErr": {
+      "NO_SPEECH": "我什么也没听到。",
+      "NO_ENGINE": "未配置转写引擎。",
+      "MIC_BUSY": "麦克风已被另一个窗口占用。",
+      "MIC_FAILED": "无法打开麦克风。",
+      "TRANSCRIPTION_FAILED": "转写失败。",
+      "NOT_LISTENING": "当前没有录音。",
+      "TTS_FAILED": "语音无法播报：请检查 设置 › 语音。",
+      "UNKNOWN": "语音步骤失败。"
+    }
   },
   "skills": {
-    "count": "架上共有 {{n}} 个技能",
-    "tapsHeading": "已订阅的 tap",
-    "ourInstalled": "mnemosyne-memory 技能已安装——你的智能体了解记忆公约。",
-    "ourMissing": "尚未安装 mnemosyne-memory 技能。添加方法：",
-    "empty": "未找到技能。"
+    "intro": "技能是一张操作说明卡，当任务合适时 Hermes 会读取它：如何读 PDF、整理邮箱、与 Obsidian 交互。它们随 Hermes 一起提供。",
+    "ourInstalled": "mnemosyne-memory 技能已安装：你的助手了解你记忆的规则。",
+    "ourMissing": "mnemosyne-memory 技能尚未安装。",
+    "ourWhy": "它教助手如何使用你的记忆：查询哪个保险库、何时提问而不是搜索、绝不混用。从我们的公开仓库安装，经过 Hermes 的隔离与扫描。",
+    "install": "安装",
+    "installing": "安装中…",
+    "installed": "已安装。网关将在下次启动时读取。",
+    "installError": {
+      "ALREADY_INSTALLED": "它已经在书架上了。",
+      "ALREADY_RUNNING": "已有一个安装正在进行。",
+      "CLI_NOT_FOUND": "找不到 Hermes 可执行文件。请在「状态」标签页重新安装助手。",
+      "NOT_ON_SHELF": "安装程序结束但没有把任何东西放到书架上。Hermes 的扫描可能拒绝了它，见下方行。",
+      "INSTALL_FAILED": "安装失败。下方的行会说明在哪里。",
+      "NOT_INSTALLED": "Hermes 未安装。",
+      "INVALID_IDENTIFIER": "该标识符既不是 owner/repo/path 形式，也不是指向 SKILL.md 的 https 链接。",
+      "INVALID_NAME": "这不是一个技能名称。",
+      "BUNDLED": "此技能随 Hermes 提供：可以禁用，不能卸载。",
+      "REMOVE_FAILED": "移除失败。下方的行会说明在哪里。",
+      "STILL_ON_SHELF": "工具已结束，但技能仍在书架上。",
+      "NO_SKILL_MD": "该文件夹不包含 SKILL.md。",
+      "ALREADY_EXISTS": "书架上已有同名技能。",
+      "COPY_FAILED": "复制失败。",
+      "OPEN_FAILED": "无法打开文件夹。",
+      "SKILLS_DISABLED_UNREADABLE": "应用无法读取配置中的已禁用技能列表。未写入任何内容。",
+      "INVALID_DISABLED": "无效的列表。",
+      "CONFIG_NOT_FOUND": "找不到 Hermes 的配置。",
+      "INVALID_SKILL_NAME": "列表中有一个名称不是技能名称。"
+    },
+    "tapsHeading": "已关注的源",
+    "count": "书架上有 {{n}} 个技能",
+    "search": "搜索技能…",
+    "allCategories": "全部",
+    "noMatch": "没有匹配的技能。",
+    "empty": "未找到技能。",
+    "installingClock": "安装中… {{clock}}",
+    "installingWhat": "Hermes 的安装程序从 GitHub 获取说明卡，隔离并扫描后放到书架上。它的输出行会随时显示在下方。",
+    "shelfHint": "勾选后 Hermes 可以读取它。取消勾选后它就看不到了。更改会在网关下次启动时读取。",
+    "disabledUnreadable": "应用无法读取配置中的已禁用技能列表：开关已冻结，不能说明任何确切情况。",
+    "disabledSaved": "已保存（已创建备份）。网关将在下次启动时读取。",
+    "enabledSwitch": "Hermes 可以读取 {{name}}",
+    "essential": "必需",
+    "origin": {
+      "hub": "中心",
+      "custom": "你的"
+    },
+    "uninstall": "卸载",
+    "uninstallConfirm": "确认移除",
+    "uninstallCancel": "保留",
+    "uninstallingClock": "移除中… {{clock}}",
+    "uninstallingWhat": "Hermes 正在把技能从书架和它的注册表中移除。",
+    "uninstalled": "{{name}} 已从书架移除。",
+    "mineHeading": "我的技能",
+    "mineWhat": "你自己的技能是一个内含 SKILL.md 的文件夹，与 Claude Code 的技能格式相同。导入后会复制到书架的「custom」下；原文件夹保持原位。",
+    "mineStep1": "创建一个以技能命名的文件夹。",
+    "mineStep2": "放入一个 SKILL.md：两行 --- 之间的 name / description 头部，然后是说明。",
+    "mineStep3": "在这里导入文件夹，然后重启网关。",
+    "importFolder": "导入文件夹",
+    "openFolder": "打开技能文件夹",
+    "imported": "{{name}} 已在书架上。重启网关让 Hermes 读取它。",
+    "importCancelled": "未选择文件夹。",
+    "advancedHeading": "高级：通过标识符安装",
+    "advancedWarning": "技能是别人编写、在你的机器上运行的脚本。只安装你了解其作者的内容。Hermes 的扫描能拦截已知的危险，但拦不住其余的。",
+    "advancedHint": "GitHub 上的 owner/repo/path 标识符，或 SKILL.md 的 https 链接。Hermes 会隔离、扫描，然后放到书架上。"
   },
   "inbox": {
-    "intro": "Hermes 写入你金库的每条记录都在这里等待你的裁决。保留即批准，移动即归档，拒绝即遗忘。",
-    "empty": "没有待审核的内容——暂无智能体写入。",
+    "intro": "当 Hermes 把某件事记入你的记忆时，会先经过这里。保留即接受，移动即归入另一个保险库，拒绝即删除。",
+    "empty": "没有待审内容。Hermes 还没有记住任何事。",
     "keep": "保留",
     "move": "移动",
     "moveTo": "移到哪个金库？",
     "reject": "拒绝",
     "confirm": "确认遗忘？",
-    "multiPart": "多分片文档——请在金库中直接管理。"
+    "multiPart": "多分片文档——请在金库中直接管理。",
+    "emptyHint": "在 Telegram 或「对话」标签页对它说「记住……」，它的笔记就会出现在这里。",
+    "readMore": "展开",
+    "readLess": "收起",
+    "bodyTruncated": "此处笔记截断于 4000 字符；其余内容在保险库中。",
+    "writtenBy": "由 Hermes 记录",
+    "task": "当时在做：{{task}}"
   },
   "onboarding": {
     "stepOf": "第 {{n}} / {{total}} 步",
@@ -162,7 +435,7 @@
       "heading": "欢迎使用 MnemoHermes",
       "body": "四个步骤，全部可选——你的智能体将用你的 OS 思考，在你的频道上与你交谈，并始终处于你的治理之下。",
       "detected": "已检测到 Hermes 安装。",
-      "notInstalled": "未找到 Hermes 安装。请先安装——自动安装将在下一个里程碑到来。"
+      "notInstalled": "这台机器上没有找到 Hermes 安装。"
     },
     "brain": {
       "heading": "1. 大脑"
@@ -220,7 +493,11 @@
   },
   "common": {
     "loading": "加载中…",
-    "error": "出了点问题。"
+    "error": "出了点问题。",
+    "restartGateway": "重启网关",
+    "restarting": "重启中…",
+    "restarted": "网关已重启。",
+    "restartFailed": "网关没有恢复。请查看「状态」标签页。"
   },
   "search": {
     "heading": "智能体网页搜索",
@@ -236,5 +513,14 @@
     "starting": "引擎正在启动——几秒后再点一次。",
     "notAnswering": "容器在运行但无响应——请检查 Mnemosyne 的网页设置。",
     "searchOnly": "SearXNG 只负责搜索——页面提取需要单独的提供方（后续里程碑）。"
+  },
+  "stage": {
+    "title": "Hermes 生成的内容",
+    "close": "关闭",
+    "open": "打开",
+    "loading": "读取中…",
+    "unreadable": "无法读取此文件：",
+    "binaryHint": "需用对应应用打开的文档。",
+    "openFailed": "无法打开："
   }
 }

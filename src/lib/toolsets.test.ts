@@ -1,9 +1,16 @@
+import { describe, it, expect } from 'vitest';
 import {
   carriesTerminal,
+  effectiveToolsets,
+  expandPreset,
   explicitToolsets,
+  gridToolsets,
+  PINNED_TOOLSETS,
   presetToolsets,
   toggleToolset,
   toolsetsPayload,
+  unreadPresets,
+  unsetLinkedChannels,
 } from './toolsets';
 
 const AVAILABLE = ['web', 'file', 'todo', 'skills', 'tts', 'terminal'];
@@ -29,6 +36,19 @@ describe('carriesTerminal', () => {
   });
 });
 
+describe('gridToolsets', () => {
+  it('draws the pinned catalogue first, then what the host adds, once each', () => {
+    const grid = gridToolsets(['web', 'zzz_custom', 'file']);
+    expect(grid.slice(0, PINNED_TOOLSETS.length)).toEqual([...PINNED_TOOLSETS]);
+    expect(grid.filter((x) => x === 'web')).toHaveLength(1);
+    expect(grid.at(-1)).toBe('zzz_custom');
+  });
+
+  it('drops an id the pinned Hermes no longer defines, even when the host offers it', () => {
+    expect(gridToolsets(['skills_hub', 'web'])).not.toContain('skills_hub');
+  });
+});
+
 describe('explicit / preset split', () => {
   it('separates what the grid can draw from what it cannot', () => {
     const list = ['web', 'hermes-cli', 'file'];
@@ -43,6 +63,37 @@ describe('explicit / preset split', () => {
   });
 });
 
+describe('expandPreset / effectiveToolsets', () => {
+  it('reads `all` and every hermes-* bundle as the whole grid', () => {
+    expect(expandPreset('all', AVAILABLE)).toEqual(AVAILABLE);
+    expect(expandPreset('hermes-cli', AVAILABLE)).toEqual(AVAILABLE);
+    expect(expandPreset('hermes-telegram', AVAILABLE)).toEqual(AVAILABLE);
+  });
+
+  it('reads `safe` and `debugging` as toolsets.py spells them', () => {
+    expect(expandPreset('safe', ['web', 'terminal', 'vision', 'image_gen'])).toEqual(['web', 'vision', 'image_gen']);
+    expect(expandPreset('debugging', AVAILABLE)).toEqual(['web', 'file', 'terminal']);
+  });
+
+  it('does not invent an expansion for a preset it cannot read', () => {
+    expect(expandPreset('coding', AVAILABLE)).toBeNull();
+    expect(expandPreset('mystery', AVAILABLE)).toBeNull();
+  });
+
+  it('ticks everything for a platform that carries hermes-cli — the screen no longer says "nothing"', () => {
+    expect(effectiveToolsets(['hermes-cli'], AVAILABLE)).toEqual(AVAILABLE);
+  });
+
+  it('merges explicit entries with an expanded preset, in grid order, once each', () => {
+    expect(effectiveToolsets(['terminal', 'safe'], ['web', 'terminal', 'vision'])).toEqual(['web', 'terminal', 'vision']);
+  });
+
+  it('ticks nothing for an unreadable preset and reports it as unread', () => {
+    expect(effectiveToolsets(['coding'], AVAILABLE)).toEqual([]);
+    expect(unreadPresets(['coding', 'hermes-cli', 'web'], AVAILABLE)).toEqual(['coding']);
+  });
+});
+
 describe('toggleToolset', () => {
   it('adds a box that was not ticked', () => {
     expect(toggleToolset(['web'], AVAILABLE, 'file')).toEqual(['web', 'file']);
@@ -52,14 +103,16 @@ describe('toggleToolset', () => {
     expect(toggleToolset(['web', 'file'], AVAILABLE, 'web')).toEqual(['file']);
   });
 
-  it('drops the preset the moment a box is touched', () => {
-    // The grid cannot draw `all`, so keeping it would leave the checkboxes
-    // showing something other than what the config means.
-    expect(toggleToolset(['all'], AVAILABLE, 'web')).toEqual(['web']);
+  it('turns a preset into the explicit list the person saw, minus the box they unticked', () => {
+    // `hermes-cli` showed every box ticked; unticking terminal must keep the
+    // rest, not collapse the platform to nothing.
+    expect(toggleToolset(['hermes-cli'], AVAILABLE, 'terminal'))
+      .toEqual(['web', 'file', 'todo', 'skills', 'tts']);
+    expect(toggleToolset(['all'], AVAILABLE, 'web')).not.toContain('all');
   });
 
-  it('keeps the explicit entries that sat beside a preset', () => {
-    expect(toggleToolset(['hermes-cli', 'web'], AVAILABLE, 'file')).toEqual(['web', 'file']);
+  it('keeps the explicit entries that sat beside an unreadable preset', () => {
+    expect(toggleToolset(['coding', 'web'], AVAILABLE, 'file')).toEqual(['web', 'file']);
   });
 
   it('can empty a platform completely', () => {
@@ -83,18 +136,36 @@ describe('toolsetsPayload', () => {
       .toEqual({ cli: ['file'], telegram: ['todo'] });
   });
 
-  it('omits an emptied platform rather than writing an empty list', () => {
-    // An empty key would claim the human chose "no tools at all" for a platform
-    // they may not even have been editing.
-    expect(toolsetsPayload({ cli: ['web'], telegram: ['todo'] }, { cli: [] }))
-      .toEqual({ telegram: ['todo'] });
+  it('🚨 writes an EDITED platform as [] — omitting it would hand it every tool (sweep 2026-09-23)', () => {
+    expect(toolsetsPayload({ cli: ['web'], telegram: ['todo'] }, { telegram: [] }))
+      .toEqual({ cli: ['web'], telegram: [] });
   });
 
-  it('ignores an edit for a platform the config does not have', () => {
-    expect(toolsetsPayload({ cli: ['web'] }, { ghost: ['terminal'] })).toEqual({ cli: ['web'] });
+  it('leaves out an untouched platform that is empty on disk', () => {
+    expect(toolsetsPayload({ cli: ['web'], telegram: [] }, { cli: ['file'] }))
+      .toEqual({ cli: ['file'] });
   });
 
-  it('returns an empty object when everything was emptied', () => {
-    expect(toolsetsPayload({ cli: ['web'] }, { cli: [] })).toEqual({});
+  it('writes a platform that exists only in the edits — a linked channel that had no block', () => {
+    expect(toolsetsPayload({ cli: ['web'] }, { telegram: ['web', 'todo'] }))
+      .toEqual({ cli: ['web'], telegram: ['web', 'todo'] });
+  });
+
+  it('an emptied only platform is written empty, not dropped to nothing', () => {
+    expect(toolsetsPayload({ cli: ['web'] }, { cli: [] })).toEqual({ cli: [] });
+  });
+});
+
+describe('unsetLinkedChannels', () => {
+  it('names the linked channels the config says nothing about', () => {
+    expect(unsetLinkedChannels({ cli: ['web'], api_server: ['web'] }, ['telegram', 'discord'])).toEqual(['telegram', 'discord']);
+  });
+
+  it('leaves out a channel that already has a block, even an empty-looking one', () => {
+    expect(unsetLinkedChannels({ telegram: ['web'] }, ['telegram'])).toEqual([]);
+  });
+
+  it('is empty when nothing is linked', () => {
+    expect(unsetLinkedChannels({ cli: ['web'] }, [])).toEqual([]);
   });
 });

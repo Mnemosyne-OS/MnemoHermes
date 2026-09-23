@@ -6,6 +6,7 @@
   "tabs": {
     "status": "État",
     "chat": "Discussion",
+    "tasks": "Tâches",
     "skills": "Skills",
     "inbox": "Inbox mémoire",
     "settings": "Réglages",
@@ -13,35 +14,187 @@
     "tools": "Outils",
     "agents": "Agents"
   },
+  "tasks": {
+    "heading": "Tâches",
+    "intro": "Confie une tâche à l'agent. Il tourne sur ta machine avec ses outils ; quand il arrive à une action gardée, il s'arrête et te demande ici. La commande que tu approuves est exactement celle affichée.",
+    "placeholder": "ex. range mon dossier Téléchargements par type",
+    "start": "Lancer",
+    "starting": "Lancement…",
+    "refused": "Refusé :",
+    "empty": "Aucune tâche pour le moment.",
+    "lastSign": "dernier signe de vie il y a {{s}} s",
+    "streamLost": "flux silencieux, statut relu",
+    "approvalTitle": "L'agent veut exécuter ceci :",
+    "noCommand": "(commande non transmise)",
+    "smartDenied": "Le gardien automatique a déjà dit non — tu peux quand même autoriser une fois.",
+    "countdown": "Hermes tranche seul dans {{s}} s si tu ne réponds pas.",
+    "expired": "Le délai est passé : Hermes a tranché seul. Regarde ce qu'il a fait ci-dessous.",
+    "choiceOnce": "Autoriser une fois",
+    "choiceSession": "Autoriser pour cette session",
+    "choiceAlways": "Toujours autoriser",
+    "choiceDeny": "Refuser",
+    "error": "Erreur :",
+    "stop": "Arrêter",
+    "stopping": "Arrêt…",
+    "statusQueued": "en file",
+    "statusRunning": "en cours",
+    "statusWaiting": "attend ton approbation",
+    "statusStopping": "arrêt en cours",
+    "statusCompleted": "terminé",
+    "statusFailed": "échec",
+    "statusCancelled": "arrêté",
+    "statusUnknown": "inconnu"
+  },
   "agents": {
     "intro": "Chaque profil est un agent complet — sa mémoire, ses skills, sa passerelle, son bot Telegram. Un token par bot, exigence Telegram.",
     "defaultAgent": "Agent principal",
-    "configureTelegram": "Telegram…",
+    "configureTelegram": "Relier un bot Telegram",
     "botfatherHint": "Créez un bot dédié via @BotFather sur Telegram (un token par agent), puis collez le token ici.",
     "createHeading": "Créer un agent",
     "create": "Créer",
-    "creating": "Création…"
+    "creating": "Création…",
+    "gatewayStart": "Démarrer sa passerelle",
+    "gatewayStop": "Arrêter sa passerelle",
+    "mainGatewayNote": "Sa passerelle se pilote depuis l'onglet État.",
+    "onlyMain": "Un seul agent pour l'instant : le principal. Un second profil est un Hermes à part, avec sa mémoire, ses skills et son bot Telegram, qui ne touche pas au principal.",
+    "mainTelegramNote": "Telegram se relie dans l'onglet Canaux."
   },
   "channels": {
-    "heading": "Canaux de messagerie",
-    "configured": "configuré",
-    "notConfigured": "non configuré",
-    "telegramHeading": "Telegram",
     "tokenLabel": "Token du bot",
-    "tokenHint": "Créez un bot avec @BotFather sur Telegram, puis collez le token ici.",
-    "allowedLabel": "IDs d'utilisateurs autorisés (séparés par des virgules)",
-    "allowedHint": "Fortement recommandé : sans liste, n'importe qui peut parler à votre agent. Trouvez votre ID via @userinfobot.",
-    "saved": "Enregistré ✓ (backup créé) — redémarrez la passerelle.",
+    "allowedLabel": "Identifiants autorisés, séparés par des virgules",
+    "allowedHint": "Votre identifiant, et ceux des personnes qui ont le droit de parler à l'assistant.",
+    "saved": "Enregistré (sauvegarde créée). La passerelle le lira à son prochain démarrage.",
     "invalidToken": "Ce token ne ressemble pas à un token BotFather.",
     "invalidIds": "Les IDs doivent être des nombres séparés par des virgules.",
-    "othersHint": "Les autres plateformes (QR, appairages…) se configurent dans Hermes pour l'instant."
+    "othersHint": "Pas encore depuis l'app. Elles passent par la commande d'installation d'Hermes dans un terminal.",
+    "intro": "Un canal, c'est une messagerie depuis laquelle vous parlez à votre assistant, depuis votre téléphone par exemple. Sans canal, il ne répond que dans l'onglet Discussion.",
+    "linked": "relié",
+    "notLinked": "pas encore relié",
+    "allowedCount": "Répond à {{n}} utilisateur(s) autorisé(s).",
+    "openToAll": "Aucune liste d'autorisés : quiconque trouve ce bot peut lui parler et dépense vos crédits.",
+    "step1": "Sur Telegram, ouvrez @BotFather, créez un bot, copiez son token.",
+    "step2": "Ouvrez @userinfobot pour connaître votre identifiant numérique.",
+    "step3": "Collez les deux ci-dessous, enregistrez, puis redémarrez la passerelle.",
+    "tokenKept": "Un token est déjà enregistré. Laissez vide pour le garder.",
+    "othersHeading": "Autres messageries",
+    "voiceHeading": "Parler et écouter",
+    "voiceHint": "Envoyez un vocal : il est transcrit sur cette machine et traité comme un message écrit. Pour que la réponse revienne en vocal, tapez /voice on dans la conversation Telegram ; /voice all met toutes les réponses en voix, /voice off arrête. La voix suit la langue de l'app.",
+    "voicePrivacy": "Les vocaux que vous envoyez restent ici. Le texte de chaque réponse lue, lui, passe par le service de synthèse vocale de Microsoft.",
+    "voiceRouteApp": "La voix choisie dans l'app, Réglages › Voix, lue ici",
+    "voiceRouteEdge": "Une voix Microsoft, gratuite",
+    "voiceRouteChosen": "choisie : {{chosen}}",
+    "voiceRouteOther": "Vous avez réglé la voix vous-même dans config.yaml ; l'app n'y touche pas.",
+    "voiceRouteSaved": "Enregistré. La passerelle le lira à son prochain démarrage.",
+    "voiceRouteReason_NO_VOICE_PREFS": "Aucune voix choisie dans l'app : ouvrez Réglages › Voix.",
+    "voiceRouteReason_UNSUPPORTED_FAMILY": "La voix système et ElevenLabs ne sortent pas de la fenêtre : choisissez une voix locale dans Réglages › Voix.",
+    "voiceRouteReason_LICENSE_REQUIRED": "Les voix locales sont une fonction sous licence.",
+    "voiceRouteReason_ENGINE_NOT_INSTALLED": "Le moteur choisi n'est pas installé : Réglages › Voix.",
+    "voiceRouteReason_VOICE_NOT_INSTALLED": "La voix Piper choisie n'est pas sur le disque : Réglages › Voix.",
+    "voiceRouteReason_NO_CLONE_SAMPLE": "Le compagnon parle avec votre voix, mais aucun échantillon n'est enregistré : Réglages › Voix."
   },
   "tools": {
-    "intro": "Ce que votre agent a le droit de faire, canal par canal. Cochez, enregistrez — backup automatique.",
-    "empty": "Aucun bloc d'outils trouvé dans la config.",
-    "saved": "Enregistré ✓ (backup créé) — redémarrez la passerelle.",
-    "terminalWarning": "terminal actif sur un canal de messagerie",
-    "presetNote": "Ce canal utilise un préréglage — enregistrer le remplacera par la liste cochée."
+    "intro": "Ce que votre assistant a le droit de faire, selon d'où on lui parle. Cochez, enregistrez, redémarrez la passerelle.",
+    "empty": "Aucun bloc d'outils dans la config, et aucun canal relié.",
+    "saved": "Enregistré (sauvegarde créée). La passerelle le lira à son prochain démarrage.",
+    "terminalWarning": "terminal ouvert depuis une messagerie",
+    "presetAll": "Préréglage « {{name}} » : tous les outils, terminal compris.",
+    "presetSome": "Préréglage « {{name}} » : {{n}} outils.",
+    "presetNote": "Décocher une case remplace le préréglage par la liste cochée.",
+    "presetUnknown": "Préréglage « {{name}} » : l'app ne sait pas ce qu'il contient, rien n'est coché pour lui.",
+    "noBlock": "Aucun réglage : Hermes lui donne tous les outils, terminal compris.",
+    "noBlockFix": "Choisir ses outils",
+    "channelsUnread": "Les canaux reliés n'ont pas pu être lus : un canal sans réglage peut manquer ici.",
+    "platform": {
+      "api_server": "Cette app (Discussion, Tâches)",
+      "cli": "Terminal Hermes",
+      "telegram": "Telegram",
+      "discord": "Discord",
+      "slack": "Slack",
+      "whatsapp": "WhatsApp",
+      "signal": "Signal",
+      "matrix": "Matrix"
+    },
+    "toolset": {
+      "web": {
+        "label": "Web",
+        "desc": "Chercher sur le web et lire une page."
+      },
+      "search": {
+        "label": "Recherche seule",
+        "desc": "Chercher sans ouvrir les pages."
+      },
+      "browser": {
+        "label": "Navigateur",
+        "desc": "Piloter un navigateur : cliquer, remplir, lire."
+      },
+      "file": {
+        "label": "Fichiers",
+        "desc": "Lire, écrire et modifier des fichiers sur ce PC."
+      },
+      "terminal": {
+        "label": "Terminal",
+        "desc": "Exécuter des commandes sur ce PC."
+      },
+      "code_execution": {
+        "label": "Exécuter du code",
+        "desc": "Lancer des scripts Python qui appellent les outils."
+      },
+      "vision": {
+        "label": "Vision",
+        "desc": "Analyser une image."
+      },
+      "image_gen": {
+        "label": "Images",
+        "desc": "Générer des images."
+      },
+      "tts": {
+        "label": "Voix",
+        "desc": "Lire un texte à voix haute."
+      },
+      "memory": {
+        "label": "Mémoire Hermes",
+        "desc": "Ses propres notes entre sessions, en plus de Mnemosyne."
+      },
+      "session_search": {
+        "label": "Conversations passées",
+        "desc": "Retrouver ses échanges précédents."
+      },
+      "todo": {
+        "label": "Liste de tâches",
+        "desc": "Planifier un travail en plusieurs étapes."
+      },
+      "skills": {
+        "label": "Skills",
+        "desc": "Lire et gérer ses skills."
+      },
+      "cronjob": {
+        "label": "Planificateur",
+        "desc": "Se programmer des tâches à heure fixe."
+      },
+      "computer_use": {
+        "label": "Bureau",
+        "desc": "Voir l'écran et agir dessus, souris et clavier."
+      },
+      "delegation": {
+        "label": "Sous-agents",
+        "desc": "Déléguer une sous-tâche à un agent séparé."
+      },
+      "clarify": {
+        "label": "Questions",
+        "desc": "Vous poser une question avant d'agir."
+      },
+      "homeassistant": {
+        "label": "Maison",
+        "desc": "Home Assistant : capteurs et appareils."
+      }
+    },
+    "discard": "Annuler",
+    "error": {
+      "TOOLSETS_BLOCK_UNREADABLE": "Le bloc d'outils de la config contient une ligne que l'app ne sait pas lire. Rien n'a été écrit : corrigez-la dans config.yaml, ou supprimez le bloc.",
+      "BLOCK_NOT_FOUND": "Aucun bloc d'outils à écrire.",
+      "CONFIG_NOT_FOUND": "La config d'Hermes est introuvable.",
+      "INVALID_PLATFORMS": "Liste invalide."
+    }
   },
   "status": {
     "heading": "État de l'agent",
@@ -65,7 +218,32 @@
     "updating": "Mise à jour d'Hermes…",
     "updateDone": "Hermes est à jour ✓ — relancez la passerelle.",
     "updateFailed": "La mise à jour a échoué — voir la sortie ci-dessous.",
-    "updateHint": "Répare le runtime embarqué (ex. le SQLite dont la passerelle avertit). Aucun terminal nécessaire."
+    "updateHint": "Répare le runtime embarqué (ex. le SQLite dont la passerelle avertit). Aucun terminal nécessaire.",
+    "install": "Installer l'assistant",
+    "installHint": "Mnemosyne OS télécharge une version vérifiée de Hermes Agent ({{version}}, environ {{mb}} Mo) et la construit sur son propre Python. Pas de terminal, pas de compte, rien d'autre touché sur cette machine.",
+    "installing": "Installation…",
+    "installCancel": "Arrêter",
+    "installDone": "Installé ✓ — démarre la passerelle.",
+    "installFailed": "L'installation a échoué — voir la sortie ci-dessous.",
+    "installCancelled": "Installation arrêtée. Rien n'a été retenu comme installé.",
+    "installBusy": "Arrête d'abord la passerelle — l'installation remplace les fichiers dont elle tourne.",
+    "installManaged": "Installé par Mnemosyne OS · {{version}}",
+    "reinstall": "Réinstaller",
+    "memoryWired": "mémoire branchée",
+    "memoryMissing": "mémoire non branchée — réinstaller",
+    "actionsWired": "images branchées",
+    "actionsMissing": "images non branchées — redémarrer la passerelle",
+    "voiceWired": "vocaux transcrits ici",
+    "voiceMissing": "vocaux non transcrits — redémarrer la passerelle",
+    "stagePython": "Préparation de Python",
+    "stageDownload": "Téléchargement de Hermes",
+    "stageVerify": "Vérification de l'archive",
+    "stageExtract": "Décompression",
+    "stageVenv": "Création de l'environnement",
+    "stageDeps": "Installation des dépendances",
+    "stageConfig": "Écriture de la configuration",
+    "stageCheck": "Vérification de l'installation",
+    "stageDone": "Terminé"
   },
   "settings": {
     "heading": "Réglages",
@@ -92,6 +270,9 @@
     "stopped": "arrêté",
     "capLabel": "Plafond d'appels par jour (0 = pause)",
     "callsToday": "{{n}} / {{cap}} appels aujourd'hui",
+    "tokenCapLabel": "Plafond de jetons par jour (0 = pause)",
+    "tokensToday": "{{n}} / {{cap}} jetons aujourd'hui (tels que les fournisseurs les ont rapportés)",
+    "tokensUnmetered": "{{n}} appel(s) sans mesure de jetons — non comptés, pas gratuits",
     "spentToday": "Dépensé aujourd'hui : ${{usd}} (route crédits — débits réels)",
     "spentTodayFloor": "Dépensé aujourd'hui : ≥ ${{usd}} ({{priced}}/{{total}} appels chiffrés — le reste inconnu, pas gratuit)",
     "toolsNative": "Outils natifs : oui — l'agent peut exécuter ses appels d'outils via ce cerveau.",
@@ -131,24 +312,116 @@
     "longTurnHint": "L'agent travaille — un tour avec outils peut durer jusqu'à 3 minutes.",
     "stop": "Arrêter",
     "stopped": "Arrêté.",
-    "errInterrupted": "La réponse a été interrompue avant la fin."
+    "errInterrupted": "La réponse a été interrompue avant la fin.",
+    "mic": "Parler à Hermes",
+    "micSend": "Envoyer le vocal",
+    "micCancel": "Annuler l'enregistrement",
+    "micProbing": "Vérification du micro…",
+    "micNoGateway": "La passerelle Hermes ne répond pas : démarre-la depuis l'onglet Statut.",
+    "micNoEngine": "Aucun moteur de transcription : choisis-en un dans Réglages › Voix (Whisper local ou une clé cloud).",
+    "listening": "Enregistrement",
+    "listeningPlaceholder": "Parle, puis appuie sur « Envoyer le vocal »",
+    "transcribing": "Transcription sur cette machine…",
+    "voiceModeLabel": "Réponses vocales",
+    "voiceMode": {
+      "off": "jamais",
+      "voice": "quand je parle",
+      "all": "toujours"
+    },
+    "speaking": "Hermes parle…",
+    "spokenTruncated": "(le début seulement, le reste est à lire)",
+    "stopSpeaking": "Silence",
+    "voiceErr": {
+      "NO_SPEECH": "Je n'ai rien entendu.",
+      "NO_ENGINE": "Aucun moteur de transcription configuré.",
+      "MIC_BUSY": "Le micro est déjà pris par une autre fenêtre.",
+      "MIC_FAILED": "Le micro n'a pas pu s'ouvrir.",
+      "TRANSCRIPTION_FAILED": "La transcription a échoué.",
+      "NOT_LISTENING": "Aucun enregistrement en cours.",
+      "TTS_FAILED": "La voix n'a pas pu parler : vérifie Réglages › Voix.",
+      "UNKNOWN": "Le vocal a échoué."
+    }
   },
   "skills": {
-    "count": "{{n}} skills sur l'étagère",
+    "intro": "Une skill est une fiche de savoir-faire qu'Hermes lit quand la tâche s'y prête : comment lire un PDF, trier une boîte mail, parler à Obsidian. Elles arrivent avec Hermes.",
+    "ourInstalled": "La skill mnemosyne-memory est installée : votre assistant connaît les règles de votre mémoire.",
+    "ourMissing": "La skill mnemosyne-memory n'est pas installée.",
+    "ourWhy": "Elle apprend à l'assistant comment se servir de votre mémoire : quel coffre interroger, quand demander plutôt que chercher, ne jamais mélanger. Installée depuis notre dépôt public, avec la quarantaine et le scan d'Hermes.",
+    "install": "Installer",
+    "installing": "installation…",
+    "installed": "Installée. La passerelle la lira à son prochain démarrage.",
+    "installError": {
+      "ALREADY_INSTALLED": "Elle est déjà sur l'étagère.",
+      "ALREADY_RUNNING": "Une installation est déjà en cours.",
+      "CLI_NOT_FOUND": "L'exécutable Hermes est introuvable. Réinstallez l'assistant depuis l'onglet État.",
+      "NOT_ON_SHELF": "L'installeur a fini sans rien poser sur l'étagère. Le scan d'Hermes a pu la refuser, voir les lignes ci-dessous.",
+      "INSTALL_FAILED": "L'installation a échoué. Les lignes ci-dessous disent où.",
+      "NOT_INSTALLED": "Hermes n'est pas installé.",
+      "INVALID_IDENTIFIER": "Cet identifiant n'a pas la forme owner/repo/chemin ni celle d'une URL https de SKILL.md.",
+      "INVALID_NAME": "Ce nom n'est pas un nom de skill.",
+      "BUNDLED": "Cette skill est livrée avec Hermes : elle se désactive, elle ne se désinstalle pas.",
+      "REMOVE_FAILED": "La suppression a échoué. Les lignes ci-dessous disent où.",
+      "STILL_ON_SHELF": "L'outil a fini mais la skill est toujours sur l'étagère.",
+      "NO_SKILL_MD": "Ce dossier ne contient pas de SKILL.md.",
+      "ALREADY_EXISTS": "Une skill de ce nom est déjà sur l'étagère.",
+      "COPY_FAILED": "La copie a échoué.",
+      "OPEN_FAILED": "Le dossier n'a pas pu s'ouvrir.",
+      "SKILLS_DISABLED_UNREADABLE": "La liste des skills désactivées dans la config n'est pas lisible par l'app. Rien n'a été écrit.",
+      "INVALID_DISABLED": "Liste invalide.",
+      "CONFIG_NOT_FOUND": "La config d'Hermes est introuvable.",
+      "INVALID_SKILL_NAME": "Un des noms de la liste n'est pas un nom de skill."
+    },
     "tapsHeading": "Taps suivis",
-    "ourInstalled": "La skill mnemosyne-memory est installée — votre agent connaît le covenant mémoire.",
-    "ourMissing": "La skill mnemosyne-memory n'est pas installée. Pour l'ajouter :",
-    "empty": "Aucune skill trouvée."
+    "count": "{{n}} skills sur l'étagère",
+    "search": "Chercher une skill…",
+    "allCategories": "Toutes",
+    "noMatch": "Aucune skill ne correspond.",
+    "empty": "Aucune skill trouvée.",
+    "installingClock": "installation… {{clock}}",
+    "installingWhat": "L'installeur d'Hermes télécharge la fiche depuis GitHub, la met en quarantaine, la scanne, puis la pose sur l'étagère. Ses lignes s'affichent ci-dessous à mesure.",
+    "shelfHint": "Cochée, Hermes peut la lire. Décochée, il ne la voit plus. Un changement est lu au prochain démarrage de la passerelle.",
+    "disabledUnreadable": "La liste des skills désactivées dans la config n'est pas lisible par l'app : les interrupteurs sont figés et ne disent rien de sûr.",
+    "disabledSaved": "Enregistré (sauvegarde créée). La passerelle le lira à son prochain démarrage.",
+    "enabledSwitch": "Hermes peut lire {{name}}",
+    "essential": "indispensable",
+    "origin": {
+      "hub": "hub",
+      "custom": "à vous"
+    },
+    "uninstall": "Désinstaller",
+    "uninstallConfirm": "Confirmer la suppression",
+    "uninstallCancel": "Garder",
+    "uninstallingClock": "suppression… {{clock}}",
+    "uninstallingWhat": "Hermes retire la skill de l'étagère et de son registre.",
+    "uninstalled": "{{name}} a été retirée de l'étagère.",
+    "mineHeading": "Mes skills",
+    "mineWhat": "Une skill à vous, c'est un dossier avec un fichier SKILL.md dedans, le même format que les skills de Claude Code. Importée, elle est copiée sur l'étagère sous « custom » ; le dossier d'origine reste où il est.",
+    "mineStep1": "Créez un dossier au nom de la skill.",
+    "mineStep2": "Mettez-y un SKILL.md : un en-tête name / description entre deux lignes ---, puis les instructions.",
+    "mineStep3": "Importez le dossier ici, puis redémarrez la passerelle.",
+    "importFolder": "Importer un dossier",
+    "openFolder": "Ouvrir le dossier des skills",
+    "imported": "{{name}} est sur l'étagère. Redémarrez la passerelle pour qu'Hermes la lise.",
+    "importCancelled": "Aucun dossier choisi.",
+    "advancedHeading": "Avancé : installer depuis un identifiant",
+    "advancedWarning": "Une skill est un script écrit par quelqu'un d'autre, exécuté chez vous. N'installez que ce dont vous connaissez l'auteur. Le scan d'Hermes bloque le dangereux connu, pas le reste.",
+    "advancedHint": "Identifiant owner/repo/chemin sur GitHub, ou l'URL https d'un SKILL.md. Hermes met en quarantaine, scanne, puis pose sur l'étagère."
   },
   "inbox": {
-    "intro": "Tout ce qu'Hermes écrit dans vos coffres attend votre verdict ici. Garder l'approuve, déplacer le range, rejeter l'oublie.",
-    "empty": "Rien à revoir — aucune écriture d'agent en attente.",
+    "intro": "Quand Hermes retient quelque chose dans votre mémoire, ça passe d'abord par ici. Garder l'accepte, Déplacer le range dans un autre coffre, Rejeter l'efface.",
+    "empty": "Rien à revoir. Hermes n'a encore rien retenu.",
     "keep": "Garder",
     "move": "Déplacer",
     "moveTo": "Vers quel coffre ?",
     "reject": "Rejeter",
     "confirm": "Confirmer l'oubli ?",
-    "multiPart": "Document en plusieurs fragments — gérez-le depuis le coffre lui-même."
+    "multiPart": "Document en plusieurs fragments — gérez-le depuis le coffre lui-même.",
+    "emptyHint": "Dites-lui « retiens que… » depuis Telegram ou l'onglet Discussion, et sa note apparaîtra ici.",
+    "readMore": "Lire la suite",
+    "readLess": "Replier",
+    "bodyTruncated": "Note coupée à 4 000 caractères ici ; le coffre a le reste.",
+    "writtenBy": "Noté par Hermes",
+    "task": "pendant : {{task}}"
   },
   "onboarding": {
     "stepOf": "Étape {{n}} / {{total}}",
@@ -162,7 +435,7 @@
       "heading": "Bienvenue dans MnemoHermes",
       "body": "Quatre étapes, toutes optionnelles, et votre agent pense avec votre OS, vous parle sur vos canaux et reste sous votre gouvernance.",
       "detected": "Installation Hermes détectée.",
-      "notInstalled": "Aucune installation Hermes trouvée. Installez-la d'abord — l'installation automatisée arrive dans un prochain jalon."
+      "notInstalled": "Aucune installation Hermes trouvée sur cette machine."
     },
     "brain": {
       "heading": "1. Le cerveau"
@@ -220,7 +493,11 @@
   },
   "common": {
     "loading": "Chargement…",
-    "error": "Une erreur est survenue."
+    "error": "Une erreur est survenue.",
+    "restartGateway": "Redémarrer la passerelle",
+    "restarting": "redémarrage…",
+    "restarted": "Passerelle redémarrée.",
+    "restartFailed": "La passerelle n'est pas revenue. Regardez l'onglet État."
   },
   "search": {
     "heading": "Recherche web de l'agent",
@@ -236,5 +513,14 @@
     "starting": "Le moteur démarre — recliquez dans quelques secondes.",
     "notAnswering": "Le conteneur tourne mais ne répond pas — vérifiez les réglages web de Mnemosyne.",
     "searchOnly": "SearXNG couvre la RECHERCHE seulement — l'extraction de pages demandera un fournisseur à part (jalon ultérieur)."
+  },
+  "stage": {
+    "title": "Ce qu'Hermes a produit",
+    "close": "Fermer",
+    "open": "Ouvrir",
+    "loading": "Lecture…",
+    "unreadable": "Impossible de lire ce fichier :",
+    "binaryHint": "Un document à ouvrir avec son application.",
+    "openFailed": "Impossible d'ouvrir :"
   }
 }

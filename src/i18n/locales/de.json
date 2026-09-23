@@ -6,6 +6,7 @@
   "tabs": {
     "status": "Status",
     "chat": "Chat",
+    "tasks": "Aufgaben",
     "skills": "Skills",
     "inbox": "Speicher-Inbox",
     "settings": "Einstellungen",
@@ -13,35 +14,187 @@
     "tools": "Werkzeuge",
     "agents": "Agenten"
   },
+  "tasks": {
+    "heading": "Aufgaben",
+    "intro": "Gib dem Agenten eine Aufgabe. Er läuft auf deinem Rechner mit seinen Werkzeugen; bei einer geschützten Aktion hält er an und fragt dich hier. Der Befehl, den du freigibst, ist genau der angezeigte.",
+    "placeholder": "z. B. sortiere meinen Downloads-Ordner nach Typ",
+    "start": "Starten",
+    "starting": "Startet…",
+    "refused": "Abgelehnt:",
+    "empty": "Noch keine Aufgabe.",
+    "lastSign": "letztes Lebenszeichen vor {{s}} s",
+    "streamLost": "Stream still, Status neu gelesen",
+    "approvalTitle": "Der Agent will dies ausführen:",
+    "noCommand": "(Befehl nicht übermittelt)",
+    "smartDenied": "Der automatische Wächter hat schon Nein gesagt — du kannst es trotzdem einmal erlauben.",
+    "countdown": "Hermes entscheidet in {{s}} s allein, wenn du nicht antwortest.",
+    "expired": "Die Frist ist abgelaufen: Hermes hat allein entschieden. Unten siehst du, was er getan hat.",
+    "choiceOnce": "Einmal erlauben",
+    "choiceSession": "Für diese Sitzung erlauben",
+    "choiceAlways": "Immer erlauben",
+    "choiceDeny": "Ablehnen",
+    "error": "Fehler:",
+    "stop": "Stopp",
+    "stopping": "Stoppt…",
+    "statusQueued": "wartet",
+    "statusRunning": "läuft",
+    "statusWaiting": "wartet auf deine Freigabe",
+    "statusStopping": "wird gestoppt",
+    "statusCompleted": "fertig",
+    "statusFailed": "fehlgeschlagen",
+    "statusCancelled": "gestoppt",
+    "statusUnknown": "unbekannt"
+  },
   "agents": {
     "intro": "Jedes Profil ist ein vollständiger Agent — mit eigenem Gedächtnis, eigenen Skills, eigenem Gateway und eigenem Telegram-Bot. Ein Token pro Bot, Telegrams Regel.",
     "defaultAgent": "Hauptagent",
-    "configureTelegram": "Telegram…",
+    "configureTelegram": "Telegram-Bot verbinden",
     "botfatherHint": "Erstelle über @BotFather auf Telegram einen eigenen Bot (ein Token pro Agent) und füge das Token hier ein.",
     "createHeading": "Agent erstellen",
     "create": "Erstellen",
-    "creating": "Wird erstellt…"
+    "creating": "Wird erstellt…",
+    "gatewayStart": "Sein Gateway starten",
+    "gatewayStop": "Sein Gateway stoppen",
+    "mainGatewayNote": "Sein Gateway wird im Tab Status gesteuert.",
+    "onlyMain": "Bisher nur ein Agent: der Hauptagent. Ein zweites Profil ist ein eigener Hermes mit eigenem Gedächtnis, eigenen Skills und eigenem Telegram-Bot, der den Hauptagenten nicht berührt.",
+    "mainTelegramNote": "Telegram wird im Tab Kanäle verbunden."
   },
   "channels": {
-    "heading": "Messaging-Kanäle",
-    "configured": "konfiguriert",
-    "notConfigured": "nicht konfiguriert",
-    "telegramHeading": "Telegram",
     "tokenLabel": "Bot-Token",
-    "tokenHint": "Erstelle einen Bot mit @BotFather auf Telegram und füge das Token hier ein.",
-    "allowedLabel": "Erlaubte Benutzer-IDs (kommagetrennt)",
-    "allowedHint": "Dringend empfohlen: ohne Liste kann jeder mit deinem Agenten sprechen. Deine ID findest du über @userinfobot.",
-    "saved": "Gespeichert ✓ (Backup erstellt) — Gateway neu starten.",
+    "allowedLabel": "Erlaubte IDs, durch Kommas getrennt",
+    "allowedHint": "Deine ID und die der Personen, die mit dem Assistenten sprechen dürfen.",
+    "saved": "Gespeichert (Sicherung erstellt). Das Gateway liest es beim nächsten Start.",
     "invalidToken": "Das sieht nicht wie ein BotFather-Token aus.",
     "invalidIds": "IDs müssen kommagetrennte Zahlen sein.",
-    "othersHint": "Andere Plattformen (QR, Kopplungen…) werden vorerst in Hermes konfiguriert."
+    "othersHint": "Noch nicht aus der App. Sie laufen über den Einrichtungsbefehl von Hermes im Terminal.",
+    "intro": "Ein Kanal ist eine Messaging-App, über die du mit deinem Assistenten sprichst, zum Beispiel vom Handy aus. Ohne Kanal antwortet er nur im Tab Chat.",
+    "linked": "verbunden",
+    "notLinked": "noch nicht verbunden",
+    "allowedCount": "Antwortet {{n}} erlaubten Nutzer(n).",
+    "openToAll": "Keine Erlaubnisliste: Wer diesen Bot findet, kann mit ihm sprechen und verbraucht dein Guthaben.",
+    "step1": "Öffne auf Telegram @BotFather, erstelle einen Bot und kopiere sein Token.",
+    "step2": "Öffne @userinfobot, um deine numerische ID zu erfahren.",
+    "step3": "Füge beides unten ein, speichere und starte das Gateway neu.",
+    "tokenKept": "Ein Token ist bereits gespeichert. Leer lassen, um es zu behalten.",
+    "othersHeading": "Andere Messaging-Apps",
+    "voiceHeading": "Sprechen und hören",
+    "voiceHint": "Schicken Sie eine Sprachnachricht: Sie wird auf diesem Rechner transkribiert und wie eine Textnachricht behandelt. Damit die Antwort als Sprachnachricht zurückkommt, tippen Sie /voice on im Telegram-Chat; /voice all spricht jede Antwort, /voice off beendet es. Die Stimme folgt der App-Sprache.",
+    "voicePrivacy": "Ihre Sprachnachrichten bleiben hier. Der Text jeder gesprochenen Antwort geht jedoch durch den Sprachdienst von Microsoft.",
+    "voiceRouteApp": "Die in der App gewählte Stimme, Einstellungen › Stimme, hier gesprochen",
+    "voiceRouteEdge": "Eine kostenlose Microsoft-Stimme",
+    "voiceRouteChosen": "gewählt: {{chosen}}",
+    "voiceRouteOther": "Sie haben die Stimme selbst in config.yaml eingestellt; die App lässt sie unberührt.",
+    "voiceRouteSaved": "Gespeichert. Das Gateway liest es beim nächsten Start.",
+    "voiceRouteReason_NO_VOICE_PREFS": "Noch keine Stimme in der App gewählt: Einstellungen › Stimme öffnen.",
+    "voiceRouteReason_UNSUPPORTED_FAMILY": "Systemstimme und ElevenLabs verlassen das Fenster nicht: wählen Sie eine lokale Stimme unter Einstellungen › Stimme.",
+    "voiceRouteReason_LICENSE_REQUIRED": "Lokale Stimmen sind eine lizenzierte Funktion.",
+    "voiceRouteReason_ENGINE_NOT_INSTALLED": "Die gewählte Engine ist nicht installiert: Einstellungen › Stimme.",
+    "voiceRouteReason_VOICE_NOT_INSTALLED": "Die gewählte Piper-Stimme ist nicht auf der Festplatte: Einstellungen › Stimme.",
+    "voiceRouteReason_NO_CLONE_SAMPLE": "Der Begleiter spricht mit Ihrer Stimme, aber es ist keine Probe aufgenommen: Einstellungen › Stimme."
   },
   "tools": {
-    "intro": "Was dein Agent tun darf, Kanal für Kanal. Ankreuzen, speichern — automatisches Backup.",
-    "empty": "Kein Werkzeug-Block in der Config gefunden.",
-    "saved": "Gespeichert ✓ (Backup erstellt) — Gateway neu starten.",
-    "terminalWarning": "Terminal auf einem Messaging-Kanal aktiv",
-    "presetNote": "Dieser Kanal nutzt ein Preset — Speichern ersetzt es durch die angekreuzte Liste."
+    "intro": "Was dein Assistent darf, je nachdem, von wo aus er angesprochen wird. Ankreuzen, speichern, Gateway neu starten.",
+    "empty": "Kein Werkzeug-Block in der Konfiguration und kein Kanal verbunden.",
+    "saved": "Gespeichert (Sicherung erstellt). Das Gateway liest es beim nächsten Start.",
+    "terminalWarning": "Terminal aus einer Messaging-App geöffnet",
+    "presetAll": "Voreinstellung „{{name}}“: alle Werkzeuge, Terminal inklusive.",
+    "presetSome": "Voreinstellung „{{name}}“: {{n}} Werkzeuge.",
+    "presetNote": "Ein Häkchen zu entfernen ersetzt die Voreinstellung durch die angekreuzte Liste.",
+    "presetUnknown": "Voreinstellung „{{name}}“: die App kann nicht lesen, was sie enthält, nichts ist dafür angekreuzt.",
+    "noBlock": "Keine Einstellung: Hermes gibt ihm alle Werkzeuge, Terminal inklusive.",
+    "noBlockFix": "Werkzeuge wählen",
+    "channelsUnread": "Die verbundenen Kanäle konnten nicht gelesen werden: ein Kanal ohne Einstellung kann hier fehlen.",
+    "platform": {
+      "api_server": "Diese App (Chat, Aufgaben)",
+      "cli": "Hermes-Terminal",
+      "telegram": "Telegram",
+      "discord": "Discord",
+      "slack": "Slack",
+      "whatsapp": "WhatsApp",
+      "signal": "Signal",
+      "matrix": "Matrix"
+    },
+    "toolset": {
+      "web": {
+        "label": "Web",
+        "desc": "Im Web suchen und eine Seite lesen."
+      },
+      "search": {
+        "label": "Nur Suche",
+        "desc": "Suchen, ohne Seiten zu öffnen."
+      },
+      "browser": {
+        "label": "Browser",
+        "desc": "Einen Browser steuern: klicken, ausfüllen, lesen."
+      },
+      "file": {
+        "label": "Dateien",
+        "desc": "Dateien auf diesem PC lesen, schreiben und ändern."
+      },
+      "terminal": {
+        "label": "Terminal",
+        "desc": "Befehle auf diesem PC ausführen."
+      },
+      "code_execution": {
+        "label": "Code ausführen",
+        "desc": "Python-Skripte starten, die die Werkzeuge aufrufen."
+      },
+      "vision": {
+        "label": "Sehen",
+        "desc": "Ein Bild analysieren."
+      },
+      "image_gen": {
+        "label": "Bilder",
+        "desc": "Bilder erzeugen."
+      },
+      "tts": {
+        "label": "Stimme",
+        "desc": "Einen Text vorlesen."
+      },
+      "memory": {
+        "label": "Hermes-Gedächtnis",
+        "desc": "Eigene Notizen über Sitzungen hinweg, neben Mnemosyne."
+      },
+      "session_search": {
+        "label": "Frühere Gespräche",
+        "desc": "Frühere Unterhaltungen wiederfinden."
+      },
+      "todo": {
+        "label": "Aufgabenliste",
+        "desc": "Mehrstufige Arbeit planen."
+      },
+      "skills": {
+        "label": "Skills",
+        "desc": "Eigene Skills lesen und verwalten."
+      },
+      "cronjob": {
+        "label": "Zeitplaner",
+        "desc": "Sich Aufgaben zu festen Zeiten einplanen."
+      },
+      "computer_use": {
+        "label": "Desktop",
+        "desc": "Den Bildschirm sehen und darauf handeln, Maus und Tastatur."
+      },
+      "delegation": {
+        "label": "Unteragenten",
+        "desc": "Eine Teilaufgabe an einen eigenen Agenten übergeben."
+      },
+      "clarify": {
+        "label": "Rückfragen",
+        "desc": "Dir vor dem Handeln eine Frage stellen."
+      },
+      "homeassistant": {
+        "label": "Zuhause",
+        "desc": "Home Assistant: Sensoren und Geräte."
+      }
+    },
+    "discard": "Verwerfen",
+    "error": {
+      "TOOLSETS_BLOCK_UNREADABLE": "Der Werkzeug-Block der Konfiguration enthält eine Zeile, die die App nicht lesen kann. Nichts wurde geschrieben: korrigiere sie in config.yaml oder entferne den Block.",
+      "BLOCK_NOT_FOUND": "Kein Werkzeug-Block zum Schreiben.",
+      "CONFIG_NOT_FOUND": "Die Hermes-Konfiguration wurde nicht gefunden.",
+      "INVALID_PLATFORMS": "Ungültige Liste."
+    }
   },
   "status": {
     "heading": "Agentenstatus",
@@ -65,7 +218,32 @@
     "updating": "Hermes wird aktualisiert…",
     "updateDone": "Hermes ist aktuell ✓ — starte das Gateway neu.",
     "updateFailed": "Aktualisierung fehlgeschlagen — siehe Ausgabe unten.",
-    "updateHint": "Repariert die eingebettete Laufzeit (z. B. das SQLite, vor dem das Gateway warnt). Kein Terminal nötig."
+    "updateHint": "Repariert die eingebettete Laufzeit (z. B. das SQLite, vor dem das Gateway warnt). Kein Terminal nötig.",
+    "install": "Assistent installieren",
+    "installHint": "Mnemosyne OS lädt eine geprüfte Hermes-Agent-Version ({{version}}, etwa {{mb}} MB) herunter und baut sie auf seinem eigenen Python. Kein Terminal, kein Konto, sonst nichts auf diesem Rechner berührt.",
+    "installing": "Installiere…",
+    "installCancel": "Stopp",
+    "installDone": "Installiert ✓ — Gateway starten.",
+    "installFailed": "Installation fehlgeschlagen — siehe Ausgabe unten.",
+    "installCancelled": "Installation gestoppt. Nichts wurde als installiert vermerkt.",
+    "installBusy": "Zuerst das Gateway stoppen — die Installation ersetzt die Dateien, aus denen es läuft.",
+    "installManaged": "Von Mnemosyne OS installiert · {{version}}",
+    "reinstall": "Neu installieren",
+    "memoryWired": "Gedächtnis angebunden",
+    "memoryMissing": "kein Gedächtnis angebunden — neu installieren",
+    "actionsWired": "Bilder angebunden",
+    "actionsMissing": "Bilder nicht angebunden — Gateway neu starten",
+    "voiceWired": "Sprachnachrichten werden hier transkribiert",
+    "voiceMissing": "Sprachnachrichten nicht transkribiert — Gateway neu starten",
+    "stagePython": "Python wird vorbereitet",
+    "stageDownload": "Hermes wird heruntergeladen",
+    "stageVerify": "Archiv wird geprüft",
+    "stageExtract": "Entpacken",
+    "stageVenv": "Umgebung wird erstellt",
+    "stageDeps": "Abhängigkeiten werden installiert",
+    "stageConfig": "Konfiguration wird geschrieben",
+    "stageCheck": "Installation wird geprüft",
+    "stageDone": "Fertig"
   },
   "settings": {
     "heading": "Einstellungen",
@@ -92,6 +270,9 @@
     "stopped": "gestoppt",
     "capLabel": "Tägliches Anruflimit (0 = pausiert)",
     "callsToday": "{{n}} / {{cap}} Aufrufe heute",
+    "tokenCapLabel": "Tägliche Token-Obergrenze (0 = Pause)",
+    "tokensToday": "{{n}} / {{cap}} Tokens heute (wie von den Anbietern gemeldet)",
+    "tokensUnmetered": "{{n}} Aufruf(e) ohne Token-Zählung — nicht gezählt, nicht gratis",
     "spentToday": "Heute ausgegeben: ${{usd}} (Kredit-Route — echte Abbuchungen)",
     "spentTodayFloor": "Heute ausgegeben: ≥ ${{usd}} ({{priced}}/{{total}} Aufrufe bepreist — der Rest unbekannt, nicht gratis)",
     "toolsNative": "Native Tools: ja — der Agent kann seine Tool-Aufrufe über dieses Gehirn ausführen.",
@@ -131,24 +312,116 @@
     "longTurnHint": "Der Agent arbeitet — ein Zug mit Tools kann bis zu 3 Minuten dauern.",
     "stop": "Stopp",
     "stopped": "Gestoppt.",
-    "errInterrupted": "Die Antwort wurde vor dem Ende unterbrochen."
+    "errInterrupted": "Die Antwort wurde vor dem Ende unterbrochen.",
+    "mic": "Mit Hermes sprechen",
+    "micSend": "Sprachnachricht senden",
+    "micCancel": "Aufnahme abbrechen",
+    "micProbing": "Mikrofon wird geprüft…",
+    "micNoGateway": "Das Hermes-Gateway antwortet nicht: starte es im Tab Status.",
+    "micNoEngine": "Keine Transkriptions-Engine: wähle eine in Einstellungen › Stimme (lokales Whisper oder ein Cloud-Schlüssel).",
+    "listening": "Aufnahme",
+    "listeningPlaceholder": "Sprich, dann drücke „Sprachnachricht senden“",
+    "transcribing": "Transkription auf diesem Rechner…",
+    "voiceModeLabel": "Gesprochene Antworten",
+    "voiceMode": {
+      "off": "nie",
+      "voice": "wenn ich spreche",
+      "all": "immer"
+    },
+    "speaking": "Hermes spricht…",
+    "spokenTruncated": "(nur der Anfang, der Rest ist zum Lesen)",
+    "stopSpeaking": "Still",
+    "voiceErr": {
+      "NO_SPEECH": "Ich habe nichts gehört.",
+      "NO_ENGINE": "Keine Transkriptions-Engine eingerichtet.",
+      "MIC_BUSY": "Das Mikrofon wird bereits von einem anderen Fenster gehalten.",
+      "MIC_FAILED": "Das Mikrofon ließ sich nicht öffnen.",
+      "TRANSCRIPTION_FAILED": "Die Transkription ist fehlgeschlagen.",
+      "NOT_LISTENING": "Keine Aufnahme läuft.",
+      "TTS_FAILED": "Die Stimme konnte nicht sprechen: prüfe Einstellungen › Stimme.",
+      "UNKNOWN": "Der Sprachschritt ist fehlgeschlagen."
+    }
   },
   "skills": {
-    "count": "{{n}} Skills im Regal",
+    "intro": "Ein Skill ist ein Wissensblatt, das Hermes liest, wenn eine Aufgabe dazu passt: ein PDF lesen, ein Postfach sortieren, mit Obsidian sprechen. Sie kommen mit Hermes.",
+    "ourInstalled": "Der Skill mnemosyne-memory ist installiert: dein Assistent kennt die Regeln deines Gedächtnisses.",
+    "ourMissing": "Der Skill mnemosyne-memory ist nicht installiert.",
+    "ourWhy": "Er bringt dem Assistenten bei, dein Gedächtnis zu nutzen: welchen Tresor er fragt, wann er fragt statt sucht, nie mischt. Installiert aus unserem öffentlichen Repo, mit Quarantäne und Scan von Hermes.",
+    "install": "Installieren",
+    "installing": "wird installiert…",
+    "installed": "Installiert. Das Gateway liest ihn beim nächsten Start.",
+    "installError": {
+      "ALREADY_INSTALLED": "Er liegt bereits im Regal.",
+      "ALREADY_RUNNING": "Eine Installation läuft bereits.",
+      "CLI_NOT_FOUND": "Die Hermes-Programmdatei wurde nicht gefunden. Installiere den Assistenten im Tab Status neu.",
+      "NOT_ON_SHELF": "Der Installer endete, ohne etwas ins Regal zu legen. Der Scan von Hermes könnte ihn abgelehnt haben, siehe die Zeilen unten.",
+      "INSTALL_FAILED": "Die Installation ist fehlgeschlagen. Die Zeilen unten sagen wo.",
+      "NOT_INSTALLED": "Hermes ist nicht installiert.",
+      "INVALID_IDENTIFIER": "Diese Kennung hat weder die Form owner/repo/pfad noch die einer https-URL zu einer SKILL.md.",
+      "INVALID_NAME": "Das ist kein Skill-Name.",
+      "BUNDLED": "Dieser Skill kommt mit Hermes: er lässt sich deaktivieren, nicht deinstallieren.",
+      "REMOVE_FAILED": "Das Entfernen ist fehlgeschlagen. Die Zeilen unten sagen wo.",
+      "STILL_ON_SHELF": "Das Werkzeug ist fertig, aber der Skill liegt noch im Regal.",
+      "NO_SKILL_MD": "Dieser Ordner enthält keine SKILL.md.",
+      "ALREADY_EXISTS": "Ein Skill mit diesem Namen liegt bereits im Regal.",
+      "COPY_FAILED": "Das Kopieren ist fehlgeschlagen.",
+      "OPEN_FAILED": "Der Ordner konnte nicht geöffnet werden.",
+      "SKILLS_DISABLED_UNREADABLE": "Die Liste deaktivierter Skills in der Konfiguration ist für die App nicht lesbar. Nichts wurde geschrieben.",
+      "INVALID_DISABLED": "Ungültige Liste.",
+      "CONFIG_NOT_FOUND": "Die Hermes-Konfiguration wurde nicht gefunden.",
+      "INVALID_SKILL_NAME": "Ein Name in der Liste ist kein Skill-Name."
+    },
     "tapsHeading": "Abonnierte Taps",
-    "ourInstalled": "Die Skill mnemosyne-memory ist installiert — dein Agent kennt den Gedächtnis-Covenant.",
-    "ourMissing": "Die Skill mnemosyne-memory ist nicht installiert. So fügst du sie hinzu:",
-    "empty": "Keine Skills gefunden."
+    "count": "{{n}} Skills im Regal",
+    "search": "Skill suchen…",
+    "allCategories": "Alle",
+    "noMatch": "Kein Skill passt.",
+    "empty": "Kein Skill gefunden.",
+    "installingClock": "wird installiert… {{clock}}",
+    "installingWhat": "Der Installer von Hermes holt das Blatt von GitHub, stellt es in Quarantäne, scannt es und legt es ins Regal. Seine Zeilen erscheinen unten, sobald sie kommen.",
+    "shelfHint": "Angekreuzt darf Hermes ihn lesen. Ohne Häkchen sieht er ihn nicht mehr. Eine Änderung wird beim nächsten Start des Gateways gelesen.",
+    "disabledUnreadable": "Die Liste deaktivierter Skills in der Konfiguration ist für die App nicht lesbar: die Schalter sind eingefroren und sagen nichts Sicheres.",
+    "disabledSaved": "Gespeichert (Sicherung erstellt). Das Gateway liest es beim nächsten Start.",
+    "enabledSwitch": "Hermes darf {{name}} lesen",
+    "essential": "unverzichtbar",
+    "origin": {
+      "hub": "Hub",
+      "custom": "eigener"
+    },
+    "uninstall": "Deinstallieren",
+    "uninstallConfirm": "Entfernen bestätigen",
+    "uninstallCancel": "Behalten",
+    "uninstallingClock": "wird entfernt… {{clock}}",
+    "uninstallingWhat": "Hermes nimmt den Skill aus dem Regal und aus seinem Register.",
+    "uninstalled": "{{name}} wurde aus dem Regal genommen.",
+    "mineHeading": "Meine Skills",
+    "mineWhat": "Ein eigener Skill ist ein Ordner mit einer SKILL.md darin, dasselbe Format wie Claude-Code-Skills. Importiert wird er unter „custom“ ins Regal kopiert; der Originalordner bleibt, wo er ist.",
+    "mineStep1": "Lege einen Ordner mit dem Namen des Skills an.",
+    "mineStep2": "Lege eine SKILL.md hinein: ein name / description-Kopf zwischen zwei ----Zeilen, dann die Anweisungen.",
+    "mineStep3": "Importiere den Ordner hier und starte das Gateway neu.",
+    "importFolder": "Ordner importieren",
+    "openFolder": "Skills-Ordner öffnen",
+    "imported": "{{name}} liegt im Regal. Starte das Gateway neu, damit Hermes ihn liest.",
+    "importCancelled": "Kein Ordner gewählt.",
+    "advancedHeading": "Erweitert: aus einer Kennung installieren",
+    "advancedWarning": "Ein Skill ist ein von jemand anderem geschriebenes Skript, das auf deinem Rechner läuft. Installiere nur, wessen Autor du kennst. Der Scan von Hermes blockiert bekannt Gefährliches, nicht den Rest.",
+    "advancedHint": "Eine owner/repo/pfad-Kennung auf GitHub oder die https-URL einer SKILL.md. Hermes stellt in Quarantäne, scannt und legt ins Regal."
   },
   "inbox": {
-    "intro": "Alles, was Hermes in deine Tresore schreibt, wartet hier auf dein Urteil. Behalten billigt es, Verschieben sortiert es um, Ablehnen vergisst es.",
-    "empty": "Nichts zu prüfen — keine Agenten-Einträge ausstehend.",
+    "intro": "Wenn Hermes sich etwas in deinem Gedächtnis merkt, kommt es zuerst hier vorbei. Behalten nimmt es an, Verschieben legt es in einen anderen Tresor, Ablehnen löscht es.",
+    "empty": "Nichts zu prüfen. Hermes hat sich noch nichts gemerkt.",
     "keep": "Behalten",
     "move": "Verschieben",
     "moveTo": "In welchen Tresor?",
     "reject": "Ablehnen",
     "confirm": "Vergessen bestätigen?",
-    "multiPart": "Mehrteiliges Dokument — verwalte es direkt im Tresor."
+    "multiPart": "Mehrteiliges Dokument — verwalte es direkt im Tresor.",
+    "emptyHint": "Sag ihm „merk dir, dass…“ über Telegram oder den Tab Chat, und seine Notiz erscheint hier.",
+    "readMore": "Mehr lesen",
+    "readLess": "Einklappen",
+    "bodyTruncated": "Notiz hier bei 4 000 Zeichen abgeschnitten; der Tresor hat den Rest.",
+    "writtenBy": "Notiert von Hermes",
+    "task": "dabei: {{task}}"
   },
   "onboarding": {
     "stepOf": "Schritt {{n}} / {{total}}",
@@ -162,7 +435,7 @@
       "heading": "Willkommen bei MnemoHermes",
       "body": "Vier Schritte, alle optional — und dein Agent denkt mit deinem OS, spricht mit dir auf deinen Kanälen und bleibt unter deiner Governance.",
       "detected": "Hermes-Installation erkannt.",
-      "notInstalled": "Keine Hermes-Installation gefunden. Installiere sie zuerst — die automatisierte Installation kommt in einem nächsten Meilenstein."
+      "notInstalled": "Keine Hermes-Installation auf diesem Rechner gefunden."
     },
     "brain": {
       "heading": "1. Das Gehirn"
@@ -220,7 +493,11 @@
   },
   "common": {
     "loading": "Wird geladen…",
-    "error": "Etwas ist schiefgelaufen."
+    "error": "Etwas ist schiefgelaufen.",
+    "restartGateway": "Gateway neu starten",
+    "restarting": "Neustart…",
+    "restarted": "Gateway neu gestartet.",
+    "restartFailed": "Das Gateway ist nicht zurückgekommen. Siehe Tab Status."
   },
   "search": {
     "heading": "Websuche des Agenten",
@@ -236,5 +513,14 @@
     "starting": "Die Engine startet — klicke in ein paar Sekunden erneut.",
     "notAnswering": "Der Container läuft, antwortet aber nicht — prüfe Mnemosynes Web-Einstellungen.",
     "searchOnly": "SearXNG deckt nur die SUCHE ab — Seiten-Extraktion braucht einen eigenen Anbieter (späterer Meilenstein)."
+  },
+  "stage": {
+    "title": "Was Hermes erzeugt hat",
+    "close": "Schließen",
+    "open": "Öffnen",
+    "loading": "Wird gelesen…",
+    "unreadable": "Diese Datei konnte nicht gelesen werden:",
+    "binaryHint": "Ein Dokument, das mit seiner Anwendung geöffnet wird.",
+    "openFailed": "Konnte nicht öffnen:"
   }
 }
