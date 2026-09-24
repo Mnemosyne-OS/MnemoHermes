@@ -46,6 +46,13 @@ real browser, skills it writes for itself. What it does not have is governed
 memory. Its own is flat files, with no vaults, no protection levels and no
 provenance.
 
+Hermes Agent is built and published by [Nous Research](https://nousresearch.com),
+under the MIT licence:
+[official site](https://hermes-agent.nousresearch.com) ·
+[documentation](https://hermes-agent.nousresearch.com/docs) ·
+[GitHub](https://github.com/NousResearch/hermes-agent) ·
+[@nousresearch](https://x.com/nousresearch).
+
 MnemoHermes is the outward half of the bridge. It does not live inside the
 agent. It watches it from Mnemosyne OS and gives you the controls that otherwise
 live in a YAML file and a terminal:
