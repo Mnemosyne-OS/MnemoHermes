@@ -11,6 +11,13 @@ cartridge.
 
 <br clear="left">
 
+<p align="center">
+  <img src="docs/tour.gif" alt="The MnemoHermes cockpit opening from the Mnemosyne OS dock, then its Tasks, Agents, Tools, Skills, Memory inbox and Settings tabs" width="880">
+</p>
+
+<p align="center"><sub>The cockpit inside Mnemosyne OS. What it does for you, step by step:
+<a href="https://mnemosyne-os.io/hermes">mnemosyne-os.io/hermes</a></sub></p>
+
 > [!WARNING]
 > **MnemoHermes is in beta, and it is not in the store yet.**
 >
