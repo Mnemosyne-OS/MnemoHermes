@@ -14,7 +14,7 @@ cartridge.
 > [!WARNING]
 > **MnemoHermes is in beta, and it is not in the store yet.**
 >
-> You add it by hand, by pasting this repo's URL into Mnemosyne (see
+> You add it by hand, by pasting this repo's URL into Mnemosyne OS (see
 > [Installing it](#installing-it)). There is no catalog entry, no review and no
 > signed listing behind it.
 >
@@ -40,36 +40,44 @@ memory. Its own is flat files, with no vaults, no protection levels and no
 provenance.
 
 MnemoHermes is the outward half of the bridge. It does not live inside the
-agent. It watches it from Mnemosyne and gives you the controls that otherwise
+agent. It watches it from Mnemosyne OS and gives you the controls that otherwise
 live in a YAML file and a terminal:
 
-- **Status** — the install, the `api_server`, and the gateway, with start, stop
+- **Status.** The install, the `api_server` and the gateway, with start, stop
   and the process's own journal. A managed child that has not bound its port yet
-  reads as *starting*, not as *stopped*. Without Hermes, one button installs it:
-  the app downloads the pinned release, builds it, and wires your memory in.
-- **Tasks** — start a run and follow its log. When Hermes asks before a risky
+  reads as *starting*. Without Hermes, one button installs it: the app downloads
+  the pinned release, builds it, and wires your memory in.
+- **Tasks.** Start a run and follow its log. When Hermes asks before a risky
   command, you see the command, its reason and the time left, and you answer
   once, for the session, or always. The same question appears as a card on your
   board.
-- **Discussion** — talk to the agent through its `api_server`, streaming token
-  by token, with a Stop button. An agent turn runs tools and can legitimately
-  take minutes, so the wait shows elapsed seconds rather than a spinner.
-- **Agents** — one card per Hermes profile, each with its own Telegram token and
+- **Chat.** Talk to the agent through its `api_server`, streamed token by token,
+  with a Stop button. An agent turn runs tools and can take minutes, so the wait
+  shows elapsed seconds. A microphone button lends you the app's microphone for
+  one question, and replies can be spoken in the voice chosen in Settings ›
+  Voice. An image the agent made or a document it wrote becomes its own card
+  beside the conversation, with an **Open** button.
+- **Agents.** One card per Hermes profile, each with its own Telegram token and
   its own gateway.
-- **Channels** — which messaging platforms are configured, and the one form the
-  cockpit is allowed to write.
-- **Tools** — the per-platform toolset grid. A messaging platform that carries a
+- **Channels.** Which messaging platforms are configured, who each bot is linked
+  to, and the one form the cockpit is allowed to write (the main Telegram bot).
+  Voice notes sent to the bot are transcribed on your machine. Spoken replies use
+  either a free Microsoft voice in the app's language or the voice chosen in
+  Settings › Voice; with the Microsoft voice, the text of each reply goes through
+  Microsoft's speech service.
+- **Tools.** The per-platform toolset grid. A messaging platform that carries a
   terminal gets flagged, because that is the configuration worth noticing.
-- **Skills** — a switch per skill, where each one comes from, uninstall, import
+- **Skills.** A switch per skill, where each one comes from, uninstall, import
   your own, and install any identifier through Hermes' own installer and its
   scan.
-- **Inbox** — the reason this exists. Every chronicle the agent wrote into your
-  vaults through MCP carries a provenance line, and the inbox surfaces them as a
-  queue: **keep**, **move** or **reject**.
-- **Brain** — the loopback proxy that serves Mnemosyne's inference to Hermes,
+- **Memory inbox.** The reason this exists. Every chronicle the agent wrote into
+  your vaults through MCP carries a signed provenance line. The inbox lists only
+  those, as a queue: **keep**, **move** or **reject**. A note of yours that merely
+  quotes the agent stays out of it.
+- **Brain.** The loopback proxy that serves Mnemosyne OS's inference to Hermes,
   with a daily call cap, a daily token cap, and today's real spend.
-- **Security presets** — Fortress, Balanced, YOLO. One click writes both sides
-  of the bridge: Hermes' `config.yaml` and Mnemosyne's own call cap.
+- **Security presets.** Fortress, Balanced, YOLO. One click writes both sides
+  of the bridge: Hermes' `config.yaml` and Mnemosyne OS's own call cap.
 
 Nothing here mutates your agent behind your back. A preset click is the human
 gesture, mediated; the cockpit never steers the agent's configuration on its own
@@ -87,12 +95,12 @@ Then, in the app:
 1. Open **MnemoHub**.
 2. **Add an external cartridge**, then **A repository**.
 3. Paste `https://github.com/Mnemosyne-OS/MnemoHermes` and press **Read it**.
-4. Mnemosyne downloads the manifest and shows you the name, the version and the
+4. Mnemosyne OS downloads the manifest and shows you the name, the version and the
    permissions *before* installing anything. Confirm with **Install**.
 
 Two things worth knowing before you do that:
 
-- **It spends your free external-cartridge slot.** Mnemosyne allows one
+- **It spends your free external-cartridge slot.** Mnemosyne OS allows one
   cartridge from outside the store without a license, and a second one needs an
   active Engramm. A repo install and a local folder link draw on the same slot.
 - **Updates come from this repo.** The manifest declares `updateStrategy: git`,
@@ -103,34 +111,33 @@ It asks for four permissions. `hermes:control` covers the install probe, the
 config reads and writes, and the gateway. `vault:read` and `vault:write` are the
 inbox, and they are deliberately separate from `hermes:control`, whose
 description promises no access to vault content. `model:infer` is the brain
-proxy.
+proxy, the microphone lent to the Chat tab, and the spoken replies.
 
 ## The three arrows, which are easy to confuse
 
 | | Direction | What carries it |
 |---|---|---|
-| Memory **in** | Hermes reads and writes Mnemosyne vaults | `@mnemosyne_os/mcp`, under the `mnemosyne-memory` skill covenant |
-| Control **out** | you observe and drive Hermes from Mnemosyne | this cartridge |
-| Inference **served** | Hermes thinks with Mnemosyne's brain | a loopback OpenAI-compatible endpoint |
+| Memory **in** | Hermes reads and writes Mnemosyne OS vaults | `@mnemosyne_os/mcp`, under the `mnemosyne-memory` skill covenant |
+| Control **out** | you observe and drive Hermes from Mnemosyne OS | this cartridge |
+| Inference **served** | Hermes thinks with Mnemosyne OS's brain | a loopback OpenAI-compatible endpoint |
 
 They share no code path. A problem with one says nothing about the others.
 
 ## What it does not know yet
 
-These are not unknowns, they are gaps we have found and not yet closed. They are
-here rather than in a milestone list because one of them can make a screen lie to
-you.
+These are gaps we have found and not yet closed. They are listed here, rather
+than in a milestone list, because one of them can make a screen lie to you.
 
 - **The profile screen may write into the void.** It writes `USER.md`, and
   Hermes carries a `user_profile_enabled` flag that this cockpit does not read.
   With that flag off, Hermes never injects the file into its prompt, and the
   screen still reports a success. Check the flag yourself until this is fixed.
-- **Two memories can run in parallel and nobody says so.** When Mnemosyne serves
+- **Two memories can run in parallel and nobody says so.** When Mnemosyne OS serves
   the memory through MCP, Hermes' own `memory.memory_enabled` can still be on,
   spending tokens every turn on a memory you are not using. The cockpit neither
   shows nor measures that flag.
 - **Turning off the `memory` toolset may do more than it says.** Whether
-  disabling it from the Tools tab also cuts Hermes' access to Mnemosyne's MCP
+  disabling it from the Tools tab also cuts Hermes' access to Mnemosyne OS's MCP
   tools has **not been measured**. The screen says nothing about it on purpose,
   because a guess does not belong in an interface.
 - **Session identity across `/new`, `/resume`, `/branch`, undo and context
