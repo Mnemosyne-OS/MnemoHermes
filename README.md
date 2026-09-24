@@ -64,7 +64,7 @@ live in a YAML file and a terminal:
 - **Tasks.** Start a run and follow its log. When Hermes asks before a risky
   command, you see the command, its reason and the time left, and you answer
   once, for the session, or always. The same question appears as a card on your
-  board.
+  Mnemosyne OS dashboard.
 - **Chat.** Talk to the agent through its `api_server`, streamed token by token,
   with a Stop button. An agent turn runs tools and can take minutes, so the wait
   shows elapsed seconds. A microphone button lends you the app's microphone for
