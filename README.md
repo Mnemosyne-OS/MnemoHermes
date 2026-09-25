@@ -25,7 +25,7 @@ cartridge.
 > [Installing it](#installing-it)). There is no catalog entry, no review and no
 > signed listing behind it.
 >
-> What has actually been measured: **218 tests** over 17 files, and **7
+> What has actually been measured: **254 tests** over 24 files, and **7
 > languages at key parity**. The security presets and the task approvals were
 > written against the Hermes source, not against its documentation. The managed
 > install pins one Hermes release (`v2026.9.21`) and checks its sha256.
@@ -53,6 +53,10 @@ MnemoHermes is the outward half of the bridge. It does not live inside the
 agent. It watches it from Mnemosyne OS and gives you the controls that otherwise
 live in a YAML file and a terminal:
 
+- **Setup.** Five steps on first open: install Hermes, choose what the agent
+  may do, introduce yourself, link Telegram, then one **Plug in and start**
+  button that switches on the brain, installs the `mnemosyne-memory` skill and
+  starts the gateway, each line turning green or saying what went wrong.
 - **Status.** The install, the `api_server` and the gateway, with start, stop
   and the process's own journal. A managed child that has not bound its port yet
   reads as *starting*. Without Hermes, one button installs it: the app downloads
@@ -86,8 +90,9 @@ live in a YAML file and a terminal:
   quotes the agent stays out of it.
 - **Brain.** The loopback proxy that serves Mnemosyne OS's inference to Hermes,
   with a daily call cap, a daily token cap, and today's real spend.
-- **Security presets.** Fortress, Balanced, YOLO. One click writes both sides
-  of the bridge: Hermes' `config.yaml` and Mnemosyne OS's own call cap.
+- **Security presets.** Careful, Balanced, Everything allowed. One click writes
+  both sides of the bridge: Hermes' `config.yaml` and Mnemosyne OS's own call
+  cap.
 
 Nothing here mutates your agent behind your back. A preset click is the human
 gesture, mediated; the cockpit never steers the agent's configuration on its own
@@ -113,14 +118,20 @@ Two things worth knowing before you do that:
 - **It spends your free external-cartridge slot.** Mnemosyne OS allows one
   cartridge from outside the store without a license, and a second one needs an
   active Engramm. A repo install and a local folder link draw on the same slot.
-- **Updates come from this repo.** The manifest declares `updateStrategy: git`,
-  so the app checks this URL rather than a catalog. Nothing is fetched on its
-  own between those checks.
+- **Updates come from this repo, and the Hub does not announce them.** The
+  Hub compares versions only for its signed catalog, and MnemoHermes is not in
+  it. From 0.9.2 the cockpit reads the version published here when its window
+  opens and every six hours, and shows a line when a newer one exists. To
+  update: in MnemoHub, **Uninstall** MnemoHermes, then add it again from this
+  URL. Hermes and its settings stay in place. 0.9.1 and earlier cannot tell
+  you, so from those the first update is one you find yourself.
 
 It asks for four permissions. `hermes:control` covers the install probe, the
 config reads and writes, and the gateway. `vault:read` and `vault:write` are the
 inbox, and they are deliberately separate from `hermes:control`, whose
-description promises no access to vault content. `model:infer` is the brain
+description promises no access to vault content. `vault:read` also carries the
+one outbound request the cockpit makes on its own: reading the version in this
+repo's `mnemo-plugin.json`. `model:infer` is the brain
 proxy, the microphone lent to the Chat tab, and the spoken replies.
 
 ## The three arrows, which are easy to confuse

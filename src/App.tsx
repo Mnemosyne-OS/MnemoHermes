@@ -21,6 +21,7 @@ import {
 } from './types';
 import { StatusPanel } from './panels/StatusPanel';
 import { ChatPanel } from './panels/ChatPanel';
+import { UpdateBanner } from './panels/UpdateBanner';
 import { AgentsPanel } from './panels/AgentsPanel';
 import { ChannelsPanel } from './panels/ChannelsPanel';
 import { ToolsPanel } from './panels/ToolsPanel';
@@ -46,6 +47,11 @@ export default function App() {
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
   // The cards beside the chat outlive the turn that made them (doc 123).
   const [stageItems, setStageItems] = useState<StageItem[]>([]);
+  // The Chat panel stays mounted once opened, so a reply outlives a tab
+  // switch; `chatBusy` marks its tab while a turn is running elsewhere.
+  const [chatMounted, setChatMounted] = useState(false);
+  const [chatBusy, setChatBusy] = useState(false);
+  useEffect(() => { if (tab === 'chat') setChatMounted(true); }, [tab]);
 
   // Outside the host (plain browser dev) the bridge is absent — defaults apply.
   useEffect(() => {
@@ -99,8 +105,9 @@ export default function App() {
     void persist(settings ?? DEFAULT_SETTINGS, next, onboardingDone === true);
   }, [persist, settings, reviewedIds, onboardingDone]);
 
-  const finishOnboarding = useCallback(() => {
+  const finishOnboarding = useCallback((openChat: boolean) => {
     setOnboardingDone(true);
+    if (openChat) setTab('chat');
     void persist(settings ?? DEFAULT_SETTINGS, reviewedIds, true);
   }, [persist, settings, reviewedIds]);
 
@@ -118,6 +125,7 @@ export default function App() {
           <p style={{ margin: '4px 0 0', fontSize: 12, color: 'var(--text-muted, #666)' }}>{t('app.tagline')}</p>
         </div>
       </header>
+      <UpdateBanner />
 
       {onboardingDone === null && <div style={panel}>{t('common.loading')}</div>}
       {onboardingDone === false && (
@@ -144,20 +152,27 @@ export default function App() {
                 }}
               >
                 {t(`tabs.${id}`)}
+                {id === 'chat' && chatBusy && tab !== 'chat' && (
+                  <span title={t('tabs.chatBusy')} aria-label={t('tabs.chatBusy')} style={{ marginLeft: 6, color: 'var(--accent, #35c9a6)' }}>●</span>
+                )}
               </button>
             ))}
           </nav>
 
           <main style={{ flex: 1, overflowY: 'auto' }}>
             {tab === 'status' && <StatusPanel refreshSec={settings?.statusRefreshSec ?? 0} reviewedIds={reviewedIds} />}
-            {tab === 'chat' && (
-              <ChatPanel
-                apiPort={settings?.apiPort ?? null}
-                messages={chatMessages}
-                setMessages={setChatMessages}
-                stageItems={stageItems}
-                setStageItems={setStageItems}
-              />
+            {chatMounted && (
+              <div hidden={tab !== 'chat'}>
+                <ChatPanel
+                  apiPort={settings?.apiPort ?? null}
+                  messages={chatMessages}
+                  setMessages={setChatMessages}
+                  stageItems={stageItems}
+                  setStageItems={setStageItems}
+                  active={tab === 'chat'}
+                  onBusyChange={setChatBusy}
+                />
+              </div>
             )}
             {tab === 'tasks' && <TasksPanel />}
             {tab === 'agents' && <AgentsPanel />}

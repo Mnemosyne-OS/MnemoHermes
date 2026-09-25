@@ -36,6 +36,10 @@ export function ManagedInstallCard({ status, onSettled }: { status: HermesStatus
   const [install, setInstall] = useState<ManagedInstallState | null>(null);
   const [refusal, setRefusal] = useState<string | null>(null);
   const [nowMs, setNowMs] = useState(() => Date.now());
+  // The installer's raw lines are for the curious and for a bug report: one
+  // click away, never the screen itself (onboarding rework 2026-09-25). A
+  // failure opens them, since then they are the explanation.
+  const [showOutput, setShowOutput] = useState<boolean | null>(null);
   const phase = installPhase(install);
   const running = phase === 'running';
 
@@ -91,6 +95,8 @@ export function ManagedInstallCard({ status, onSettled }: { status: HermesStatus
   if (!(canInstall(status, install) || running || canReinstall(status, install))) return null;
 
   const elapsed = elapsedSeconds(install, nowMs);
+  // Untouched by the person: closed, except on a failure.
+  const outputOpen = showOutput ?? phase === 'failed';
   return (
     <div style={{ display: 'grid', gap: 8 }}>
       {status.installed && status.managed && (
@@ -154,7 +160,12 @@ export function ManagedInstallCard({ status, onSettled }: { status: HermesStatus
         <span style={{ fontSize: 12, color: 'var(--text-secondary, #aaa)' }}>{t('status.installCancelled')}</span>
       )}
       {install.output.length > 0 && (running || phase !== 'idle') && (
-        <CodeBlock>{install.output.slice(-40).join('\n')}</CodeBlock>
+        <>
+          <button onClick={() => setShowOutput(!outputOpen)} style={{ ...buttonStyle, justifySelf: 'start', fontSize: 11 }}>
+            {outputOpen ? t('status.installHideOutput') : t('status.installShowOutput')}
+          </button>
+          {outputOpen && <CodeBlock>{install.output.slice(-40).join('\n')}</CodeBlock>}
+        </>
       )}
     </div>
   );

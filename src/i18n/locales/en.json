@@ -12,7 +12,8 @@
     "settings": "Settings",
     "channels": "Channels",
     "tools": "Tools",
-    "agents": "Agents"
+    "agents": "Agents",
+    "chatBusy": "A reply is still coming"
   },
   "tasks": {
     "heading": "Tasks",
@@ -243,7 +244,9 @@
     "stageDeps": "Installing dependencies",
     "stageConfig": "Writing the configuration",
     "stageCheck": "Checking the install",
-    "stageDone": "Done"
+    "stageDone": "Done",
+    "installShowOutput": "Show details",
+    "installHideOutput": "Hide details"
   },
   "settings": {
     "heading": "Settings",
@@ -340,7 +343,9 @@
       "NOT_LISTENING": "No recording in progress.",
       "TTS_FAILED": "The voice could not speak: check Settings › Voice.",
       "UNKNOWN": "The voice step failed."
-    }
+    },
+    "brainOff": "The assistant's brain is off, so Hermes cannot answer.",
+    "brainOn": "Switch it on"
   },
   "skills": {
     "intro": "A skill is a know-how sheet Hermes reads when a task fits: how to read a PDF, triage an inbox, talk to Obsidian. They ship with Hermes.",
@@ -425,48 +430,38 @@
   },
   "onboarding": {
     "stepOf": "Step {{n}} / {{total}}",
-    "skipAll": "Skip everything",
-    "skip": "Skip",
+    "skipAll": "Set up later",
     "next": "Next",
     "back": "Back",
-    "finishButton": "Finish first steps",
+    "finishButton": "Finish",
     "rerun": "Run first steps again",
-    "welcome": {
-      "heading": "Welcome to MnemoHermes",
-      "body": "Four steps, all optional, and your agent thinks with your OS, talks to you on your channels, and stays under your governance.",
-      "detected": "Hermes install detected.",
-      "notInstalled": "No Hermes install found on this machine."
-    },
-    "brain": {
-      "heading": "1. The brain"
-    },
     "posture": {
-      "heading": "2. Where does your agent live?",
-      "body": "An autonomous agent executes what it reads. Pick a posture in one click — it writes both sides of the bridge: Hermes' tools and the brain cap. You can always change it.",
-      "current": "Current posture: {{name}}",
-      "currentCustom": "Current posture: custom (matches no preset)",
-      "active": "active",
-      "apply": "Apply",
-      "confirmYolo": "Confirm? Everything opens",
-      "applying": "Applying…",
-      "applied": "Applied ✓ (backup created) — brain cap now {{cap}}/day. Restart the Hermes gateway.",
-      "footnote": "Every preset backs up Hermes' config before writing. On a machine that holds your passwords or wallets, prefer Fortress — or run the agent on a dedicated machine / VPS.",
+      "heading": "What may your agent do?",
+      "body": "An agent runs what it reads, including what is written in a web page or a message. Choose how much it may do on its own. You can change it later in Settings.",
+      "current": "Now: {{name}}",
+      "currentCustom": "Now: custom (matches no choice below)",
+      "active": "current",
+      "apply": "Choose",
+      "confirmYolo": "Sure? Everything opens",
+      "applying": "Saving…",
+      "applied": "Saved. It applies the next time the gateway starts.",
+      "footnote": "Each choice saves a copy of Hermes' settings before changing them. On a machine that holds your passwords or wallets, pick Careful.",
       "fortress": {
-        "title": "Fortress — important machine",
-        "body": "Minimal tools everywhere (no terminal, no skill self-install), manual approval, blocking tirith scan, low brain cap. The most closed attack surface."
+        "title": "Careful",
+        "body": "It asks you before every risky action. No terminal, it cannot install anything on its own, and a small daily limit."
       },
       "balanced": {
-        "title": "Balanced — recommended",
-        "body": "Cautious messaging (recall, no shell), full CLI, smart approval, normal brain cap. The wizard's default."
+        "title": "Balanced (recommended)",
+        "body": "It asks you before risky commands. On your phone it can remember and answer, not run commands. Normal daily limit."
       },
       "yolo": {
-        "title": "YOLO — throwaway PC, \"may burn\"",
-        "body": "Everything open on every channel, approvals off, high brain cap. Only on a remote machine with nothing to lose."
+        "title": "Everything allowed",
+        "body": "No questions, every tool on every channel, high daily limit. Only on a machine with nothing to lose."
       }
     },
     "profile": {
-      "heading": "3. Who are you to it?",
-      "body": "The profile your agent reads every session. Mnemosyne can draft it from your memory — review, adjust, apply. Or fill the questionnaire, or paste an existing profile if you are migrating.",
+      "heading": "Introduce yourself",
+      "body": "A short text your agent reads at the start of every conversation: who you are, what you do, how it should talk to you. Mnemosyne OS can draft it from your memory. Read it, fix it, then save.",
       "autofill": "Pre-fill from Mnemosyne",
       "autofilling": "Mnemosyne is drafting…",
       "template": "Insert the questionnaire",
@@ -477,12 +472,37 @@
       "templateText": "# Profile\n\n## Role\n(dev, researcher, creative… ?)\n\n## Stack / daily tools\n\n## Interaction style\n(concise or didactic? proactive or reactive? language?)\n\n## What I expect from you\n\n## Context\n(timezone, channels, constraints)"
     },
     "channel": {
-      "heading": "4. A channel to talk to it"
+      "heading": "Talk to it from your phone"
     },
-    "finish": {
-      "heading": "5. Start",
-      "body": "Start the gateway and say hello to your agent — from the Chat tab, or from Telegram if you configured it.",
-      "started": "Gateway up ✓ — your agent is online."
+    "optional": "optional",
+    "install": {
+      "heading": "Install Hermes",
+      "body": "Hermes Agent is the assistant this cockpit drives. It runs on your machine, and Mnemosyne OS gives it your memory.",
+      "readyManaged": "Hermes is installed. Mnemosyne OS installed it, and your memory is already plugged in.",
+      "readyOwn": "Hermes is installed (your own install).",
+      "missing": "Hermes is not on this machine yet.",
+      "noHost": "This version of Mnemosyne OS cannot talk to Hermes. Update Mnemosyne OS, then retry.",
+      "needed": "Install Hermes to go on. The next steps write into it."
+    },
+    "start": {
+      "heading": "Start",
+      "body": "One button plugs in the three things your assistant needs, then starts it.",
+      "brain": "Brain: Mnemosyne OS lends its AI model to Hermes",
+      "brainOk": "Brain plugged in",
+      "brainKept": "Brain: Hermes keeps the model named in its own settings",
+      "brainFail": "The brain did not switch on. Hermes will not be able to answer.",
+      "memory": "Memory: the mnemosyne-memory skill teaches Hermes how to use your memory",
+      "memoryOk": "Memory skill installed",
+      "memoryFail": "Memory skill not installed, Hermes starts without it.",
+      "gateway": "Gateway: the program that lets the app talk to Hermes",
+      "gatewayOk": "Gateway started, Hermes is answering",
+      "gatewayFail": "The gateway did not answer in 45 seconds.",
+      "useMnemoBrain": "Make Hermes think with Mnemosyne OS. This replaces the model in Hermes' settings, after saving a copy.",
+      "run": "Plug in and start",
+      "running": "Working…",
+      "retry": "Try again",
+      "openChat": "Say hello",
+      "gatewayHelp": "To see why, open the Status tab and click Logs."
     }
   },
   "dashboard": {
@@ -522,5 +542,10 @@
     "unreadable": "Could not read this file:",
     "binaryHint": "A document to open with its application.",
     "openFailed": "Could not open:"
+  },
+  "update": {
+    "available": "MnemoHermes {{latest}} is available (you have {{current}}).",
+    "how": "To install it: MnemoHub, MnemoHermes card, Uninstall. Then Add a cartridge, A repository, with the link below. Hermes and its settings stay in place.",
+    "dismiss": "Hide until the next version"
   }
 }

@@ -12,7 +12,8 @@
     "settings": "Einstellungen",
     "channels": "Kanäle",
     "tools": "Werkzeuge",
-    "agents": "Agenten"
+    "agents": "Agenten",
+    "chatBusy": "Eine Antwort ist unterwegs"
   },
   "tasks": {
     "heading": "Aufgaben",
@@ -243,7 +244,9 @@
     "stageDeps": "Abhängigkeiten werden installiert",
     "stageConfig": "Konfiguration wird geschrieben",
     "stageCheck": "Installation wird geprüft",
-    "stageDone": "Fertig"
+    "stageDone": "Fertig",
+    "installShowOutput": "Details anzeigen",
+    "installHideOutput": "Details ausblenden"
   },
   "settings": {
     "heading": "Einstellungen",
@@ -340,7 +343,9 @@
       "NOT_LISTENING": "Keine Aufnahme läuft.",
       "TTS_FAILED": "Die Stimme konnte nicht sprechen: prüfe Einstellungen › Stimme.",
       "UNKNOWN": "Der Sprachschritt ist fehlgeschlagen."
-    }
+    },
+    "brainOff": "Das Gehirn des Assistenten ist aus, Hermes kann nicht antworten.",
+    "brainOn": "Einschalten"
   },
   "skills": {
     "intro": "Ein Skill ist ein Wissensblatt, das Hermes liest, wenn eine Aufgabe dazu passt: ein PDF lesen, ein Postfach sortieren, mit Obsidian sprechen. Sie kommen mit Hermes.",
@@ -425,48 +430,38 @@
   },
   "onboarding": {
     "stepOf": "Schritt {{n}} / {{total}}",
-    "skipAll": "Alles überspringen",
-    "skip": "Überspringen",
+    "skipAll": "Später einrichten",
     "next": "Weiter",
     "back": "Zurück",
-    "finishButton": "Erste Schritte abschließen",
+    "finishButton": "Fertig",
     "rerun": "Erste Schritte erneut starten",
-    "welcome": {
-      "heading": "Willkommen bei MnemoHermes",
-      "body": "Vier Schritte, alle optional — und dein Agent denkt mit deinem OS, spricht mit dir auf deinen Kanälen und bleibt unter deiner Governance.",
-      "detected": "Hermes-Installation erkannt.",
-      "notInstalled": "Keine Hermes-Installation auf diesem Rechner gefunden."
-    },
-    "brain": {
-      "heading": "1. Das Gehirn"
-    },
     "posture": {
-      "heading": "2. Wo lebt dein Agent?",
-      "body": "Ein autonomer Agent führt aus, was er liest. Wähle eine Haltung mit einem Klick — sie schreibt beide Seiten der Brücke: die Tools von Hermes und das Gehirn-Limit. Du kannst sie jederzeit ändern.",
-      "current": "Aktuelle Haltung: {{name}}",
-      "currentCustom": "Aktuelle Haltung: benutzerdefiniert (passt zu keinem Preset)",
-      "active": "aktiv",
-      "apply": "Anwenden",
-      "confirmYolo": "Bestätigen? Alles öffnet sich",
-      "applying": "Wird angewendet…",
-      "applied": "Angewendet ✓ (Backup erstellt) — Gehirn-Limit jetzt {{cap}}/Tag. Starte das Hermes-Gateway neu.",
-      "footnote": "Jedes Preset sichert die Hermes-Konfiguration vor dem Schreiben. Auf einer Maschine mit deinen Passwörtern oder Wallets bevorzuge Festung — oder lasse den Agenten auf einer dedizierten Maschine / einem VPS leben.",
+      "heading": "Was darf dein Agent tun?",
+      "body": "Ein Agent führt aus, was er liest, auch was in einer Webseite oder Nachricht steht. Wähle, was er allein tun darf. Du kannst es später in den Einstellungen ändern.",
+      "current": "Jetzt: {{name}}",
+      "currentCustom": "Jetzt: angepasst (passt zu keiner Auswahl)",
+      "active": "aktuell",
+      "apply": "Wählen",
+      "confirmYolo": "Sicher? Alles öffnet sich",
+      "applying": "Wird gespeichert…",
+      "applied": "Gespeichert. Gilt beim nächsten Start des Gateways.",
+      "footnote": "Jede Auswahl sichert eine Kopie der Hermes-Einstellungen, bevor sie sie ändert. Auf einem Rechner mit deinen Passwörtern oder Wallets wähle Vorsichtig.",
       "fortress": {
-        "title": "Festung — wichtige Maschine",
-        "body": "Minimale Tools überall (kein Terminal, keine Skill-Selbstinstallation), manuelle Freigabe, blockierender tirith-Scan, niedriges Gehirn-Limit. Die geschlossenste Angriffsfläche."
+        "title": "Vorsichtig",
+        "body": "Er fragt dich vor jeder riskanten Aktion. Kein Terminal, er kann nichts selbst installieren, und ein kleines Tageslimit."
       },
       "balanced": {
-        "title": "Ausgewogen — empfohlen",
-        "body": "Vorsichtige Messenger (Recall, keine Shell), volle CLI, intelligente Freigabe, normales Gehirn-Limit. Die Standardeinstellung des Assistenten."
+        "title": "Ausgewogen (empfohlen)",
+        "body": "Er fragt dich vor riskanten Befehlen. Auf deinem Handy kann er sich erinnern und antworten, aber keine Befehle ausführen. Normales Tageslimit."
       },
       "yolo": {
-        "title": "YOLO — Wegwerf-PC, „kann brennen“",
-        "body": "Alles offen auf jedem Kanal, Freigaben aus, hohes Gehirn-Limit. Nur auf einer entfernten Maschine ohne etwas zu verlieren."
+        "title": "Alles erlaubt",
+        "body": "Keine Fragen, alle Werkzeuge auf allen Kanälen, hohes Tageslimit. Nur auf einem Rechner, auf dem nichts zu verlieren ist."
       }
     },
     "profile": {
-      "heading": "3. Wer bist du für ihn?",
-      "body": "Das Profil, das dein Agent in jeder Sitzung liest. Mnemosyne kann es aus deinem Gedächtnis entwerfen — lies es, passe es an, übernimm es. Oder fülle den Fragebogen aus, oder füge ein bestehendes Profil ein, wenn du migrierst.",
+      "heading": "Stell dich vor",
+      "body": "Ein kurzer Text, den dein Agent zu Beginn jedes Gesprächs liest: wer du bist, was du machst, wie er mit dir sprechen soll. Mnemosyne OS kann ihn aus deinem Gedächtnis entwerfen. Lies ihn, korrigiere ihn, dann speichere.",
       "autofill": "Aus Mnemosyne vorausfüllen",
       "autofilling": "Mnemosyne entwirft…",
       "template": "Fragebogen einfügen",
@@ -477,12 +472,37 @@
       "templateText": "# Profil\n\n## Rolle\n(Dev, Forscher, Kreativer… ?)\n\n## Stack / tägliche Tools\n\n## Interaktionsstil\n(knapp oder ausführlich? proaktiv oder reaktiv? Sprache?)\n\n## Was ich von dir erwarte\n\n## Kontext\n(Zeitzone, Kanäle, Einschränkungen)"
     },
     "channel": {
-      "heading": "4. Ein Kanal, um mit ihm zu sprechen"
+      "heading": "Sprich mit ihm vom Handy aus"
     },
-    "finish": {
-      "heading": "5. Starten",
-      "body": "Starte das Gateway und sag deinem Agenten Hallo — im Chat-Tab oder über Telegram, falls eingerichtet.",
-      "started": "Gateway läuft ✓ — dein Agent ist online."
+    "optional": "optional",
+    "install": {
+      "heading": "Hermes installieren",
+      "body": "Hermes Agent ist der Assistent, den dieses Cockpit steuert. Er läuft auf deinem Rechner, und Mnemosyne OS gibt ihm dein Gedächtnis.",
+      "readyManaged": "Hermes ist installiert. Mnemosyne OS hat ihn installiert, und dein Gedächtnis ist schon angeschlossen.",
+      "readyOwn": "Hermes ist installiert (deine eigene Installation).",
+      "missing": "Hermes ist noch nicht auf diesem Rechner.",
+      "noHost": "Diese Version von Mnemosyne OS kann nicht mit Hermes sprechen. Aktualisiere Mnemosyne OS und versuche es erneut.",
+      "needed": "Installiere Hermes, um weiterzumachen. Die nächsten Schritte schreiben hinein."
+    },
+    "start": {
+      "heading": "Starten",
+      "body": "Ein Knopf schließt die drei Dinge an, die dein Assistent braucht, und startet ihn dann.",
+      "brain": "Gehirn: Mnemosyne OS leiht Hermes sein KI-Modell",
+      "brainOk": "Gehirn angeschlossen",
+      "brainKept": "Gehirn: Hermes behält das Modell aus seinen eigenen Einstellungen",
+      "brainFail": "Das Gehirn hat sich nicht eingeschaltet. Hermes wird nicht antworten können.",
+      "memory": "Gedächtnis: der Skill mnemosyne-memory bringt Hermes bei, dein Gedächtnis zu nutzen",
+      "memoryOk": "Gedächtnis-Skill installiert",
+      "memoryFail": "Gedächtnis-Skill nicht installiert, Hermes startet ohne ihn.",
+      "gateway": "Gateway: das Programm, über das die App mit Hermes spricht",
+      "gatewayOk": "Gateway gestartet, Hermes antwortet",
+      "gatewayFail": "Das Gateway hat in 45 Sekunden nicht geantwortet.",
+      "useMnemoBrain": "Hermes mit Mnemosyne OS denken lassen. Das ersetzt das Modell in den Hermes-Einstellungen, nachdem eine Kopie gesichert wurde.",
+      "run": "Alles anschließen und starten",
+      "running": "Läuft…",
+      "retry": "Erneut versuchen",
+      "openChat": "Hallo sagen",
+      "gatewayHelp": "Um zu sehen warum, öffne den Tab Status und klicke auf Protokoll."
     }
   },
   "dashboard": {
@@ -522,5 +542,10 @@
     "unreadable": "Diese Datei konnte nicht gelesen werden:",
     "binaryHint": "Ein Dokument, das mit seiner Anwendung geöffnet wird.",
     "openFailed": "Konnte nicht öffnen:"
+  },
+  "update": {
+    "available": "MnemoHermes {{latest}} ist verfügbar (du hast {{current}}).",
+    "how": "So installierst du sie: MnemoHub, Karte MnemoHermes, Deinstallieren. Dann Eine Patrone hinzufügen, Ein Repository, mit dem Link unten. Hermes und seine Einstellungen bleiben erhalten.",
+    "dismiss": "Bis zur nächsten Version ausblenden"
   }
 }

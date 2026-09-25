@@ -1,5 +1,34 @@
 # Changelog
 
+## 0.9.2
+
+- **MnemoHermes tells you when a new version is out.** It reads the version
+  published on GitHub when its window opens, then every six hours, and shows
+  a line with how to install it. The line can be hidden until the next
+  version. Offline, it says nothing. Earlier versions could not do this, so
+  0.9.2 is the last update you have to find by yourself.
+- **A reply keeps coming when you open another tab.** Leaving Chat used to
+  cancel the question in flight, so opening Status to check on Hermes lost
+  the answer. The reply now runs on, a dot on the Chat tab says it is still
+  coming, and it is there when you come back. The microphone is released
+  and nothing is spoken while Chat is not on screen. Closing the window
+  still stops the question.
+- **A new setup, five steps, one question each.** Install Hermes (Next
+  waits until it is there), choose what the agent may do, introduce yourself,
+  link Telegram, then one Start button. The installer's raw output is behind
+  "Show details" instead of filling the screen, and the texts say what each
+  choice does in plain words.
+- **Start plugs everything in.** It switches on the brain Mnemosyne OS lends
+  to Hermes, installs the mnemosyne-memory skill, then starts the gateway and
+  waits for it to answer. Each line turns green or says what went wrong. The
+  separate "brain" step, a panel of switches and YAML, is gone from the
+  setup (it stays in Settings).
+- **Fixed: Hermes never answering after a managed install.** The installer
+  pointed Hermes at the brain Mnemosyne OS lends, but that brain stayed off
+  until a box on the brain step was ticked. Skipping that step left Hermes
+  talking to nothing, and every chat question hung. Start now switches it
+  on, and the Chat tab says when it is off, with a button to switch it on.
+
 ## 0.9.1
 
 - **Starting the gateway no longer reports a failure while it boots.** The

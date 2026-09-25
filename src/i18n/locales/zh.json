@@ -12,7 +12,8 @@
     "settings": "设置",
     "channels": "频道",
     "tools": "工具",
-    "agents": "智能体"
+    "agents": "智能体",
+    "chatBusy": "回复仍在进行中"
   },
   "tasks": {
     "heading": "任务",
@@ -243,7 +244,9 @@
     "stageDeps": "安装依赖",
     "stageConfig": "写入配置",
     "stageCheck": "检查安装",
-    "stageDone": "完成"
+    "stageDone": "完成",
+    "installShowOutput": "显示详情",
+    "installHideOutput": "隐藏详情"
   },
   "settings": {
     "heading": "设置",
@@ -340,7 +343,9 @@
       "NOT_LISTENING": "当前没有录音。",
       "TTS_FAILED": "语音无法播报：请检查 设置 › 语音。",
       "UNKNOWN": "语音步骤失败。"
-    }
+    },
+    "brainOff": "助手的大脑已关闭，Hermes 无法回答。",
+    "brainOn": "开启"
   },
   "skills": {
     "intro": "技能是一张操作说明卡，当任务合适时 Hermes 会读取它：如何读 PDF、整理邮箱、与 Obsidian 交互。它们随 Hermes 一起提供。",
@@ -425,48 +430,38 @@
   },
   "onboarding": {
     "stepOf": "第 {{n}} / {{total}} 步",
-    "skipAll": "全部跳过",
-    "skip": "跳过",
+    "skipAll": "稍后设置",
     "next": "下一步",
     "back": "上一步",
-    "finishButton": "完成初始设置",
+    "finishButton": "完成",
     "rerun": "重新运行初始设置",
-    "welcome": {
-      "heading": "欢迎使用 MnemoHermes",
-      "body": "四个步骤，全部可选——你的智能体将用你的 OS 思考，在你的频道上与你交谈，并始终处于你的治理之下。",
-      "detected": "已检测到 Hermes 安装。",
-      "notInstalled": "这台机器上没有找到 Hermes 安装。"
-    },
-    "brain": {
-      "heading": "1. 大脑"
-    },
     "posture": {
-      "heading": "2. 你的智能体住在哪里？",
-      "body": "自主智能体会执行它读到的内容。一键选择一种姿态——它会同时写入桥的两端：Hermes 的工具集和大脑上限。之后随时可以更改。",
-      "current": "当前姿态：{{name}}",
-      "currentCustom": "当前姿态：自定义（不匹配任何预设）",
-      "active": "生效中",
-      "apply": "应用",
-      "confirmYolo": "确认？将全部开放",
-      "applying": "正在应用…",
-      "applied": "已应用 ✓（已创建备份）——大脑上限现为每日 {{cap}} 次。请重启 Hermes 网关。",
-      "footnote": "每个预设在写入前都会备份 Hermes 配置。在存有你的密码或钱包的机器上，请优先选择堡垒——或让智能体运行在专用机器 / VPS 上。",
+      "heading": "你的智能体可以做什么？",
+      "body": "智能体会执行它读到的内容，包括网页或消息里写的东西。选择它可以独自做什么。之后可以在设置中更改。",
+      "current": "当前：{{name}}",
+      "currentCustom": "当前：自定义（不匹配任何选项）",
+      "active": "当前",
+      "apply": "选择",
+      "confirmYolo": "确定吗？将全部开放",
+      "applying": "正在保存…",
+      "applied": "已保存。下次网关启动时生效。",
+      "footnote": "每个选项在修改前都会备份 Hermes 的设置。如果这台电脑上有你的密码或钱包，请选择谨慎。",
       "fortress": {
-        "title": "堡垒——重要机器",
-        "body": "各处工具集最小化（不开终端，不自动安装技能）、手动审批、tirith 拦截式扫描、大脑上限低。攻击面最封闭。"
+        "title": "谨慎",
+        "body": "每次有风险的操作前都会问你。没有终端，不能自行安装任何东西，每日上限较低。"
       },
       "balanced": {
-        "title": "均衡——推荐",
-        "body": "消息频道谨慎（可回忆，无 shell）、完整 CLI、智能审批、大脑上限正常。向导的默认设置。"
+        "title": "均衡（推荐）",
+        "body": "执行有风险的命令前会问你。在手机上它可以回忆和回答，但不能执行命令。每日上限正常。"
       },
       "yolo": {
-        "title": "YOLO——一次性电脑，「可能烧掉」",
-        "body": "所有频道全部开放、关闭审批、大脑上限高。仅用于无所顾忌的远程机器。"
+        "title": "全部允许",
+        "body": "不再询问，所有频道开放所有工具，每日上限较高。只适合没有任何损失风险的电脑。"
       }
     },
     "profile": {
-      "heading": "3. 对它来说，你是谁？",
-      "body": "这是你的智能体每次会话都会读取的档案。Mnemosyne 可以从你的记忆中起草——请审阅、调整、应用。也可以填写问卷，或在迁移时粘贴现有档案。",
+      "heading": "介绍你自己",
+      "body": "一段简短的文字，智能体在每次对话开始时都会读：你是谁、做什么、它该怎么跟你说话。Mnemosyne OS 可以根据你的记忆起草。读一遍，修改，然后保存。",
       "autofill": "从 Mnemosyne 预填",
       "autofilling": "Mnemosyne 起草中…",
       "template": "插入问卷",
@@ -477,12 +472,37 @@
       "templateText": "# 档案\n\n## 角色\n（开发者、研究者、创作者……?）\n\n## 技术栈 / 日常工具\n\n## 交互风格\n（简洁还是详尽？主动还是被动？语言？）\n\n## 我对你的期待\n\n## 背景\n（时区、频道、约束）"
     },
     "channel": {
-      "heading": "4. 一个与它对话的频道"
+      "heading": "用手机和它对话"
     },
-    "finish": {
-      "heading": "5. 启动",
-      "body": "启动网关，向你的智能体问声好——在对话标签页，或者你配置好的 Telegram 上。",
-      "started": "网关已启动 ✓——你的智能体已上线。"
+    "optional": "可选",
+    "install": {
+      "heading": "安装 Hermes",
+      "body": "Hermes Agent 是本面板控制的助手。它在你的电脑上运行，Mnemosyne OS 为它提供你的记忆。",
+      "readyManaged": "Hermes 已安装。它由 Mnemosyne OS 安装，你的记忆已经接入。",
+      "readyOwn": "Hermes 已安装（你自己的安装）。",
+      "missing": "这台电脑上还没有 Hermes。",
+      "noHost": "此版本的 Mnemosyne OS 无法与 Hermes 通信。请更新 Mnemosyne OS 后重试。",
+      "needed": "安装 Hermes 后才能继续。后面的步骤会写入它的设置。"
+    },
+    "start": {
+      "heading": "启动",
+      "body": "一个按钮接好助手需要的三样东西，然后启动它。",
+      "brain": "大脑：Mnemosyne OS 把它的 AI 模型借给 Hermes",
+      "brainOk": "大脑已接入",
+      "brainKept": "大脑：Hermes 保留它自己设置中的模型",
+      "brainFail": "大脑没有开启。Hermes 将无法回答。",
+      "memory": "记忆：mnemosyne-memory 技能教 Hermes 使用你的记忆",
+      "memoryOk": "记忆技能已安装",
+      "memoryFail": "记忆技能未安装，Hermes 将在没有它的情况下启动。",
+      "gateway": "网关：让应用与 Hermes 对话的程序",
+      "gatewayOk": "网关已启动，Hermes 正在回答",
+      "gatewayFail": "网关在 45 秒内没有回应。",
+      "useMnemoBrain": "让 Hermes 用 Mnemosyne OS 思考。这会先备份，再替换 Hermes 设置中的模型。",
+      "run": "全部接好并启动",
+      "running": "进行中…",
+      "retry": "重试",
+      "openChat": "打个招呼",
+      "gatewayHelp": "想知道原因，请打开状态标签页并点击日志。"
     }
   },
   "dashboard": {
@@ -522,5 +542,10 @@
     "unreadable": "无法读取此文件：",
     "binaryHint": "需用对应应用打开的文档。",
     "openFailed": "无法打开："
+  },
+  "update": {
+    "available": "MnemoHermes {{latest}} 已发布（你的版本是 {{current}}）。",
+    "how": "安装方法：MnemoHub，MnemoHermes 卡片，卸载。然后选择添加一个卡带、一个仓库，填入下面的链接。Hermes 及其设置保持不变。",
+    "dismiss": "在下个版本前隐藏"
   }
 }

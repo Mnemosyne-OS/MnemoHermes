@@ -53,8 +53,16 @@ export function stageItemsFor(refs: MediaRef[]): StageItem[] {
   }));
 }
 
-export function ChatPanel({ apiPort, messages, setMessages, stageItems, setStageItems }: {
+export function ChatPanel({ apiPort, messages, setMessages, stageItems, setStageItems, active = true, onBusyChange }: {
   apiPort: number | null;
+  /** Whether the Chat tab is the one on screen. App keeps this panel MOUNTED
+   *  once visited, so a reply keeps streaming while another tab is open
+   *  (field report 2026-09-25: opening Status to check on Hermes cancelled
+   *  the question every time). Hidden, the mic is released and nothing is
+   *  spoken. */
+  active?: boolean;
+  /** Told when a turn starts and ends, so the tab bar can show it runs on. */
+  onBusyChange?: (busy: boolean) => void;
   /** Owned by App so the conversation survives tab switches (panels unmount). */
   messages: ChatMessage[];
   setMessages: Dispatch<SetStateAction<ChatMessage[]>>;
@@ -70,8 +78,9 @@ export function ChatPanel({ apiPort, messages, setMessages, stageItems, setStage
   const inputRef = useRef<HTMLInputElement>(null);
   // The in-flight stream's canceller (Stop button, and abort-on-unmount).
   const abortRef = useRef<AbortController | null>(null);
-  // Guards setState after unmount: the conversation lives in App state (survives
-  // tab switches), but this panel does not — a switch mid-stream aborts here.
+  // Guards setState after unmount. App keeps this panel mounted across tab
+  // switches, so an unmount now means the window itself is going away — the
+  // one case where the stream is aborted here.
   const mountedRef = useRef(true);
   useEffect(() => {
     mountedRef.current = true;
@@ -92,19 +101,62 @@ export function ChatPanel({ apiPort, messages, setMessages, stageItems, setStage
   const lastMsg = messages[messages.length - 1];
   const awaitingFirstToken = pending && (!lastMsg || lastMsg.role !== 'assistant' || lastMsg.content.length === 0);
 
+  useEffect(() => { onBusyChange?.(pending); }, [pending, onBusyChange]);
+
   // ── Voice ────────────────────────────────────────────────────────────────
   const voice = useCockpitVoice();
+  const activeRef = useRef(active);
+  activeRef.current = active;
+  // Hidden: release the host's mic and silence the voice, as leaving the tab
+  // did when it unmounted. The stream itself runs on.
+  const { cancel: cancelListening, stopSpeaking } = voice;
+  useEffect(() => {
+    if (active) return;
+    cancelListening();
+    stopSpeaking();
+  }, [active, cancelListening, stopSpeaking]);
   // The mic exists only when Hermes can answer: without the gateway this tab
   // is the text tab it always was, and nothing here is confused with the
   // app's own assistant.
   const [gatewayUp, setGatewayUp] = useState<boolean | null>(null);
+  // Field report 2026-09-25: a managed install points Hermes at the brain
+  // proxy, and the proxy was off — every turn hung on a closed port and read
+  // as "Hermes does not answer". Said here, where the silence is felt, with
+  // the switch beside it. Only on a managed install: a hand install may think
+  // with its own model, and an off proxy then means nothing.
+  const [brainOff, setBrainOff] = useState(false);
+  const [brainBusy, setBrainBusy] = useState(false);
+  const [brainError, setBrainError] = useState<string | null>(null);
+  // Asked again each time the tab comes back: the gateway may have been
+  // started or stopped from Status meanwhile.
   useEffect(() => {
+    if (!active) return;
     let cancelled = false;
     sdk.invoke<HermesStatus>('hermes.status', {})
-      .then((s) => { if (!cancelled) setGatewayUp(s?.gatewayRunning === true); })
+      .then(async (s) => {
+        if (cancelled) return;
+        setGatewayUp(s?.gatewayRunning === true);
+        if (s?.managed !== true) { setBrainOff(false); return; }
+        const proxy = await sdk.invoke<{ enabled?: boolean }>('hermes.proxyStatus', {});
+        if (!cancelled) setBrainOff(proxy?.enabled === false);
+      })
       .catch((err) => { console.warn('[chat] hermes.status failed:', err); if (!cancelled) setGatewayUp(false); });
     return () => { cancelled = true; };
-  }, []);
+  }, [active]);
+  const switchBrainOn = async () => {
+    setBrainBusy(true);
+    setBrainError(null);
+    try {
+      const proxy = await sdk.invoke<{ enabled?: boolean }>('hermes.proxySetConfig', { enabled: true });
+      if (proxy?.enabled !== true) throw new Error('PROXY_NOT_ENABLED');
+      if (mountedRef.current) setBrainOff(false);
+    } catch (err) {
+      console.warn('[chat] brain not switched on:', err);
+      if (mountedRef.current) setBrainError(errorMessage(err).slice(0, 120));
+    } finally {
+      if (mountedRef.current) setBrainBusy(false);
+    }
+  };
   const micReady = gatewayUp === true && voice.available === true;
   const micDisabledReason = gatewayUp === null || voice.available === null
     ? t('chat.micProbing')
@@ -209,7 +261,7 @@ export function ChatPanel({ apiPort, messages, setMessages, stageItems, setStage
         });
       }
       if (refs.length > 0) setStageItems((cur) => [...stageItemsFor(refs), ...cur]);
-      if (mountedRef.current && shouldSpeak(voice.mode, askedByVoice)) void voice.speak(clean);
+      if (mountedRef.current && activeRef.current && shouldSpeak(voice.mode, askedByVoice)) void voice.speak(clean);
     } catch (err) {
       if (controller.signal.aborted) {
         // Clean stop: keep whatever streamed, label it stopped.
@@ -283,6 +335,14 @@ export function ChatPanel({ apiPort, messages, setMessages, stageItems, setStage
         ))}
         <span style={{ ...hint, fontSize: 11, marginTop: 4 }}>{t('chat.commandsHint')}</span>
       </div>
+
+      {brainOff && (
+        <div role="alert" style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap', padding: '8px 10px', marginBottom: 10, border: '1px solid var(--accent, #35c9a6)', borderRadius: 6, fontSize: 13 }}>
+          <span style={{ flex: 1, minWidth: 200 }}>{t('chat.brainOff')}</span>
+          <button onClick={() => void switchBrainOn()} disabled={brainBusy} style={primaryButton}>{t('chat.brainOn')}</button>
+          {brainError && <span style={{ ...hint, width: '100%' }}>{t('common.error')} <code>{brainError}</code></span>}
+        </div>
+      )}
 
       <div style={{ flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: 10, paddingBottom: 12 }}>
         {messages.length === 0 && !pending && (

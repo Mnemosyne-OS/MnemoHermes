@@ -33,7 +33,9 @@ const CHANNEL_LABELS: Record<string, string> = {
 
 interface ChannelInfo { id: string; configured: boolean; tokenPresent?: boolean; allowedUsers?: string }
 
-export function ChannelsPanel() {
+/** `telegramOnly`: the wizard's version — the Telegram card alone. The voice
+ *  route and the other platforms are settings for later, not first steps. */
+export function ChannelsPanel({ telegramOnly = false }: { telegramOnly?: boolean } = {}) {
   const { t } = useI18n();
   const { state, reload } = usePanelData<{ channels: ChannelInfo[] }>(
     () => sdk.invoke<{ channels: ChannelInfo[] }>('hermes.channels', {}),
@@ -164,6 +166,7 @@ export function ChannelsPanel() {
               </div>
             </div>
 
+            {!telegramOnly && (<>
             <div style={panel}>
               <h2 style={{ ...sectionTitle, marginBottom: 6 }}>{t('channels.voiceHeading')}</h2>
               <p style={{ ...hint, margin: 0 }}>{t('channels.voiceHint')}</p>
@@ -211,6 +214,7 @@ export function ChannelsPanel() {
                 </p>
               )}
             </div>
+            </>)}
           </div>
         );
       }}

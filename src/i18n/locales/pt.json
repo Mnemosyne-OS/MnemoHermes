@@ -12,7 +12,8 @@
     "settings": "Configurações",
     "channels": "Canais",
     "tools": "Ferramentas",
-    "agents": "Agentes"
+    "agents": "Agentes",
+    "chatBusy": "Uma resposta está a caminho"
   },
   "tasks": {
     "heading": "Tarefas",
@@ -243,7 +244,9 @@
     "stageDeps": "A instalar dependências",
     "stageConfig": "A escrever a configuração",
     "stageCheck": "A verificar a instalação",
-    "stageDone": "Concluído"
+    "stageDone": "Concluído",
+    "installShowOutput": "Ver detalhes",
+    "installHideOutput": "Ocultar detalhes"
   },
   "settings": {
     "heading": "Configurações",
@@ -340,7 +343,9 @@
       "NOT_LISTENING": "Nenhuma gravação em curso.",
       "TTS_FAILED": "A voz não conseguiu falar: verifica Definições › Voz.",
       "UNKNOWN": "O passo de voz falhou."
-    }
+    },
+    "brainOff": "O cérebro do assistente está desligado, então o Hermes não pode responder.",
+    "brainOn": "Ligar"
   },
   "skills": {
     "intro": "Uma skill é uma ficha de saber-fazer que o Hermes lê quando a tarefa pede: como ler um PDF, triar uma caixa de e-mail, falar com o Obsidian. Elas vêm com o Hermes.",
@@ -425,48 +430,38 @@
   },
   "onboarding": {
     "stepOf": "Etapa {{n}} / {{total}}",
-    "skipAll": "Pular tudo",
-    "skip": "Pular",
+    "skipAll": "Configurar mais tarde",
     "next": "Avançar",
     "back": "Voltar",
-    "finishButton": "Concluir os primeiros passos",
+    "finishButton": "Concluir",
     "rerun": "Refazer os primeiros passos",
-    "welcome": {
-      "heading": "Bem-vindo ao MnemoHermes",
-      "body": "Quatro etapas, todas opcionais — e seu agente pensa com o seu OS, fala com você nos seus canais e permanece sob a sua governança.",
-      "detected": "Instalação do Hermes detectada.",
-      "notInstalled": "Nenhuma instalação do Hermes encontrada nesta máquina."
-    },
-    "brain": {
-      "heading": "1. O cérebro"
-    },
     "posture": {
-      "heading": "2. Onde vive o seu agente?",
-      "body": "Um agente autônomo executa o que lê. Escolha uma postura com um clique — ela escreve os dois lados da ponte: as ferramentas do Hermes e o limite do cérebro. Você sempre pode mudar.",
-      "current": "Postura atual: {{name}}",
-      "currentCustom": "Postura atual: personalizada (não corresponde a nenhum preset)",
-      "active": "ativa",
-      "apply": "Aplicar",
-      "confirmYolo": "Confirmar? Tudo se abre",
-      "applying": "Aplicando…",
-      "applied": "Aplicado ✓ (backup criado) — limite do cérebro agora {{cap}}/dia. Reinicie o gateway do Hermes.",
-      "footnote": "Cada preset faz backup da config do Hermes antes de escrever. Numa máquina com suas senhas ou wallets, prefira Fortaleza — ou faça o agente viver numa máquina dedicada / VPS.",
+      "heading": "O que o seu agente pode fazer?",
+      "body": "Um agente executa o que lê, incluindo o que está escrito numa página web ou numa mensagem. Escolha o que ele pode fazer sozinho. Você pode mudar depois em Configurações.",
+      "current": "Agora: {{name}}",
+      "currentCustom": "Agora: personalizado (não corresponde a nenhuma opção)",
+      "active": "atual",
+      "apply": "Escolher",
+      "confirmYolo": "Tem certeza? Tudo fica aberto",
+      "applying": "Salvando…",
+      "applied": "Salvo. Vale a partir da próxima vez que o gateway iniciar.",
+      "footnote": "Cada opção salva uma cópia das configurações do Hermes antes de mudá-las. Em um computador com suas senhas ou wallets, escolha Prudente.",
       "fortress": {
-        "title": "Fortaleza — máquina importante",
-        "body": "Ferramentas mínimas em todo lugar (sem terminal, sem autoinstalação de skills), aprovação manual, varredura tirith bloqueante, limite do cérebro baixo. A superfície de ataque mais fechada."
+        "title": "Prudente",
+        "body": "Pergunta a você antes de cada ação arriscada. Sem terminal, não pode instalar nada sozinho, e um limite diário pequeno."
       },
       "balanced": {
-        "title": "Equilibrado — recomendado",
-        "body": "Mensagens cautelosas (recall, sem shell), CLI completa, aprovação inteligente, limite do cérebro normal. O padrão do assistente."
+        "title": "Equilibrado (recomendado)",
+        "body": "Pergunta a você antes de comandos arriscados. No celular ele pode lembrar e responder, não executar comandos. Limite diário normal."
       },
       "yolo": {
-        "title": "YOLO — PC descartável, \"pode queimar\"",
-        "body": "Tudo aberto em todos os canais, aprovações desligadas, limite do cérebro alto. Apenas numa máquina remota sem nada a perder."
+        "title": "Tudo permitido",
+        "body": "Sem perguntas, todas as ferramentas em todos os canais, limite diário alto. Só em um computador sem nada a perder."
       }
     },
     "profile": {
-      "heading": "3. Quem é você para ele?",
-      "body": "O perfil que seu agente lerá a cada sessão. Mnemosyne pode redigi-lo a partir da sua memória — revise, ajuste, aplique. Ou preencha o questionário, ou cole um perfil existente se estiver migrando.",
+      "heading": "Apresente-se",
+      "body": "Um texto curto que o seu agente lê no início de cada conversa: quem é, o que faz, como ele deve falar com você. O Mnemosyne OS pode escrevê-lo a partir da sua memória. Leia, corrija e salve.",
       "autofill": "Pré-preencher a partir de Mnemosyne",
       "autofilling": "Mnemosyne está redigindo…",
       "template": "Inserir o questionário",
@@ -477,12 +472,37 @@
       "templateText": "# Perfil\n\n## Papel\n(dev, pesquisador, criativo… ?)\n\n## Stack / ferramentas do dia a dia\n\n## Estilo de interação\n(conciso ou didático? proativo ou reativo? idioma?)\n\n## O que espero de você\n\n## Contexto\n(fuso horário, canais, restrições)"
     },
     "channel": {
-      "heading": "4. Um canal para falar com ele"
+      "heading": "Fale com ele pelo celular"
     },
-    "finish": {
-      "heading": "5. Iniciar",
-      "body": "Inicie o gateway e diga olá ao seu agente — pela aba Conversa, ou pelo Telegram se você o configurou.",
-      "started": "Gateway ativo ✓ — seu agente está online."
+    "optional": "opcional",
+    "install": {
+      "heading": "Instalar o Hermes",
+      "body": "O Hermes Agent é o assistente que este painel controla. Ele roda no seu computador, e o Mnemosyne OS dá a ele a sua memória.",
+      "readyManaged": "O Hermes está instalado. O Mnemosyne OS o instalou, e a sua memória já está ligada.",
+      "readyOwn": "O Hermes está instalado (a sua própria instalação).",
+      "missing": "O Hermes ainda não está neste computador.",
+      "noHost": "Esta versão do Mnemosyne OS não sabe falar com o Hermes. Atualize o Mnemosyne OS e tente de novo.",
+      "needed": "Instale o Hermes para continuar. Os passos seguintes escrevem nele."
+    },
+    "start": {
+      "heading": "Iniciar",
+      "body": "Um botão conecta as três coisas de que o seu assistente precisa e depois o inicia.",
+      "brain": "Cérebro: o Mnemosyne OS empresta o seu modelo de IA ao Hermes",
+      "brainOk": "Cérebro conectado",
+      "brainKept": "Cérebro: o Hermes mantém o modelo indicado nas suas próprias configurações",
+      "brainFail": "O cérebro não foi ligado. O Hermes não vai conseguir responder.",
+      "memory": "Memória: o skill mnemosyne-memory ensina o Hermes a usar a sua memória",
+      "memoryOk": "Skill de memória instalado",
+      "memoryFail": "Skill de memória não instalado, o Hermes inicia sem ele.",
+      "gateway": "Gateway: o programa que deixa a app falar com o Hermes",
+      "gatewayOk": "Gateway iniciado, o Hermes está respondendo",
+      "gatewayFail": "O gateway não respondeu em 45 segundos.",
+      "useMnemoBrain": "Fazer o Hermes pensar com o Mnemosyne OS. Isto substitui o modelo nas configurações do Hermes, depois de salvar uma cópia.",
+      "run": "Conectar tudo e iniciar",
+      "running": "Trabalhando…",
+      "retry": "Tentar de novo",
+      "openChat": "Dizer olá",
+      "gatewayHelp": "Para saber por quê, abra a aba Estado e clique em Registro."
     }
   },
   "dashboard": {
@@ -522,5 +542,10 @@
     "unreadable": "Não foi possível ler este ficheiro:",
     "binaryHint": "Um documento para abrir com a sua aplicação.",
     "openFailed": "Não foi possível abrir:"
+  },
+  "update": {
+    "available": "O MnemoHermes {{latest}} está disponível (você tem a {{current}}).",
+    "how": "Para instalar: MnemoHub, cartão MnemoHermes, Desinstalar. Depois Adicionar um cartucho, com o link do repositório abaixo. O Hermes e as configurações dele continuam no lugar.",
+    "dismiss": "Ocultar até a próxima versão"
   }
 }
