@@ -15,6 +15,10 @@ import { getLang } from '../i18n/useI18n';
 
 /** How long a freshly started gateway is given to bind before we re-read. */
 export const GATEWAY_SETTLE_MS = 3000;
+/** How long a freshly started gateway may take to answer before we call it
+ *  failed. It measured 10-20 s on Windows (lib/gateway), so a single read
+ *  after GATEWAY_SETTLE_MS reported healthy boots as failures. */
+export const GATEWAY_BOOT_MS = 45000;
 /** How long the old gateway is given to die before the new one is started. */
 export const STOP_WAIT_MS = 8000;
 
@@ -46,10 +50,14 @@ export function useGatewayRestart(): { restart: RestartState; run: () => Promise
       if (!gone) { setRestart('failed'); return; }
       await sdk.invoke('hermes.gatewayStart', { locale: getLang() });
       await new Promise((r) => setTimeout(r, GATEWAY_SETTLE_MS));
-      const status = await sdk.invoke<HermesStatus>('hermes.status', {});
       // "managed" says a process was spawned; "running" says it answers. When
-      // the host measured the second, that is the verdict.
-      const up = status.gatewayRunning !== null ? status.gatewayRunning === true : status.gatewayProcess.managed;
+      // the host measured the second, that is the verdict — polled until the
+      // boot budget is spent, since one read at 3 s lands mid-boot.
+      const up = await waitUntil(async () => {
+        const status = await sdk.invoke<HermesStatus>('hermes.status', {});
+        if (status.gatewayRunning !== null) return status.gatewayRunning === true;
+        return status.gatewayProcess.managed;
+      }, GATEWAY_BOOT_MS - GATEWAY_SETTLE_MS, 1000);
       setRestart(up ? 'ok' : 'failed');
     } catch {
       // The status read is the only witness; a thrown call is a failed restart.

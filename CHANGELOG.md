@@ -1,6 +1,15 @@
 # Changelog
 
-## 0.9.0 (unreleased — ships with Mnemosyne OS 1.6.0)
+## 0.9.1
+
+- **Starting the gateway no longer reports a failure while it boots.** The
+  wizard's last step and the Restart button read the status once, a few
+  seconds after Start, while the gateway takes 10 to 20 seconds to answer on
+  Windows. They said "not running" and offered Start again, and a second
+  click was refused because the gateway was already starting. Both now wait
+  up to 45 seconds for the gateway to answer.
+
+## 0.9.0 (ships with Mnemosyne OS 1.6.0)
 
 Needs Mnemosyne OS 1.6.0 or later: the new tabs call host actions that
 earlier versions do not have.

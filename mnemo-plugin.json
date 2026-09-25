@@ -1,7 +1,7 @@
 {
   "name": "@mnemosyne-plugins/mnemo-hermes",
   "displayName": "MnemoHermes",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "description": "Cockpit for your Hermes Agent. See what your agent is doing, chat with it, manage its skills, and govern every memory it writes into your vaults — keep, move or reject, with full provenance. Hermes roams the world; you govern what it remembers.",
   "descriptionI18n": {
     "en": "Cockpit for your Hermes Agent. See what your agent is doing, chat with it, manage its skills, and govern every memory it writes into your vaults — keep, move or reject, with full provenance.",

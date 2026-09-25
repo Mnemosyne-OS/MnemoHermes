@@ -4,6 +4,7 @@ import { sdk } from '../sdk/instance';
 import { useI18n, getLang } from '../i18n/useI18n';
 import { panel, buttonStyle } from '../ui';
 import type { HermesStatus } from '../types';
+import { waitUntil, GATEWAY_BOOT_MS } from '../hooks/useGatewayRestart';
 
 export function FinishStep({ onDone }: { onDone: () => void }) {
   const { t } = useI18n();
@@ -15,12 +16,18 @@ export function FinishStep({ onDone }: { onDone: () => void }) {
       try {
         await sdk.invoke('hermes.gatewayStart', { locale: getLang() });
       } catch (err) {
-        // A gateway already answering is a success, not a failure.
-        if (!(err instanceof Error && err.message.includes('ALREADY_RUNNING'))) throw err;
+        // A gateway already answering, or one this app already spawned and
+        // that is still booting, is not a failure. Field report 2026-09-25:
+        // a fixed 4 s wait called a 10-20 s boot "not running", put the
+        // button back, and the second click came back ALREADY_MANAGED.
+        const msg = err instanceof Error ? err.message : '';
+        if (!msg.includes('ALREADY_RUNNING') && !msg.includes('ALREADY_MANAGED')) throw err;
       }
-      await new Promise((r) => setTimeout(r, 4000));
-      const status = await sdk.invoke<HermesStatus>('hermes.status', {});
-      setGw(status.gatewayRunning ? 'up' : 'error');
+      const up = await waitUntil(async () => {
+        const status = await sdk.invoke<HermesStatus>('hermes.status', {});
+        return status.gatewayRunning === true;
+      }, GATEWAY_BOOT_MS, 1000);
+      setGw(up ? 'up' : 'error');
     } catch {
       setGw('error');
     }

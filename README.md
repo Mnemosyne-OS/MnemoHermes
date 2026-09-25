@@ -30,7 +30,7 @@ cartridge.
 > written against the Hermes source, not against its documentation. The managed
 > install pins one Hermes release (`v2026.9.21`) and checks its sha256.
 >
-> **Version 0.9.0 needs Mnemosyne OS 1.6.0 or later.** Its new tabs call host
+> **Versions 0.9.0 and later need Mnemosyne OS 1.6.0 or later.** Its new tabs call host
 > actions that earlier versions do not have.
 >
 > What nobody has watched: macOS, Linux, anyone else's Hermes layout, and any
