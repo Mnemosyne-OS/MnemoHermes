@@ -12,7 +12,7 @@
  * carries `hermes-cli` on both platforms and the grid drew twelve empty boxes
  * next to a pill — the screen said "nothing" where the truth was "everything,
  * terminal included". The expansions below are read from `toolsets.py` of the
- * pinned Hermes (v2026.9.21); a preset this module does not know stays a pill
+ * pinned Hermes (v2026.9.21, unchanged in v2026.9.24); a preset this module does not know stays a pill
  * with no boxes ticked, which is the old behaviour and an honest "unknown".
  */
 

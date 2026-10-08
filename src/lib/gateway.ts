@@ -38,3 +38,22 @@ export const GATEWAY_PHASE_KEYS: Record<GatewayPhase, string> = {
   starting: 'status.gatewayStarting',
   down: 'status.gatewayDown',
 };
+
+/** Start refusals that have their own sentence. */
+export const START_REFUSALS = ['NOT_INSTALLED', 'INSTALL_RUNNING', 'INSTALL_INCOMPLETE', 'CLI_NOT_FOUND'] as const;
+
+/**
+ * What the Start button says after a refused start, from the error the host
+ * returned. Null when there is nothing to say: ALREADY_RUNNING / ALREADY_MANAGED
+ * mean a gateway is already answering or booting, a start in progress and not
+ * a failure (the same reading as the start sequence). A code without its own
+ * sentence is shown RAW: hiding it is how a refusal went unseen (2026-10-01,
+ * INSTALL_INCOMPLETE swallowed by this button).
+ */
+export function startRefusal(message: string): { key: string; vars?: Record<string, string> } | null {
+  if (/ALREADY_(RUNNING|MANAGED)/.test(message)) return null;
+  const code = START_REFUSALS.find((c) => message.includes(c));
+  if (code) return { key: `status.startError.${code}` };
+  const raw = message.trim().slice(0, 120);
+  return raw ? { key: 'status.startErrorRaw', vars: { code: raw } } : { key: 'status.startErrorUnknown' };
+}

@@ -14,6 +14,10 @@ import type { HermesStatus, ManagedInstallState } from '../types';
 
 export type InstallPhase = 'idle' | 'running' | 'done' | 'failed' | 'cancelled';
 
+/**
+ * The job's phase, one of FIVE: a job the human stopped is `cancelled`, never
+ * `failed`, and no job state at all is `idle`, never `done`.
+ */
 export function installPhase(run: ManagedInstallState | null): InstallPhase {
   if (!run) return 'idle';
   if (run.running) return 'running';

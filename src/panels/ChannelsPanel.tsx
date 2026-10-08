@@ -65,7 +65,13 @@ export function ChannelsPanel({ telegramOnly = false }: { telegramOnly?: boolean
       await loadVoiceRoute();
       setVoiceFeedback('saved');
     } catch (err) {
-      setVoiceError(err instanceof Error ? err.message : String(err));
+      // A refusal the switch knows (the ElevenLabs probe says the key is refused,
+      // the quota spent…) reads as its own sentence; anything else stays raw.
+      const msg = err instanceof Error ? err.message : String(err);
+      const code = /(ELEVENLABS_[A-Z_]+)/.exec(msg)?.[1];
+      setVoiceError(code ? t(`channels.voiceRouteReason_${code}`) : msg);
+      // The verdict may have changed under the switch (a refused key): re-read it.
+      void loadVoiceRoute();
       setVoiceFeedback('failed');
     }
   };
@@ -182,6 +188,15 @@ export function ChannelsPanel({ telegramOnly = false }: { telegramOnly?: boolean
                       {voiceRoute.chosen && <span style={hint}> · {t('channels.voiceRouteChosen', { chosen: voiceRoute.chosen })}</span>}
                       {!voiceRoute.appAvailable && voiceRoute.reason && (
                         <span style={{ ...hint, display: 'block' }}>{t(`channels.voiceRouteReason_${voiceRoute.reason}`)}</span>
+                      )}
+                      {/* Privacy is stated PER ROUTE: the app voice is local or ElevenLabs,
+                          and the line says which. An older host says nothing here (`cloud`
+                          absent), rather than a "stays here" nobody measured. */}
+                      {voiceRoute.chosen && voiceRoute.cloud === 'elevenlabs' && (
+                        <span style={{ ...hint, display: 'block' }}>{t('channels.voicePrivacyAppElevenLabs')}</span>
+                      )}
+                      {voiceRoute.chosen && voiceRoute.cloud === null && (
+                        <span style={{ ...hint, display: 'block' }}>{t('channels.voicePrivacyAppLocal')}</span>
                       )}
                     </span>
                   </label>

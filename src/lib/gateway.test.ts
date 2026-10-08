@@ -1,4 +1,4 @@
-import { canStartGateway, gatewayPhase, GATEWAY_PHASE_KEYS, isBooting } from './gateway';
+import { canStartGateway, gatewayPhase, GATEWAY_PHASE_KEYS, isBooting, startRefusal, START_REFUSALS } from './gateway';
 import type { HermesStatus } from '../types';
 
 type StatusOverride = Omit<Partial<HermesStatus>, 'gatewayProcess'> & {
@@ -98,5 +98,23 @@ describe('isBooting', () => {
 
   it('is false when nobody probed, so an unknown never starts a poll loop', () => {
     expect(isBooting(status({ gatewayRunning: null, gatewayProcess: { managed: true } }))).toBe(false);
+  });
+});
+
+describe('startRefusal — what a refused Start says', () => {
+  it('a known code gets its own sentence, wherever it sits in the message', () => {
+    expect(startRefusal('INSTALL_INCOMPLETE')).toEqual({ key: 'status.startError.INSTALL_INCOMPLETE' });
+    expect(startRefusal('Error: hermes.gatewayStart failed: NOT_INSTALLED')).toEqual({ key: 'status.startError.NOT_INSTALLED' });
+    for (const c of START_REFUSALS) expect(startRefusal(c)?.key).toBe(`status.startError.${c}`);
+  });
+
+  it('a gateway already answering or booting is not a failure: nothing to say', () => {
+    expect(startRefusal('ALREADY_RUNNING')).toBeNull();
+    expect(startRefusal('ALREADY_MANAGED')).toBeNull();
+  });
+
+  it('an unknown code is shown raw, never hidden', () => {
+    expect(startRefusal('EACCES: spawn denied')).toEqual({ key: 'status.startErrorRaw', vars: { code: 'EACCES: spawn denied' } });
+    expect(startRefusal('   ')).toEqual({ key: 'status.startErrorUnknown' });
   });
 });

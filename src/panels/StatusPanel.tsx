@@ -10,9 +10,9 @@ import { useCallback, useEffect, useState, type ReactNode } from 'react';
 import { sdk } from '../sdk/instance';
 import { useI18n, getLang } from '../i18n/useI18n';
 import { usePanelData } from '../hooks/usePanelData';
-import { panel, buttonStyle, primaryButton, hint, StatusDot, PanelGate, CodeBlock, sectionTitle, row } from '../ui';
+import { panel, buttonStyle, primaryButton, hint, note, StatusDot, PanelGate, CodeBlock, sectionTitle, row } from '../ui';
 import { type HermesStatus } from '../types';
-import { canStartGateway, gatewayPhase, GATEWAY_PHASE_KEYS, isBooting } from '../lib/gateway';
+import { canStartGateway, gatewayPhase, GATEWAY_PHASE_KEYS, isBooting, startRefusal } from '../lib/gateway';
 import { showsUpdateButton } from '../lib/managedInstall';
 import { ManagedInstallCard } from './ManagedInstallCard';
 import {
@@ -47,6 +47,8 @@ export function StatusPanel({ refreshSec, reviewedIds }: { refreshSec: number; r
     () => sdk.invoke<HermesStatus>('hermes.status', {}),
   );
   const [gatewayBusy, setGatewayBusy] = useState(false);
+  /** The last Start refusal, said under the button (lib/gateway startRefusal). */
+  const [startError, setStartError] = useState<ReturnType<typeof startRefusal>>(null);
   const [extras, setExtras] = useState<DashboardExtras | null>(null);
   const [logsOpen, setLogsOpen] = useState(false);
   const [logLines, setLogLines] = useState<string[] | null>(null);
@@ -135,10 +137,13 @@ export function StatusPanel({ refreshSec, reviewedIds }: { refreshSec: number; r
   const startGateway = async () => {
     setGatewayBusy(true);
     setLogsOpen(true); // the honest status: show the process's own words
+    setStartError(null);
     try {
       await sdk.invoke('hermes.gatewayStart', { locale: getLang() });
-    } catch {
-      // The reload below shows the honest state either way.
+    } catch (err) {
+      // A refusal starts no process, so neither the reload nor the logs would
+      // show it: it is said under the button.
+      setStartError(startRefusal(err instanceof Error ? err.message : String(err)));
     } finally {
       setGatewayBusy(false);
       void reload(true);
@@ -205,6 +210,9 @@ export function StatusPanel({ refreshSec, reviewedIds }: { refreshSec: number; r
                   <span style={{ ...hint, fontSize: 11 }}>{status.gatewayProcess.lastLine}</span>
                 )}
               </div>
+            )}
+            {startError && !status.gatewayRunning && (
+              <div role="alert" style={note}>{t(startError.key, startError.vars)}</div>
             )}
             {logsOpen && (
               <CodeBlock>

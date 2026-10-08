@@ -92,3 +92,21 @@ export const TELEGRAM_FEEDBACK_TEXT: Record<Exclude<TelegramFeedback, 'idle'>, s
   invalidIds: 'channels.invalidIds',
   error: 'common.error',
 };
+
+/** Apify connector form (Settings tab). */
+export type ApifyFeedback = 'idle' | 'saved' | 'unlinked' | 'invalidKey' | 'error';
+
+export const APIFY_FEEDBACK_KEYS = [
+  ['INVALID_APIFY_TOKEN', 'invalidKey'],
+] as const satisfies ReadonlyArray<readonly [string, ApifyFeedback]>;
+
+export function apifyFeedback(message: string): ApifyFeedback {
+  return matchCode(APIFY_FEEDBACK_KEYS, message, 'error');
+}
+
+export const APIFY_FEEDBACK_TEXT: Record<Exclude<ApifyFeedback, 'idle'>, string> = {
+  saved: 'connectors.saved',
+  unlinked: 'connectors.unlinked',
+  invalidKey: 'connectors.invalidKey',
+  error: 'common.error',
+};

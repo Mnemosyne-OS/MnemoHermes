@@ -65,6 +65,8 @@ function readMode(): VoiceReplyMode {
   }
 }
 
+/** The Chat tab's voice loop. `available` stays null until the host answers;
+ *  a failed status probe reads as false, and unmount releases mic and voice. */
 export function useCockpitVoice(): CockpitVoice {
   const [available, setAvailable] = useState<boolean | null>(null);
   const [listening, setListening] = useState(false);
@@ -230,7 +232,10 @@ export function useCockpitVoice(): CockpitVoice {
     setSpeaking(true);
     setError(null);
     try {
-      const cfg = await sdk.invoke<VoiceConfig>('reader.voiceConfig', {});
+      // `cloud: true`: this chat accepts the ElevenLabs voice chosen in
+      // Settings › Voice (rendered by the host, in main, with its key). A host
+      // older than 2026-09-24 ignores the flag and answers 'browser' or local.
+      const cfg = await sdk.invoke<VoiceConfig>('reader.voiceConfig', { cloud: true });
       if (speakRunRef.current !== run) return;
       if (cfg.engine === 'browser') {
         for (const unit of units) {

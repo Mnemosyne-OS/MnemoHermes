@@ -1,5 +1,25 @@
 # Changelog
 
+## 0.9.3
+
+Needs Mnemosyne OS 1.7.0 or later: older hosts ignore the new voice flag and
+keep the previous behaviour.
+
+- **Watches**: a new tab sets up a nightly search on a topic, at the hour you
+  pick, read here or on Telegram. Each watch can be run now, paused or deleted.
+  A free web search engine is installed with one click; a Brave key is
+  optional.
+- **Apify**: Settings links your own Apify account, so the assistant can answer
+  competitor, product and local-prospect questions from Google Maps places and
+  a website's content. The cockpit says who pays before you enter the key.
+- **Start**: a refused start says why, under the button.
+- **ElevenLabs voice**: when ElevenLabs is the voice chosen in Settings ›
+  Voice, the Chat tab reads replies in it, and Channels can use it for
+  Telegram voice notes. Channels says, per route, where the reply text goes:
+  with ElevenLabs it is sent to ElevenLabs with your key. A missing key, a
+  refused key, a spent quota or a deleted voice is named; no other voice
+  takes its place.
+
 ## 0.9.2
 
 - **MnemoHermes tells you when a new version is out.** It reads the version

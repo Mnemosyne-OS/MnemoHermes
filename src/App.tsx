@@ -29,13 +29,15 @@ import { SkillsPanel } from './panels/SkillsPanel';
 import { InboxPanel } from './panels/InboxPanel';
 import { BrainSection } from './panels/BrainSection';
 import { SearchSection } from './panels/SearchSection';
+import { ConnectorsSection } from './panels/ConnectorsSection';
 import { SettingsPanel } from './panels/SettingsPanel';
 import { TasksPanel } from './panels/TasksPanel';
+import { WatchesPanel } from './panels/WatchesPanel';
 import { OnboardingWizard } from './onboarding/OnboardingWizard';
 
-type Tab = 'status' | 'chat' | 'tasks' | 'agents' | 'channels' | 'tools' | 'skills' | 'inbox' | 'settings';
+type Tab = 'status' | 'chat' | 'tasks' | 'watches' | 'agents' | 'channels' | 'tools' | 'skills' | 'inbox' | 'settings';
 
-const TABS: Tab[] = ['status', 'chat', 'tasks', 'agents', 'channels', 'tools', 'skills', 'inbox', 'settings'];
+const TABS: Tab[] = ['status', 'chat', 'tasks', 'watches', 'agents', 'channels', 'tools', 'skills', 'inbox', 'settings'];
 
 export default function App() {
   const { t } = useI18n();
@@ -175,6 +177,7 @@ export default function App() {
               </div>
             )}
             {tab === 'tasks' && <TasksPanel />}
+            {tab === 'watches' && <WatchesPanel />}
             {tab === 'agents' && <AgentsPanel />}
             {tab === 'channels' && <ChannelsPanel />}
             {tab === 'tools' && <ToolsPanel />}
@@ -184,6 +187,7 @@ export default function App() {
               <div style={{ display: 'grid', gap: 12 }}>
                 <BrainSection />
                 <SearchSection />
+                <ConnectorsSection />
                 {settings === null
                   ? <div style={panel}>{t('common.loading')}</div>
                   : <SettingsPanel settings={settings} onSave={saveSettings} />}

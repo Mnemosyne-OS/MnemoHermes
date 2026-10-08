@@ -52,10 +52,13 @@ export interface VoiceRouteView {
   ours: boolean;
   appAvailable: boolean;
   /** Why the app voice cannot answer: NO_VOICE_PREFS, UNSUPPORTED_FAMILY, LICENSE_REQUIRED,
-   *  ENGINE_NOT_INSTALLED, VOICE_NOT_INSTALLED, NO_CLONE_SAMPLE. */
+   *  ENGINE_NOT_INSTALLED, VOICE_NOT_INSTALLED, NO_CLONE_SAMPLE, or an ELEVENLABS_* refusal. */
   reason: string | null;
-  /** The choice in words (`xtts · clone`), or null. */
+  /** The choice in words (`xtts · clone`, `elevenlabs`), or null. */
   chosen: string | null;
+  /** Where the reply text goes on the app route: 'elevenlabs', or null when it stays on
+   *  this machine. Absent from a host older than 2026-09-24 (read as "not said"). */
+  cloud?: 'elevenlabs' | null;
 }
 
 export type RunChoice = 'once' | 'session' | 'always' | 'deny';
