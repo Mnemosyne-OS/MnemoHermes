@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.10.0
+
+- **Agent door**: an agent can drive Hermes through the same calls as the
+  buttons (gateway start/stop, runs, start a task with its declared spend).
+  Approvals, chat and configuration are never exposed.
+- **Moli OS**: the cockpit links a Moli OS instance, probing it first, with four
+  defects behind a green connector fixed.
+
 ## 0.9.3
 
 Needs Mnemosyne OS 1.7.0 or later: older hosts ignore the new voice flag and

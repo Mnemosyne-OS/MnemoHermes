@@ -1,7 +1,7 @@
 {
   "name": "@mnemosyne-plugins/mnemo-hermes",
   "displayName": "MnemoHermes",
-  "version": "0.9.3",
+  "version": "0.10.0",
   "description": "Cockpit for your Hermes Agent. See what your agent is doing, chat with it, manage its skills, and govern every memory it writes into your vaults — keep, move or reject, with full provenance. Hermes roams the world; you govern what it remembers.",
   "descriptionI18n": {
     "en": "Cockpit for your Hermes Agent. See what your agent is doing, chat with it, manage its skills, and govern every memory it writes into your vaults — keep, move or reject, with full provenance.",
@@ -37,6 +37,100 @@
       "route": "index.html",
       "defaultWidth": 960,
       "defaultHeight": 700
+    }
+  ],
+  "agentActions": [
+    {
+      "id": "status",
+      "summary": "Where the Hermes agent stands: installed or not, whether its gateway is up, starting or down, since when, and the tab on the person's screen.",
+      "details": "gateway is null when it is not probed (no install, or the api server is off). A gateway that just started takes 10-20 s to be up.",
+      "effect": "read",
+      "params": {}
+    },
+    {
+      "id": "tasks",
+      "summary": "The tasks given to Hermes, newest first: what was asked, its status, how long since its last sign of life, what it answered, and an approval waiting for the person.",
+      "details": "waitsForThePerson is answered by the person on their screen, never by an agent. silentSeconds is a fact; a task is never said to be working.",
+      "effect": "read",
+      "params": {
+        "limit": {
+          "type": "number",
+          "description": "How many tasks to return (default 10).",
+          "minimum": 1,
+          "maximum": 50
+        }
+      }
+    },
+    {
+      "id": "showTab",
+      "summary": "Show one tab of the cockpit on the person's screen.",
+      "effect": "write",
+      "params": {
+        "tab": {
+          "type": "string",
+          "description": "The tab.",
+          "enum": [
+            "status",
+            "chat",
+            "tasks",
+            "watches",
+            "agents",
+            "channels",
+            "tools",
+            "skills",
+            "inbox",
+            "settings"
+          ]
+        }
+      },
+      "required": [
+        "tab"
+      ]
+    },
+    {
+      "id": "startGateway",
+      "summary": "Start the Hermes gateway, as the Status tab's « Start » button does, and show that tab.",
+      "details": "Answers once the start is accepted; the gateway is up 10-20 s later (call status). A refusal (not installed, install running...) comes back as START_REFUSED with the host's reason.",
+      "effect": "write",
+      "params": {}
+    },
+    {
+      "id": "stopGateway",
+      "summary": "Stop the gateway the cockpit started, as the Status tab's « Stop » button does.",
+      "details": "A gateway started elsewhere is not stopped from here (NOT_MANAGED).",
+      "effect": "write",
+      "params": {}
+    },
+    {
+      "id": "startTask",
+      "summary": "Give Hermes a task, as the Tasks tab does, and show that tab. Hermes answers with its model, which costs credits or the person's own key.",
+      "details": "The gateway must be up. Any command Hermes wants to run waits for the person's approval on their screen. Follow the task with tasks.",
+      "effect": "spend",
+      "params": {
+        "task": {
+          "type": "string",
+          "description": "What Hermes should do, in plain words.",
+          "maxLength": 4000
+        }
+      },
+      "required": [
+        "task"
+      ]
+    },
+    {
+      "id": "stopTask",
+      "summary": "Stop a running task, as its « Stop » button does.",
+      "effect": "write",
+      "params": {
+        "runId": {
+          "type": "string",
+          "description": "The task's runId, from tasks.",
+          "maxLength": 200
+        }
+      },
+      "required": [
+        "runId"
+      ]
     }
   ]
 }

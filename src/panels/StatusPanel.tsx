@@ -12,7 +12,7 @@ import { useI18n, getLang } from '../i18n/useI18n';
 import { usePanelData } from '../hooks/usePanelData';
 import { panel, buttonStyle, primaryButton, hint, note, StatusDot, PanelGate, CodeBlock, sectionTitle, row } from '../ui';
 import { type HermesStatus } from '../types';
-import { canStartGateway, gatewayPhase, GATEWAY_PHASE_KEYS, isBooting, startRefusal } from '../lib/gateway';
+import { canStartGateway, gatewayPhase, gatewayStartCall, gatewayStopCall, GATEWAY_PHASE_KEYS, isBooting, startRefusal } from '../lib/gateway';
 import { showsUpdateButton } from '../lib/managedInstall';
 import { ManagedInstallCard } from './ManagedInstallCard';
 import {
@@ -139,7 +139,7 @@ export function StatusPanel({ refreshSec, reviewedIds }: { refreshSec: number; r
     setLogsOpen(true); // the honest status: show the process's own words
     setStartError(null);
     try {
-      await sdk.invoke('hermes.gatewayStart', { locale: getLang() });
+      await gatewayStartCall((action, payload) => sdk.invoke(action, payload), getLang());
     } catch (err) {
       // A refusal starts no process, so neither the reload nor the logs would
       // show it: it is said under the button.
@@ -154,7 +154,7 @@ export function StatusPanel({ refreshSec, reviewedIds }: { refreshSec: number; r
   const stopGateway = async () => {
     setGatewayBusy(true);
     try {
-      await sdk.invoke('hermes.gatewayStop', {});
+      await gatewayStopCall((action, payload) => sdk.invoke(action, payload));
     } catch {
       // Reload shows the honest state.
     } finally {

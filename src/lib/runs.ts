@@ -8,6 +8,17 @@
  * is asking anymore.
  */
 import type { RunChoice, RunView } from '../types';
+import type { Invoke } from './startSequence';
+
+/** The Tasks tab's « Start » call, shared with an agent (doc 149). */
+export function runStartCall(invoke: Invoke, input: string): Promise<RunView> {
+  return invoke<RunView>('hermes.runStart', { input });
+}
+
+/** The Tasks tab's « Stop » call, shared with an agent (doc 149). */
+export function runStopCall(invoke: Invoke, runId: string): Promise<unknown> {
+  return invoke('hermes.runStop', { runId });
+}
 
 export type RunPhase = 'active' | 'waiting' | 'settled';
 

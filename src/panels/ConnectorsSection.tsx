@@ -16,13 +16,18 @@ import { useGatewayRestart } from '../hooks/useGatewayRestart';
 import { panel, inputStyle, primaryButton, buttonStyle, hint, StatusDot, PanelGate, FeedbackNote, sectionTitle, row } from '../ui';
 import { RestartGatewayRow } from './RestartGatewayRow';
 import { apifyFeedback, APIFY_FEEDBACK_TEXT, errorMessage, type ApifyFeedback } from '../lib/errorCodes';
+import type { MoliStatus } from '../lib/moli';
+import { MoliConnector } from './MoliConnector';
 
 interface ApifyStatus { tokenPresent: boolean; serverPresent: boolean; serverHosted: boolean; skillPresent?: boolean }
+/** `moli` is absent from a host older than the Moli connector: then no Moli
+ *  panel at all, rather than one whose buttons answer "unknown action". */
+interface Connectors { apify: ApifyStatus; moli?: MoliStatus }
 
 export function ConnectorsSection() {
   const { t } = useI18n();
-  const { state, reload } = usePanelData<{ apify: ApifyStatus }>(
-    () => sdk.invoke<{ apify: ApifyStatus }>('hermes.connectors', {}),
+  const { state, reload } = usePanelData<Connectors>(
+    () => sdk.invoke<Connectors>('hermes.connectors', {}),
     /unknown action|not supported|NOT_INSTALLED/i,
   );
   const [key, setKey] = useState('');
@@ -55,9 +60,10 @@ export function ConnectorsSection() {
 
   return (
     <PanelGate state={state} onRetry={() => void reload()}>
-      {({ apify }) => {
+      {({ apify, moli }) => {
         const linked = apify.tokenPresent && apify.serverHosted;
         return (
+          <>
           <div style={panel}>
             <div style={{ ...row, gap: 10, marginBottom: 6 }}>
               <h2 style={{ ...sectionTitle, margin: 0 }}>{t('connectors.heading')}</h2>
@@ -127,6 +133,8 @@ export function ConnectorsSection() {
               {linked && apify.skillPresent === false && <span style={hint}>{t('connectors.skillMissing')}</span>}
             </div>
           </div>
+          {moli && <MoliConnector status={moli} onChanged={() => void reload(true)} />}
+          </>
         );
       }}
     </PanelGate>

@@ -9,6 +9,9 @@
  * starting.
  */
 import type { HermesStatus } from '../types';
+import type { Invoke } from './startSequence';
+
+export type { Invoke };
 
 export type GatewayPhase = 'up' | 'starting' | 'down';
 
@@ -38,6 +41,16 @@ export const GATEWAY_PHASE_KEYS: Record<GatewayPhase, string> = {
   starting: 'status.gatewayStarting',
   down: 'status.gatewayDown',
 };
+
+/** The Start button's call, shared with an agent (doc 149). Resolves once the host accepted it. */
+export function gatewayStartCall(invoke: Invoke, locale: string): Promise<unknown> {
+  return invoke('hermes.gatewayStart', { locale });
+}
+
+/** The Stop button's call, shared with an agent (doc 149). */
+export function gatewayStopCall(invoke: Invoke): Promise<unknown> {
+  return invoke('hermes.gatewayStop', {});
+}
 
 /** Start refusals that have their own sentence. */
 export const START_REFUSALS = ['NOT_INSTALLED', 'INSTALL_RUNNING', 'INSTALL_INCOMPLETE', 'CLI_NOT_FOUND'] as const;

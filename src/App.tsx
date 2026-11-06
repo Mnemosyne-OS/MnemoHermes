@@ -34,10 +34,8 @@ import { SettingsPanel } from './panels/SettingsPanel';
 import { TasksPanel } from './panels/TasksPanel';
 import { WatchesPanel } from './panels/WatchesPanel';
 import { OnboardingWizard } from './onboarding/OnboardingWizard';
-
-type Tab = 'status' | 'chat' | 'tasks' | 'watches' | 'agents' | 'channels' | 'tools' | 'skills' | 'inbox' | 'settings';
-
-const TABS: Tab[] = ['status', 'chat', 'tasks', 'watches', 'agents', 'channels', 'tools', 'skills', 'inbox', 'settings'];
+import { HermesAgentActions } from './panels/HermesAgentActions';
+import { TABS, type Tab } from './lib/hermesAgent';
 
 export default function App() {
   const { t } = useI18n();
@@ -54,6 +52,9 @@ export default function App() {
   const [chatMounted, setChatMounted] = useState(false);
   const [chatBusy, setChatBusy] = useState(false);
   useEffect(() => { if (tab === 'chat') setChatMounted(true); }, [tab]);
+  /** Bumped to re-read the Status or Tasks tab after an agent acted there (doc 149). */
+  const [panelNonce, setPanelNonce] = useState(0);
+  const refreshPanel = useCallback(() => setPanelNonce((n) => n + 1), []);
 
   // Outside the host (plain browser dev) the bridge is absent — defaults apply.
   useEffect(() => {
@@ -120,6 +121,7 @@ export default function App() {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%', padding: 20, boxSizing: 'border-box' }}>
+      <HermesAgentActions onboardingDone={onboardingDone} tab={tab} setTab={setTab} refresh={refreshPanel} />
       <header style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
         <Logo />
         <div>
@@ -162,7 +164,7 @@ export default function App() {
           </nav>
 
           <main style={{ flex: 1, overflowY: 'auto' }}>
-            {tab === 'status' && <StatusPanel refreshSec={settings?.statusRefreshSec ?? 0} reviewedIds={reviewedIds} />}
+            {tab === 'status' && <StatusPanel key={panelNonce} refreshSec={settings?.statusRefreshSec ?? 0} reviewedIds={reviewedIds} />}
             {chatMounted && (
               <div hidden={tab !== 'chat'}>
                 <ChatPanel
@@ -176,7 +178,7 @@ export default function App() {
                 />
               </div>
             )}
-            {tab === 'tasks' && <TasksPanel />}
+            {tab === 'tasks' && <TasksPanel key={panelNonce} />}
             {tab === 'watches' && <WatchesPanel />}
             {tab === 'agents' && <AgentsPanel />}
             {tab === 'channels' && <ChannelsPanel />}

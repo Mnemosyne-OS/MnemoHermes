@@ -110,3 +110,31 @@ export const APIFY_FEEDBACK_TEXT: Record<Exclude<ApifyFeedback, 'idle'>, string>
   invalidKey: 'connectors.invalidKey',
   error: 'common.error',
 };
+
+/**
+ * Moli OS address refusals. Each is a different correction for the person:
+ * a NAME needs the IP instead (Moli's Host guard), an Internet address must
+ * never be used (no login on Moli), anything else is a typo.
+ */
+export type MoliFault = 'empty' | 'name' | 'public' | 'invalid' | 'notInstalled' | 'error';
+
+export const MOLI_FAULT_KEYS = [
+  ['MOLI_ADDRESS_EMPTY', 'empty'],
+  ['MOLI_ADDRESS_NAME', 'name'],
+  ['MOLI_ADDRESS_PUBLIC', 'public'],
+  ['MOLI_ADDRESS_INVALID', 'invalid'],
+  ['NOT_INSTALLED', 'notInstalled'],
+] as const satisfies ReadonlyArray<readonly [string, MoliFault]>;
+
+export function moliFault(message: string): MoliFault {
+  return matchCode(MOLI_FAULT_KEYS, message, 'error');
+}
+
+export const MOLI_FAULT_TEXT: Record<MoliFault, string> = {
+  empty: 'moli.errEmpty',
+  name: 'moli.errName',
+  public: 'moli.errPublic',
+  invalid: 'moli.errInvalid',
+  notInstalled: 'chat.errNotInstalled',
+  error: 'common.error',
+};

@@ -14,7 +14,7 @@ import { useI18n } from '../i18n/useI18n';
 import { usePanelData } from '../hooks/usePanelData';
 import { panel, inputStyle, buttonStyle, primaryButton, dangerButton, hint, PanelGate, CodeBlock, sectionTitle, row, StatusDot } from '../ui';
 import type { RunChoice, RunView } from '../types';
-import { anyRunLive, approvalSecondsLeft, runPhase, silentSeconds, sortRuns, CHOICE_KEYS, STATUS_KEYS } from '../lib/runs';
+import { anyRunLive, approvalSecondsLeft, runPhase, runStartCall, runStopCall, silentSeconds, sortRuns, CHOICE_KEYS, STATUS_KEYS } from '../lib/runs';
 
 const WATCH_MS = 2000;
 
@@ -44,7 +44,7 @@ export function TasksPanel() {
     setBusy('start');
     setRefusal(null);
     try {
-      await sdk.invoke<RunView>('hermes.runStart', { input: text });
+      await runStartCall((action, payload) => sdk.invoke(action, payload), text);
       setInput('');
       await reload(true);
     } catch (err) {
@@ -71,7 +71,7 @@ export function TasksPanel() {
   const stop = useCallback(async (runId: string) => {
     setBusy(runId);
     try {
-      await sdk.invoke('hermes.runStop', { runId });
+      await runStopCall((action, payload) => sdk.invoke(action, payload), runId);
     } catch (err) {
       setRefusal(err instanceof Error ? err.message : String(err));
     } finally {
